@@ -1,9 +1,11 @@
+import { useContext } from 'react'
 import {
   AppBar,
   Container,
   createTheme,
   CssBaseline,
   Link,
+  Switch,
   ThemeProvider,
   Toolbar,
   Typography,
@@ -11,8 +13,12 @@ import {
 import Head from 'next/head'
 import useStyles from '../utils/styles'
 import NextLink from 'next/link'
+import { Store } from '../utils/store'
+import Cookies from 'js-cookie'
 
 const Layout = ({ description, title, children }) => {
+  const [state, dispatch] = useContext(Store)
+  const { darkMode } = state
   const theme = createTheme({
     typography: {
       h1: {
@@ -27,7 +33,7 @@ const Layout = ({ description, title, children }) => {
       },
     },
     pallete: {
-      type: 'light',
+      type: darkMode ? 'dark' : 'light',
       primary: {
         main: '#f0c000',
       },
@@ -37,6 +43,12 @@ const Layout = ({ description, title, children }) => {
     },
   })
   const classes = useStyles()
+
+  const darkModeChangeHandler = () => {
+    dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' })
+    const newDarkMode = !darkMode
+    Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF')
+  }
 
   return (
     <>
@@ -57,6 +69,10 @@ const Layout = ({ description, title, children }) => {
             </NextLink>
             <div className={classes.grow}></div>
             <div>
+              <Switch
+                checked={darkMode}
+                onChange={darkModeChangeHandler}
+              ></Switch>
               <NextLink href="/cart" passHref>
                 <Link>Cart</Link>
               </NextLink>
