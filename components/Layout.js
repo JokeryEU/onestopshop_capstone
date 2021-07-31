@@ -3,13 +3,16 @@ import Head from 'next/head'
 import useStyles from '../utils/styles'
 import NextLink from 'next/link'
 
-const Layout = ({ children }) => {
+const Layout = ({ description, title, children }) => {
   const classes = useStyles()
 
   return (
     <>
       <Head>
-        <title>Welcome to OneStopShop</title>
+        <title>
+          {title ? `${title} - OneStopShop` : 'Welcome to OneStopShop'}
+        </title>
+        {description && <meta name="description" content={description}></meta>}
       </Head>
       <AppBar position="static" className={classes.navbar}>
         <Toolbar>

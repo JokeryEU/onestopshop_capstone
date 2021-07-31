@@ -22,6 +22,10 @@ const useStyles = makeStyles({
     marginTop: 10,
     textAlign: 'center',
   },
+  section: {
+    marginTop: 10,
+    marginbottom: 10,
+  },
 })
 
 export default useStyles
