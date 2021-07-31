@@ -16,7 +16,7 @@ export default class MyDocument extends Document {
   }
 }
 
-Mydocument.getInitialProps = async (ctx) => {
+MyDocument.getInitialProps = async (ctx) => {
   const sheets = new ServerStyleSheets()
   const originalRenderPage = ctx.renderPage
   ctx.renderpage = () => {

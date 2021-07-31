@@ -10,13 +10,13 @@ const Layout = ({ children }) => {
       <Head>
         <title>Welcome to OneStopShop</title>
       </Head>
-      <AppBar position="static" classname={classes.navbar}>
+      <AppBar position="static" className={classes.navbar}>
         <Toolbar>
           <Typography>OneStopShop</Typography>
         </Toolbar>
       </AppBar>
-      <Container classname={classes.main}>{children}</Container>
-      <footer classname={classes.footer}>
+      <Container className={classes.main}>{children}</Container>
+      <footer className={classes.footer}>
         <Typography>All rights reserved. OneStopShop.</Typography>
       </footer>
     </>
