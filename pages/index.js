@@ -28,7 +28,8 @@ export default function Home(props) {
                     component="img"
                     image={product.image[0]}
                     title={product.name}
-                  ></CardMedia>
+                    style={{ height: '35vh', objectFit: 'fill' }}
+                  />
                   <CardContent>
                     <Typography>{product.name}</Typography>
                   </CardContent>
