@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import NextLink from 'next/link'
 import Image from 'next/image'
 import {
@@ -12,12 +11,13 @@ import {
 } from '@material-ui/core'
 import Layout from '../../components/layout'
 import useStyles from '../../utils/styles'
+import Product from '../../models/Product'
+import db from '../../utils/db'
 
-const ProductPage = () => {
+const ProductPage = (props) => {
+  const { product } = props
   const classes = useStyles()
-  const router = useRouter()
-  const { slug } = router.query
-  const product = toBeAddedFromDB.products.find((p) => p.slug === slug)
+
   if (!product) {
     return <div>Product not found</div>
   }
@@ -33,7 +33,7 @@ const ProductPage = () => {
       <Grid container spacing={1}>
         <Grid item md={6} xs={12}>
           <Image
-            src={product.image}
+            src={product.image[0]}
             alt={product.name}
             width={640}
             height={640}
@@ -99,6 +99,19 @@ const ProductPage = () => {
       </Grid>
     </Layout>
   )
+}
+
+export async function getServerSideProps(context) {
+  const { params } = context
+  const { slug } = params
+  await db.connect()
+  const product = await Product.findOne({ slug }).lean()
+  await db.disconnect()
+  return {
+    props: {
+      product: db.convertDocToObj(product),
+    },
+  }
 }
 
 export default ProductPage

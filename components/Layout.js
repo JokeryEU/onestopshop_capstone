@@ -17,7 +17,7 @@ import { Store } from '../utils/store'
 import Cookies from 'js-cookie'
 
 const Layout = ({ description, title, children }) => {
-  const [state, dispatch] = useContext(Store)
+  const { state, dispatch } = useContext(Store)
   const { darkMode } = state
   const theme = createTheme({
     typography: {
@@ -32,7 +32,7 @@ const Layout = ({ description, title, children }) => {
         margin: '1rem 0',
       },
     },
-    pallete: {
+    palette: {
       type: darkMode ? 'dark' : 'light',
       primary: {
         main: '#f0c000',
@@ -69,10 +69,7 @@ const Layout = ({ description, title, children }) => {
             </NextLink>
             <div className={classes.grow}></div>
             <div>
-              <Switch
-                checked={darkMode}
-                onChange={darkModeChangeHandler}
-              ></Switch>
+              <Switch checked={darkMode} onChange={darkModeChangeHandler} />
               <NextLink href="/cart" passHref>
                 <Link>Cart</Link>
               </NextLink>
