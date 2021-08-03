@@ -22,14 +22,16 @@ import NextLink from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import axios from 'axios'
+import { useRouter } from 'next/router'
 
 const CartPage = () => {
+  const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const {
     cart: { cartItems },
   } = state
   const updateCartHandler = async (item, quantity) => {
-    const { data } = axios.get(`/products/${item._id}`)
+    const { data } = await axios.get(`/api/products/${item._id}`)
     if (data.countInStock < quantity) {
       window.alert('Sorry. Product is out of stock')
       return
@@ -39,12 +41,15 @@ const CartPage = () => {
   const removeItemHandler = async (item) => {
     dispatch({ type: 'CART_REMOVE_ITEM', payload: item })
   }
+  const checkoutHandler = () => {
+    router.push('/shipping')
+  }
   return (
     <Layout title="Shopping Cart">
       <Typography component="h1" variant="h1">
         Shopping Cart
       </Typography>
-      {cartItems === 0 ? (
+      {cartItems === 0 || undefined ? (
         <div>
           Cart is empty{' '}
           <NextLink href="/" passHref>
@@ -132,7 +137,12 @@ const CartPage = () => {
                   </Typography>
                 </ListItem>
                 <ListItem>
-                  <Button variant="contained" color="primary" fullWidth>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    onClick={checkoutHandler}
+                  >
                     Check Out
                   </Button>
                 </ListItem>

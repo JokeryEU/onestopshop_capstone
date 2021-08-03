@@ -49,7 +49,9 @@ const Layout = ({ description, title, children }) => {
   const darkModeChangeHandler = () => {
     dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' })
     const newDarkMode = !darkMode
-    Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF')
+    Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF', {
+      sameSite: 'lax',
+    })
   }
 
   return (
