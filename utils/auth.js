@@ -14,10 +14,10 @@ const generateJWT = (user) =>
     )
   )
 
-export const verifyJWT = (token) =>
+const verifyJWT = (token) =>
   new Promise((res, rej) =>
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
-      if (error) rej(new Error('Sign in again'))
+      if (error) rej(error)
       res(decoded)
     })
   )
@@ -71,4 +71,28 @@ export const refreshJWT = async (oldRefreshToken) => {
   user.refreshToken = newRefreshToken
   await user.save()
   return { accessToken: newAccessToken, refreshToken: newRefreshToken }
+}
+
+export const isAuth = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization.split(' ')[1]
+    const decoded = await verifyJWT(token)
+    const user = await User.findOne({ _id: decoded._id })
+    if (!user) {
+      throw new Error(`Please login`)
+    }
+    req.user = user
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const adminOnly = (req, res, next) => {
+  if (req.user && req.user.role === 'Admin') {
+    next()
+  } else {
+    const error = new Error('Admin Only')
+    next(error)
+  }
 }
