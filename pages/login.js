@@ -10,9 +10,22 @@ import Layout from '../components/layout'
 import useStyles from '../utils/styles'
 import NextLink from 'next/link'
 import axios from 'axios'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { Store } from '../utils/store'
+import { useRouter } from 'next/router'
+import Cookies from 'js-cookie'
 
 const LoginPage = () => {
+  const router = useRouter()
+  const { redirect } = router.query
+  const { state, dispatch } = useContext(Store)
+  const { userInfo } = state
+  useEffect(() => {
+    if (userInfo) {
+      router.push('/')
+    }
+  }, [userInfo])
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const classes = useStyles()
@@ -20,7 +33,11 @@ const LoginPage = () => {
   const submitHandler = async (e) => {
     e.preventDefault()
     try {
-      await axios.post('/api/users/login', { email, password })
+      const { data } = await axios.post('/api/users/login', { email, password })
+
+      dispatch({ type: 'USER_LOGIN', payload: data })
+      Cookies.set('userInfo', data, { sameSite: 'lax' })
+      router.push(redirect || '/')
     } catch (error) {
       alert(error)
     }
@@ -40,7 +57,7 @@ const LoginPage = () => {
               label="Email"
               inputProps={{ type: 'email' }}
               onChange={(e) => setEmail(e.target.value)}
-            ></TextField>
+            />
           </ListItem>
           <ListItem>
             <TextField
@@ -50,7 +67,7 @@ const LoginPage = () => {
               label="Password"
               inputProps={{ type: 'password' }}
               onChange={(e) => setPassword(e.target.value)}
-            ></TextField>
+            />
           </ListItem>
           <ListItem>
             <Button variant="contained" type="submit" fullWidth color="primary">
@@ -59,7 +76,7 @@ const LoginPage = () => {
           </ListItem>
           <ListItem>
             Don't have an account? &nbsp;
-            <NextLink href="/register" passHref>
+            <NextLink href={`/register?redirect=${redirect || '/'}`} passHref>
               <Link>Register</Link>
             </NextLink>
           </ListItem>
