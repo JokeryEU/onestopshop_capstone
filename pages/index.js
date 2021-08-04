@@ -11,6 +11,7 @@ import {
 import axios from 'axios'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 import { useContext } from 'react'
 import Layout from '../components/layout'
 import Product from '../models/Product'
@@ -18,19 +19,22 @@ import db from '../utils/db'
 import { Store } from '../utils/store'
 
 export default function Home(props) {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const { products } = props
 
   const addToCartHandler = async (product) => {
+    closeSnackbar()
     const existItem = state.cart.cartItems.find(
       (item) => item._id === product._id
     )
     const quantity = existItem ? existItem.quantity + 1 : 1
     const { data } = await axios.get(`/api/products/${product._id}`)
     if (data.countInStock < quantity) {
-      window.alert('Sorry. Product is out of stock')
-      return
+      return enqueueSnackbar('Sorry. Product is out of stock', {
+        variant: 'error',
+      })
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
     router.push('/cart')

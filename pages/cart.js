@@ -23,18 +23,22 @@ import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 
 const CartPage = () => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const {
     cart: { cartItems },
   } = state
   const updateCartHandler = async (item, quantity) => {
+    closeSnackbar()
     const { data } = await axios.get(`/api/products/${item._id}`)
     if (data.countInStock < quantity) {
-      window.alert('Sorry. Product is out of stock')
-      return
+      return enqueueSnackbar('Sorry. Product is out of stock', {
+        variant: 'error',
+      })
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } })
   }
@@ -49,7 +53,7 @@ const CartPage = () => {
       <Typography component="h1" variant="h1">
         Shopping Cart
       </Typography>
-      {cartItems === 0 || undefined ? (
+      {cartItems.length === 0 ? (
         <div>
           Cart is empty{' '}
           <NextLink href="/" passHref>
