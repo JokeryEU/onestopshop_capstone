@@ -28,7 +28,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
-      minlength: [8, 'Minimum length must be 8 chars'],
+      minlength: [8, 'Minimum length must be at least 8 chars'],
     },
     profilePic: {
       type: String,

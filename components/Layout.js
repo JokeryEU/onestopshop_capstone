@@ -70,6 +70,7 @@ const Layout = ({ description, title, children }) => {
     dispatch({ type: 'USER_LOGOUT' })
     Cookies.remove('userInfo')
     Cookies.remove('cartItems')
+    Cookies.remove('shippingAddress')
     router.push('/')
   }
   return (
