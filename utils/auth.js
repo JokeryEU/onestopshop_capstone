@@ -17,7 +17,11 @@ const generateJWT = (user) =>
 const verifyJWT = (token) =>
   new Promise((res, rej) =>
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
-      if (error) rej(error)
+      if (error) {
+        const err = new Error("Token isn't valid")
+        err.httpStatusCode = 401
+        rej(err)
+      }
       res(decoded)
     })
   )
@@ -38,7 +42,11 @@ const generateRefreshJWT = (user) =>
 const verifyRefreshToken = (token) =>
   new Promise((res, rej) =>
     jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (error, decoded) => {
-      if (error) rej(error)
+      if (error) {
+        const err = new Error('Sign in again')
+        err.httpStatusCode = 403
+        rej(err)
+      }
       res(decoded)
     })
   )
@@ -57,12 +65,16 @@ export const refreshJWT = async (oldRefreshToken) => {
   const user = await User.findOne({ _id: decoded._id })
 
   if (!user) {
-    throw new Error('Sign in again')
+    const error = new Error('Sign in again')
+    error.httpStatusCode = 401
+    throw error
   }
   const refreshToken = user.refreshToken
 
   if (refreshToken !== oldRefreshToken) {
-    throw new Error('Sign in again')
+    const error = new Error('Sign in again')
+    error.httpStatusCode = 401
+    throw error
   }
 
   const newAccessToken = await generateJWT({ _id: user._id })
@@ -79,7 +91,9 @@ export const isAuth = async (req, res, next) => {
     const decoded = await verifyJWT(token)
     const user = await User.findOne({ _id: decoded._id })
     if (!user) {
-      throw new Error(`Please login`)
+      const error = new Error(`Please sign in again`)
+      error.httpStatusCode = 400
+      throw error
     }
     req.user = user
     next()
@@ -93,6 +107,7 @@ export const adminOnly = (req, res, next) => {
     next()
   } else {
     const error = new Error('Admin Only')
+    error.httpStatusCode = 403
     next(error)
   }
 }
