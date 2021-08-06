@@ -29,9 +29,7 @@ const LoginPage = () => {
   const { state, dispatch } = useContext(Store)
   const { userInfo } = state
   useEffect(() => {
-    if (userInfo) {
-      router.push('/')
-    }
+    if (userInfo) return router.push('/')
   }, [userInfo])
   const classes = useStyles()
 

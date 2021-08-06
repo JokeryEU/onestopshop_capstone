@@ -80,7 +80,8 @@ const OrderPage = ({ params }) => {
   } = order
 
   useEffect(() => {
-    if (!userInfo) router.push('/login')
+    if (!userInfo) return router.push('/login')
+
     const fetchOrder = async () => {
       try {
         dispatch({ type: 'FETCH_ORDER_REQUEST' })

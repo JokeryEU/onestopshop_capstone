@@ -51,9 +51,8 @@ const OrderHistoryPage = () => {
   })
 
   useEffect(() => {
-    if (!userInfo) {
-      router.push('/login')
-    }
+    if (!userInfo) return router.push('/login')
+
     const fetchOrders = async () => {
       try {
         dispatch({ type: 'FETCH_ORDERS_REQUEST' })

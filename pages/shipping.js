@@ -27,10 +27,10 @@ const ShippingPage = () => {
     userInfo,
     cart: { shippingAddress },
   } = state
+
   useEffect(() => {
-    if (!userInfo) {
-      router.push('/login?redirect=/shipping')
-    }
+    if (!userInfo) return router.push('/login?redirect=/shipping')
+
     setValue('fullName', shippingAddress.fullName)
     setValue('address', shippingAddress.address)
     setValue('city', shippingAddress.city)

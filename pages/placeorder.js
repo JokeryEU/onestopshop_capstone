@@ -47,8 +47,8 @@ const PlaceOrderPage = () => {
   const totalPrice = round2(itemsPrice + shippingPrice + taxPrice)
 
   useEffect(() => {
-    if (!paymentMethod) router.push('/payment')
-    if (cartItems.length === 0) router.push('/cart')
+    if (!paymentMethod) return router.push('/payment')
+    if (cartItems.length === 0) return router.push('/cart')
   }, [paymentMethod, cartItems])
 
   const placeOrderHandler = async () => {

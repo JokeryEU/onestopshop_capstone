@@ -26,9 +26,7 @@ const ProductPage = (props) => {
   const { product } = props
   const classes = useStyles()
 
-  if (!product) {
-    return <div>Product not found</div>
-  }
+  if (!product) return <div>Product not found</div>
 
   const addToCartHandler = async () => {
     closeSnackbar()
