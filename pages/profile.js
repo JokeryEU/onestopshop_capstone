@@ -68,7 +68,7 @@ const ProfilePage = () => {
       )
       if (!password) {
         dispatch({ type: 'USER_LOGIN', payload: data })
-        Cookies.set('userInfo', JSON.stringify(data))
+        Cookies.set('userInfo', JSON.stringify(data), { sameSite: 'lax' })
         enqueueSnackbar('Profile updated', { variant: 'success' })
       } else {
         dispatch({ type: 'USER_LOGOUT' })
