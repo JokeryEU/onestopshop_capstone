@@ -62,8 +62,11 @@ const Layout = ({ description, title, children }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const loginClickHandler = (e) => setAnchorEl(e.currentTarget)
 
-  const loginMenuCloseHandler = () => {
+  const loginMenuCloseHandler = (e, redirect) => {
     setAnchorEl(null)
+    if (redirect) {
+      router.push(redirect)
+    }
   }
   const logoutClickHandler = () => {
     setAnchorEl(null)
@@ -128,6 +131,13 @@ const Layout = ({ description, title, children }) => {
                       onClick={(e) => loginMenuCloseHandler(e, '/profile')}
                     >
                       Profile
+                    </MenuItem>
+                    <MenuItem
+                      onClick={(e) =>
+                        loginMenuCloseHandler(e, '/order-history')
+                      }
+                    >
+                      Order History
                     </MenuItem>
                     <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                   </Menu>

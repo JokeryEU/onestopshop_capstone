@@ -102,7 +102,7 @@ export const isAuth = async (req, res, next) => {
   }
 }
 
-export const adminOnly = (req, res, next) => {
+export const isAdmin = (req, res, next) => {
   if (req.user && req.user.role === 'Admin') {
     next()
   } else {
