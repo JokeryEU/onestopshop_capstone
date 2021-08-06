@@ -1,5 +1,6 @@
 import {
   Button,
+  Card,
   CircularProgress,
   Grid,
   List,
@@ -117,17 +118,14 @@ const OrderHistoryPage = () => {
                           <TableRow key={order._id}>
                             <TableCell>{order._id}</TableCell>
                             <TableCell>
-                              {format(
-                                parseISO(order.createdAt),
-                                'dd-MMM-yyyy | HH:mm'
-                              )}
+                              {format(parseISO(order.createdAt), 'dd-MM-yyyy')}
                             </TableCell>
                             <TableCell>€{order.totalPrice}</TableCell>
                             <TableCell>
                               {order.isPaid
                                 ? `Paid at ${format(
                                     parseISO(order.paidAt),
-                                    'dd-MMM-yyyy | HH:mm'
+                                    'dd-MM-yyyy'
                                   )}`
                                 : 'Not paid'}
                             </TableCell>
@@ -135,7 +133,7 @@ const OrderHistoryPage = () => {
                               {order.isDelivered
                                 ? `Delivered at ${format(
                                     parseISO(order.deliveredAt),
-                                    'dd-MMM-yyyy | HH:mm'
+                                    'dd-MM-yyyy'
                                   )}`
                                 : 'Not delivered'}
                             </TableCell>

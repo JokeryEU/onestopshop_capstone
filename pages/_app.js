@@ -3,7 +3,7 @@ import { SnackbarProvider } from 'notistack'
 import { useEffect } from 'react'
 import { StoreProvider } from '../utils/store'
 
-function MyApp({ Component, pageProps }) {
+const MyApp = ({ Component, pageProps }) => {
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {

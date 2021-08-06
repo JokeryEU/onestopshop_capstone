@@ -16,6 +16,7 @@ import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 import { Controller, useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
+import { getError } from '../utils/error'
 
 const RegisterPage = () => {
   const {
@@ -59,10 +60,7 @@ const RegisterPage = () => {
       Cookies.set('userInfo', JSON.stringify(data), { sameSite: 'lax' })
       router.push(redirect || '/')
     } catch (error) {
-      enqueueSnackbar(
-        error.response.data ? error.response.data : error.message,
-        { variant: 'error' }
-      )
+      enqueueSnackbar(getError(error), { variant: 'error' })
     }
   }
   return (

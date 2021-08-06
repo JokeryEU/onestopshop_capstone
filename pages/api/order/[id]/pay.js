@@ -20,10 +20,10 @@ handler.put(async (req, res) => {
     }
     const paidOrder = await order.save()
     await db.disconnect()
-    res.send({ message: 'Order paid', order: paidOrder })
+    res.send('Order paid', { order: paidOrder })
   } else {
     await db.disconnect()
-    res.status(404).send({ message: 'Order not found' })
+    res.status(404).send('Order not found')
   }
 })
 
