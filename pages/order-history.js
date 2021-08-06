@@ -22,6 +22,7 @@ import Layout from '../components/layout'
 import { getError } from '../utils/error'
 import { Store } from '../utils/store'
 import useStyles from '../utils/styles'
+import { format, parseISO } from 'date-fns'
 
 function reducer(state, action) {
   switch (action.type) {
@@ -116,16 +117,27 @@ const OrderHistoryPage = () => {
                         {orders.map((order) => (
                           <TableRow key={order._id}>
                             <TableCell>{order._id}</TableCell>
-                            <TableCell>{order.createdAt}</TableCell>
+                            <TableCell>
+                              {format(
+                                parseISO(order.createdAt),
+                                'dd-MMM-yyyy | HH:mm'
+                              )}
+                            </TableCell>
                             <TableCell>€{order.totalPrice}</TableCell>
                             <TableCell>
                               {order.isPaid
-                                ? `Paid at ${order.paidAt}`
+                                ? `Paid at ${format(
+                                    parseISO(order.paidAt),
+                                    'dd-MMM-yyyy | HH:mm'
+                                  )}`
                                 : 'Not paid'}
                             </TableCell>
                             <TableCell>
                               {order.isDelivered
-                                ? `Delivered at ${order.deliveredAt}`
+                                ? `Delivered at ${format(
+                                    parseISO(order.deliveredAt),
+                                    'dd-MMM-yyyy | HH:mm'
+                                  )}`
                                 : 'Not delivered'}
                             </TableCell>
                             <TableCell>
