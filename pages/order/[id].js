@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core'
 import { format, parseISO } from 'date-fns'
 import { useContext, useEffect, useReducer } from 'react'
-import Layout from '../../components/layout'
+import Layout from '../../components/Layout'
 import { Store } from '../../utils/store'
 import NextLink from 'next/link'
 import Image from 'next/image'

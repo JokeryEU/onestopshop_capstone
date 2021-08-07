@@ -13,7 +13,7 @@ import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useContext, useEffect, useState } from 'react'
 import CheckoutWizard from '../components/CheckoutWizard'
-import Layout from '../components/layout'
+import Layout from '../components/Layout'
 import { Store } from '../utils/store'
 import useStyles from '../utils/styles'
 

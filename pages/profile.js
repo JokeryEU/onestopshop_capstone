@@ -8,7 +8,7 @@ import { useContext, useEffect } from 'react'
 import { Store } from '../utils/store'
 import { useRouter } from 'next/router'
 import useStyles from '../utils/styles'
-import Layout from '../components/layout'
+import Layout from '../components/Layout'
 import {
   Button,
   Card,

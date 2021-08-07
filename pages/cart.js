@@ -16,7 +16,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { useContext } from 'react'
-import Layout from '../components/layout'
+import Layout from '../components/Layout'
 import { Store } from '../utils/store'
 import NextLink from 'next/link'
 import Image from 'next/image'

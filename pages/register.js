@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
-import Layout from '../components/layout'
+import Layout from '../components/Layout'
 import useStyles from '../utils/styles'
 import NextLink from 'next/link'
 import axios from 'axios'
