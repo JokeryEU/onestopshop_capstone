@@ -116,9 +116,13 @@ const AdminOrdersPage = () => {
                       <TableBody>
                         {orders.map((order) => (
                           <TableRow key={order._id}>
-                            <TableCell>{order._id}</TableCell>
+                            <TableCell>{order._id.substring(16, 24)}</TableCell>
                             <TableCell>
-                              {order.user ? order.user.name : 'DELETED USER'}
+                              {order.user
+                                ? order.user.firstName +
+                                  ' ' +
+                                  order.user.lastName
+                                : 'DELETED USER'}
                             </TableCell>
                             <TableCell>
                               {format(parseISO(order.createdAt), 'dd-MM-yyyy')}

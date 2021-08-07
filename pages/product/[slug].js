@@ -49,7 +49,9 @@ const ProductPage = (props) => {
       <div className={classes.section}>
         <NextLink href="/" passHref>
           <Link>
-            <Typography>Back to products</Typography>
+            <Typography component="h2" variant="h2">
+              Back to products
+            </Typography>
           </Link>
         </NextLink>
       </div>
