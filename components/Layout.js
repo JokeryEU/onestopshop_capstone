@@ -68,6 +68,9 @@ const Layout = ({ description, title, children }) => {
       router.push(redirect)
     }
   }
+
+  const menuCloseHandler = () => setAnchorEl(null)
+
   const logoutClickHandler = () => {
     setAnchorEl(null)
     dispatch({ type: 'USER_LOGOUT' })
@@ -126,7 +129,7 @@ const Layout = ({ description, title, children }) => {
                     anchorEl={anchorEl}
                     keepMounted
                     open={Boolean(anchorEl)}
-                    onClose={loginMenuCloseHandler}
+                    onClose={menuCloseHandler}
                   >
                     <MenuItem
                       onClick={(e) => loginMenuCloseHandler(e, '/profile')}
@@ -140,6 +143,15 @@ const Layout = ({ description, title, children }) => {
                     >
                       Order History
                     </MenuItem>
+                    {userInfo.role === 'Admin' && (
+                      <MenuItem
+                        onClick={(e) =>
+                          loginMenuCloseHandler(e, '/admin/dashboard')
+                        }
+                      >
+                        Admin Dashboard
+                      </MenuItem>
+                    )}
                     <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                   </Menu>
                 </>
