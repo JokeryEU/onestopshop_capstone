@@ -2,6 +2,7 @@ import axios from 'axios'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
+import { useEffect, useContext, useReducer } from 'react'
 import {
   CircularProgress,
   Grid,
@@ -19,34 +20,32 @@ import {
   TableBody,
 } from '@material-ui/core'
 import { getError } from '../../utils/error'
+import { Store } from '../../utils/store'
 import Layout from '../../components/Layout'
 import useStyles from '../../utils/styles'
-import { format, parseISO } from 'date-fns'
-import { useContext, useEffect, useReducer } from 'react'
-import { Store } from '../../utils/store'
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'FETCH_ORDERS_REQUEST':
+    case 'FETCH_PRODUCTS_REQUEST':
       return { ...state, loading: true, error: '' }
-    case 'FETCH_ORDERS_SUCCESS':
-      return { ...state, loading: false, orders: action.payload, error: '' }
-    case 'FETCH_ORDERS_FAIL':
+    case 'FETCH_PRODUCTS_SUCCESS':
+      return { ...state, loading: false, products: action.payload, error: '' }
+    case 'FETCH_PRODUCTS_FAIL':
       return { ...state, loading: false, error: action.payload }
     default:
       state
   }
 }
 
-const AdminOrdersPage = () => {
+const AdminProductsPage = () => {
   const { state } = useContext(Store)
   const router = useRouter()
   const classes = useStyles()
   const { userInfo } = state
 
-  const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     loading: true,
-    orders: [],
+    products: [],
     error: '',
   })
 
@@ -55,19 +54,19 @@ const AdminOrdersPage = () => {
 
     const fetchData = async () => {
       try {
-        dispatch({ type: 'FETCH_ORDERS_REQUEST' })
-        const { data } = await axios.get(`/api/admin/orders`, {
+        dispatch({ type: 'FETCH_PRODUCTS_REQUEST' })
+        const { data } = await axios.get(`/api/admin/products`, {
           headers: { authorization: `Bearer ${userInfo.accessToken}` },
         })
-        dispatch({ type: 'FETCH_ORDERS_SUCCESS', payload: data })
+        dispatch({ type: 'FETCH_PRODUCTS_SUCCESS', payload: data })
       } catch (error) {
-        dispatch({ type: 'FETCH_ORDERS_FAIL', payload: getError(error) })
+        dispatch({ type: 'FETCH_PRODUCTS_FAIL', payload: getError(error) })
       }
     }
     fetchData()
   }, [])
   return (
-    <Layout title="Admin Orders">
+    <Layout title="Admin Products">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
@@ -78,12 +77,12 @@ const AdminOrdersPage = () => {
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/orders" passHref>
-                <ListItem selected button component="a">
+                <ListItem button component="a">
                   <ListItemText primary="Orders"></ListItemText>
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/products" passHref>
-                <ListItem button component="a">
+                <ListItem selected button component="a">
                   <ListItemText primary="Products"></ListItemText>
                 </ListItem>
               </NextLink>
@@ -95,7 +94,7 @@ const AdminOrdersPage = () => {
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
-                  Orders
+                  Products
                 </Typography>
               </ListItem>
 
@@ -110,49 +109,37 @@ const AdminOrdersPage = () => {
                       <TableHead>
                         <TableRow>
                           <TableCell>ID</TableCell>
-                          <TableCell>USER</TableCell>
-                          <TableCell>DATE</TableCell>
-                          <TableCell>TOTAL</TableCell>
-                          <TableCell>PAID</TableCell>
-                          <TableCell>DELIVERED</TableCell>
-                          <TableCell>ACTION</TableCell>
+                          <TableCell>NAME</TableCell>
+                          <TableCell>PRICE</TableCell>
+                          <TableCell>CATEGORY</TableCell>
+                          <TableCell>COUNT</TableCell>
+                          <TableCell>RATING</TableCell>
+                          <TableCell>ACTIONS</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {orders.map((order) => (
-                          <TableRow key={order._id}>
-                            <TableCell>{order._id.substring(16, 24)}</TableCell>
+                        {products.map((product) => (
+                          <TableRow key={product._id}>
                             <TableCell>
-                              {order.user
-                                ? order.user.firstName +
-                                  ' ' +
-                                  order.user.lastName
-                                : 'DELETED USER'}
+                              {product._id.substring(16, 24)}
                             </TableCell>
+                            <TableCell>{product.name}</TableCell>
+                            <TableCell>€{product.price}</TableCell>
+                            <TableCell>{product.category}</TableCell>
+                            <TableCell>{product.countInStock}</TableCell>
+                            <TableCell>{product.rating}</TableCell>
                             <TableCell>
-                              {format(parseISO(order.createdAt), 'dd-MM-yyyy')}
-                            </TableCell>
-                            <TableCell>€{order.totalPrice}</TableCell>
-                            <TableCell>
-                              {order.isPaid
-                                ? `Paid at ${format(
-                                    parseISO(order.paidAt),
-                                    'dd-MM-yyyy'
-                                  )}`
-                                : 'Not paid'}
-                            </TableCell>
-                            <TableCell>
-                              {order.isDelivered
-                                ? `Delivered at ${format(
-                                    parseISO(order.deliveredAt),
-                                    'dd-MM-yyyy'
-                                  )}`
-                                : 'Not delivered'}
-                            </TableCell>
-                            <TableCell>
-                              <NextLink href={`/order/${order._id}`} passHref>
-                                <Button variant="contained">Details</Button>
-                              </NextLink>
+                              <NextLink
+                                href={`/admin/product/${product._id}`}
+                                passHref
+                              >
+                                <Button size="small" variant="contained">
+                                  Edit
+                                </Button>
+                              </NextLink>{' '}
+                              <Button size="small" variant="contained">
+                                Delete
+                              </Button>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -169,4 +156,4 @@ const AdminOrdersPage = () => {
   )
 }
 
-export default dynamic(() => Promise.resolve(AdminOrdersPage), { ssr: false })
+export default dynamic(() => Promise.resolve(AdminProductsPage), { ssr: false })
