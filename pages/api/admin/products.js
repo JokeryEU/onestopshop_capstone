@@ -4,9 +4,7 @@ import { isAuth, isAdmin } from '../../../utils/auth'
 import db from '../../../utils/db'
 import { onError } from '../../../utils/error'
 
-const handler = nc({
-  onError,
-})
+const handler = nc()
 handler.use(isAuth, isAdmin)
 
 handler.get(async (req, res) => {

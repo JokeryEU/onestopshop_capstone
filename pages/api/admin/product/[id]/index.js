@@ -21,13 +21,27 @@ handler.put(async (req, res) => {
     product.slug = req.body.slug || product.slug
     product.price = req.body.price || product.price
     product.category = req.body.category || product.category
-    product.image = req.body.image || product.image
+    product.image =
+      req.files.length > 0 ? req.files.map((img) => img.path) : product.image
     product.brand = req.body.brand || product.brand
     product.countInStock = req.body.countInStock || product.countInStock
     product.description = req.body.description || product.description
     await product.save()
     await db.disconnect()
     res.send('Product Updated Successfully')
+  } else {
+    await db.disconnect()
+    res.status(404).send('Product Not Found')
+  }
+})
+
+handler.delete(async (req, res) => {
+  await db.connect()
+  const product = await Product.findById(req.query.id)
+  if (product) {
+    await product.remove()
+    await db.disconnect()
+    res.send('Product Deleted')
   } else {
     await db.disconnect()
     res.status(404).send('Product Not Found')

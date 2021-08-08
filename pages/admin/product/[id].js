@@ -71,7 +71,7 @@ const AdminProductEditPage = ({ params }) => {
         setValue('name', data.name)
         setValue('slug', data.slug)
         setValue('price', data.price)
-        setValue('image', data.image)
+        // setValue('image', data.image)
         setValue('category', data.category)
         setValue('brand', data.brand)
         setValue('countInStock', data.countInStock)
@@ -148,13 +148,13 @@ const AdminProductEditPage = ({ params }) => {
                 <Typography component="h1" variant="h1">
                   Edit Product {productId}
                 </Typography>
-              </ListItem>
-              <ListItem>
-                {loading && <CircularProgress></CircularProgress>}
+                &nbsp;&nbsp;&nbsp;
+                {loading && <CircularProgress />}
                 {error && (
                   <Typography className={classes.error}>{error}</Typography>
                 )}
               </ListItem>
+
               <ListItem>
                 <form
                   onSubmit={handleSubmit(submitHandler)}
@@ -353,10 +353,23 @@ const AdminProductEditPage = ({ params }) => {
                         type="submit"
                         fullWidth
                         color="primary"
+                        disabled={loadingUpdate}
                       >
                         Update
                       </Button>
-                      {loadingUpdate && <CircularProgress />}
+                      {loadingUpdate && (
+                        <CircularProgress
+                          size={25}
+                          className={classes.buttonProgress}
+                        />
+                      )}
+                    </ListItem>
+                    <ListItem>
+                      <NextLink href="/admin/products" passHref>
+                        <Button variant="contained" fullWidth>
+                          Cancel
+                        </Button>
+                      </NextLink>
                     </ListItem>
                   </List>
                 </form>

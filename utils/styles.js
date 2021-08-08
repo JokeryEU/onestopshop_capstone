@@ -44,6 +44,14 @@ const useStyles = makeStyles({
   fullWidth: {
     width: '100%',
   },
+  buttonProgress: {
+    color: '#4CAF50',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 })
 
 export default useStyles
