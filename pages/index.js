@@ -55,7 +55,7 @@ const HomePage = (props) => {
                     component="img"
                     image={product.image[0]}
                     title={product.name}
-                    style={{ height: '30vh', objectFit: 'fill' }}
+                    // style={{ height: '30vh', objectFit: 'fill' }}
                   />
                   <CardContent>
                     <Typography>{product.name}</Typography>
