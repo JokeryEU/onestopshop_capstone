@@ -2,9 +2,17 @@ import nc from 'next-connect'
 import { isAdmin, isAuth } from '../../../../../utils/auth'
 import Product from '../../../../../models/Product'
 import db from '../../../../../utils/db'
+import { multerImageArray } from '../../../../../utils/uploadimg'
+import { onError } from '../../../../../utils/error'
 
-const handler = nc()
-handler.use(isAuth, isAdmin)
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
+
+const handler = nc({ onError })
+handler.use(isAuth, isAdmin, multerImageArray)
 
 handler.get(async (req, res) => {
   await db.connect()
@@ -28,6 +36,7 @@ handler.put(async (req, res) => {
     product.description = req.body.description || product.description
     await product.save()
     await db.disconnect()
+
     res.send('Product Updated Successfully')
   } else {
     await db.disconnect()

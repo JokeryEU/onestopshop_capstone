@@ -52,6 +52,7 @@ const AdminOrdersPage = () => {
 
   useEffect(() => {
     if (!userInfo) return router.push('/login')
+    if (userInfo.role !== 'Admin') return router.replace('/')
 
     const fetchData = async () => {
       try {
@@ -101,7 +102,7 @@ const AdminOrdersPage = () => {
 
               <ListItem>
                 {loading ? (
-                  <CircularProgress />
+                  <CircularProgress size={52} />
                 ) : error ? (
                   <Typography className={classes.error}>{error}</Typography>
                 ) : (

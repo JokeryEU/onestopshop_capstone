@@ -43,7 +43,7 @@ const ProfilePage = () => {
     setValue('email', userInfo.email)
     setValue('password', '')
     setValue('confirmPassword', '')
-  }, [userInfo])
+  }, [])
   const submitHandler = async ({
     firstName,
     lastName,

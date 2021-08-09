@@ -31,7 +31,7 @@ const LoginPage = () => {
   const { userInfo } = state
   useEffect(() => {
     if (userInfo) return router.push('/')
-  }, [userInfo])
+  }, [])
   const classes = useStyles()
 
   const submitHandler = async ({ email, password }) => {

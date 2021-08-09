@@ -30,10 +30,8 @@ const RegisterPage = () => {
   const { state, dispatch } = useContext(Store)
   const { userInfo } = state
   useEffect(() => {
-    if (userInfo) {
-      router.push('/')
-    }
-  }, [userInfo])
+    if (userInfo) return router.push('/')
+  }, [])
 
   const classes = useStyles()
 

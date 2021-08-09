@@ -37,7 +37,7 @@ const ShippingPage = () => {
     setValue('country', shippingAddress.country)
     setValue('postalCode', shippingAddress.postalCode)
     setValue('phoneNumber', shippingAddress.phoneNumber)
-  }, [userInfo])
+  }, [])
 
   const classes = useStyles()
 

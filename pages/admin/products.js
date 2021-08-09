@@ -69,6 +69,7 @@ const AdminProductsPage = () => {
 
   useEffect(() => {
     if (!userInfo) return router.push('/login')
+    if (userInfo.role !== 'Admin') return router.replace('/')
 
     const fetchData = async () => {
       try {
@@ -104,7 +105,7 @@ const AdminProductsPage = () => {
         }
       )
       dispatch({ type: 'CREATE_PRODUCT_SUCCESS' })
-      console.log(data)
+
       enqueueSnackbar('Product created successfully', { variant: 'success' })
       router.push(`/admin/product/${data._id}`)
     } catch (error) {
@@ -159,26 +160,27 @@ const AdminProductsPage = () => {
                 <Grid container alignItems="center">
                   <Grid item xs={6}>
                     <Typography component="h1" variant="h1">
-                      Products
+                      Products &nbsp;&nbsp;&nbsp;
+                      {loadingDelete && <CircularProgress size={24} />}
+                      {loadingCreate && <CircularProgress size={24} />}
                     </Typography>
-                    {loadingDelete && <CircularProgress />}
                   </Grid>
                   <Grid align="right" item xs={6}>
                     <Button
                       onClick={createHandler}
                       color="primary"
                       variant="contained"
+                      disabled={loadingCreate}
                     >
                       Create Product
                     </Button>
-                    {loadingCreate && <CircularProgress />}
                   </Grid>
                 </Grid>
               </ListItem>
 
               <ListItem>
                 {loading ? (
-                  <CircularProgress />
+                  <CircularProgress size={52} />
                 ) : error ? (
                   <Typography className={classes.error}>{error}</Typography>
                 ) : (

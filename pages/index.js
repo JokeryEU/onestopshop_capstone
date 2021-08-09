@@ -17,12 +17,14 @@ import Layout from '../components/Layout'
 import Product from '../models/Product'
 import db from '../utils/db'
 import { Store } from '../utils/store'
+import useStyles from '../utils/styles'
 
 const HomePage = (props) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const { products } = props
+  const classes = useStyles()
 
   const addToCartHandler = async (product) => {
     closeSnackbar()
@@ -45,7 +47,7 @@ const HomePage = (props) => {
       <h1>Products</h1>
       <Grid container spacing={3}>
         {products.map((product) => (
-          <Grid item md={4} key={product._id}>
+          <Grid item md={3} key={product._id}>
             <Card>
               <NextLink href={`/product/${product.slug}`} passHref>
                 <CardActionArea>
@@ -53,7 +55,7 @@ const HomePage = (props) => {
                     component="img"
                     image={product.image[0]}
                     title={product.name}
-                    style={{ height: '35vh', objectFit: 'fill' }}
+                    style={{ height: '30vh', objectFit: 'fill' }}
                   />
                   <CardContent>
                     <Typography>{product.name}</Typography>
@@ -62,6 +64,7 @@ const HomePage = (props) => {
               </NextLink>
               <CardActions>
                 <Typography>€{product.price}</Typography>
+                <div className={classes.grow} />
                 <Button
                   size="small"
                   color="primary"

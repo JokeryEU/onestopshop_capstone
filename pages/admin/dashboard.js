@@ -48,6 +48,7 @@ const AdminDashboardPage = () => {
 
   useEffect(() => {
     if (!userInfo) return router.push('/login')
+    if (userInfo.role !== 'Admin') return router.replace('/')
 
     const fetchData = async () => {
       try {
@@ -61,7 +62,7 @@ const AdminDashboardPage = () => {
       }
     }
     fetchData()
-  }, [userInfo])
+  }, [])
 
   return (
     <Layout title="Admin Dashboard">

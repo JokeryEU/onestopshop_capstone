@@ -60,6 +60,7 @@ const AdminProductEditPage = ({ params }) => {
 
   useEffect(() => {
     if (!userInfo) return router.push('/login')
+    if (userInfo.role !== 'Admin') return router.replace('/')
 
     const fetchData = async () => {
       try {
@@ -71,8 +72,8 @@ const AdminProductEditPage = ({ params }) => {
         setValue('name', data.name)
         setValue('slug', data.slug)
         setValue('price', data.price)
-        // setValue('image', data.image)
         setValue('category', data.category)
+        setValue('image', data.image)
         setValue('brand', data.brand)
         setValue('countInStock', data.countInStock)
         setValue('description', data.description)
@@ -93,22 +94,26 @@ const AdminProductEditPage = ({ params }) => {
     description,
   }) => {
     closeSnackbar()
+    const form = new FormData()
+    form.append('name', name)
+    form.append('slug', slug)
+    form.append('description', description)
+    form.append('price', price)
+    form.append('brand', brand)
+    form.append('category', category)
+    form.append('countInStock', countInStock)
+    for (const key of Object.keys(image)) {
+      form.append('prodImage', image[key])
+    }
+
     try {
       dispatch({ type: 'UPDATE_REQUEST' })
-      await axios.put(
-        `/api/admin/product/${productId}`,
-        {
-          name,
-          slug,
-          price,
-          category,
-          image,
-          brand,
-          countInStock,
-          description,
+      await axios.put(`/api/admin/product/${productId}`, form, {
+        headers: {
+          authorization: `Bearer ${userInfo.accessToken}`,
         },
-        { headers: { authorization: `Bearer ${userInfo.accessToken}` } }
-      )
+      })
+
       dispatch({ type: 'UPDATE_SUCCESS' })
       enqueueSnackbar('Product updated successfully', { variant: 'success' })
       router.push('/admin/products')
@@ -226,33 +231,6 @@ const AdminProductEditPage = ({ params }) => {
                     </ListItem>
                     <ListItem>
                       <Controller
-                        name="image"
-                        control={control}
-                        defaultValue=""
-                        rules={{
-                          required: true,
-                        }}
-                        render={({ field }) => (
-                          <TextField
-                            variant="outlined"
-                            fullWidth
-                            id="image"
-                            label="Image"
-                            error={Boolean(errors.image)}
-                            helperText={errors.image ? 'Image is required' : ''}
-                            {...field}
-                          />
-                        )}
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <Button variant="contained" component="label">
-                        Upload File
-                        <input type="file" accept="image/*" multiple hidden />
-                      </Button>
-                    </ListItem>
-                    <ListItem>
-                      <Controller
                         name="category"
                         control={control}
                         defaultValue=""
@@ -346,7 +324,34 @@ const AdminProductEditPage = ({ params }) => {
                         )}
                       />
                     </ListItem>
-
+                    <ListItem>
+                      <Controller
+                        name="image"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                        }}
+                        render={({ field }) => (
+                          <Button
+                            variant="contained"
+                            component="label"
+                            id="image"
+                            onChange={(e) => {
+                              field.onChange(e.target.files)
+                            }}
+                          >
+                            Upload Images
+                            <input
+                              type="file"
+                              accept="image/*"
+                              multiple
+                              hidden
+                            />
+                          </Button>
+                        )}
+                      />
+                    </ListItem>
                     <ListItem>
                       <Button
                         variant="contained"
