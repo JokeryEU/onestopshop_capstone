@@ -47,7 +47,7 @@ const HomePage = (props) => {
       <h1>Products</h1>
       <Grid container spacing={3}>
         {products.map((product) => (
-          <Grid item md={3} key={product._id}>
+          <Grid item md={3} lg={2} key={product._id}>
             <Card>
               <NextLink href={`/product/${product.slug}`} passHref>
                 <CardActionArea>
@@ -58,7 +58,7 @@ const HomePage = (props) => {
                     // style={{ height: '30vh', objectFit: 'fill' }}
                   />
                   <CardContent>
-                    <Typography>{product.name}</Typography>
+                    <Typography noWrap>{product.name}</Typography>
                   </CardContent>
                 </CardActionArea>
               </NextLink>

@@ -2,7 +2,7 @@ import axios from 'axios'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
-import React, { useEffect, useContext, useReducer } from 'react'
+import { useEffect, useContext, useReducer } from 'react'
 import {
   Grid,
   List,
@@ -141,6 +141,11 @@ const AdminProductEditPage = ({ params }) => {
               <NextLink href="/admin/products" passHref>
                 <ListItem selected button component="a">
                   <ListItemText primary="Products"></ListItemText>
+                </ListItem>
+              </NextLink>
+              <NextLink href="/admin/users" passHref>
+                <ListItem button component="a">
+                  <ListItemText primary="Users"></ListItemText>
                 </ListItem>
               </NextLink>
             </List>
