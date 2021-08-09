@@ -47,8 +47,20 @@ const HomePage = (props) => {
       <h1>Products</h1>
       <Grid container spacing={3}>
         {products.map((product) => (
-          <Grid item md={3} lg={2} key={product._id}>
-            <Card>
+          <Grid
+            item
+            md={3}
+            lg={2}
+            key={product._id}
+            style={{ display: 'flex' }}
+          >
+            <Card
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                flexDirection: 'column',
+              }}
+            >
               <NextLink href={`/product/${product.slug}`} passHref>
                 <CardActionArea>
                   <CardMedia

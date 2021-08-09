@@ -83,7 +83,6 @@ const RegisterPage = () => {
                   fullWidth
                   id="firstName"
                   label="First Name"
-                  inputProps={{ type: 'text' }}
                   error={Boolean(errors.firstName)}
                   helperText={
                     errors.firstName
@@ -112,7 +111,6 @@ const RegisterPage = () => {
                   fullWidth
                   id="lastName"
                   label="Last Name"
-                  inputProps={{ type: 'text' }}
                   error={Boolean(errors.lastName)}
                   helperText={
                     errors.lastName
