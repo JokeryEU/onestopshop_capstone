@@ -1,16 +1,5 @@
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-} from '@material-ui/core'
-import Rating from '@material-ui/lab/Rating'
+import { Grid } from '@material-ui/core'
 import axios from 'axios'
-import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useContext } from 'react'
@@ -18,14 +7,13 @@ import Layout from '../components/Layout'
 import Product from '../models/Product'
 import db from '../utils/db'
 import { Store } from '../utils/store'
-import useStyles from '../utils/styles'
+import ProductItem from '../components/ProductItem'
 
 const HomePage = (props) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const { products } = props
-  const classes = useStyles()
 
   const addToCartHandler = async (product) => {
     closeSnackbar()
@@ -48,46 +36,11 @@ const HomePage = (props) => {
       <h1>Products</h1>
       <Grid container spacing={3}>
         {products.map((product) => (
-          <Grid
-            item
-            md={3}
-            lg={2}
-            key={product._id}
-            style={{ display: 'flex' }}
-          >
-            <Card
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                flexDirection: 'column',
-              }}
-            >
-              <NextLink href={`/product/${product.slug}`} passHref>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    image={product.image[0]}
-                    title={product.name}
-                    // style={{ height: '30vh', objectFit: 'fill' }}
-                  />
-                  <CardContent>
-                    <Typography noWrap>{product.name}</Typography>
-                    <Rating value={product.rating} readOnly />
-                  </CardContent>
-                </CardActionArea>
-              </NextLink>
-              <CardActions>
-                <Typography>€{product.price}</Typography>
-                <div className={classes.grow} />
-                <Button
-                  size="small"
-                  color="primary"
-                  onClick={() => addToCartHandler(product)}
-                >
-                  Add to cart
-                </Button>
-              </CardActions>
-            </Card>
+          <Grid item md={3} key={product._id} style={{ display: 'flex' }}>
+            <ProductItem
+              product={product}
+              addToCartHandler={addToCartHandler}
+            />
           </Grid>
         ))}
       </Grid>
