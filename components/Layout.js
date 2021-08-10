@@ -88,6 +88,11 @@ const Layout = ({ description, title, children }) => {
     fetchCategories()
   }, [])
 
+  const calculateCartQty = cart.cartItems.reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  )
+
   const darkModeChangeHandler = () => {
     dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' })
     const newDarkMode = !darkMode
@@ -192,7 +197,7 @@ const Layout = ({ description, title, children }) => {
                       <IconButton>
                         <Badge
                           color="secondary"
-                          badgeContent={cart.cartItems.length}
+                          badgeContent={calculateCartQty}
                         >
                           <ShoppingCartRoundedIcon />
                         </Badge>
