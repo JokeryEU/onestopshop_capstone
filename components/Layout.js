@@ -23,6 +23,7 @@ import {
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import CancelIcon from '@material-ui/icons/Cancel'
+import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded'
 import { getError } from '../utils/error'
 import Head from 'next/head'
 import useStyles from '../utils/styles'
@@ -188,14 +189,18 @@ const Layout = ({ description, title, children }) => {
                 <Link>
                   <Typography component="span">
                     {cart.cartItems.length > 0 ? (
-                      <Badge
-                        color="secondary"
-                        badgeContent={cart.cartItems.length}
-                      >
-                        Cart
-                      </Badge>
+                      <IconButton>
+                        <Badge
+                          color="secondary"
+                          badgeContent={cart.cartItems.length}
+                        >
+                          <ShoppingCartRoundedIcon />
+                        </Badge>
+                      </IconButton>
                     ) : (
-                      'Cart'
+                      <IconButton>
+                        <ShoppingCartRoundedIcon />
+                      </IconButton>
                     )}
                   </Typography>
                 </Link>
