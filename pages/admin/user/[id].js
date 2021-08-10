@@ -275,10 +275,23 @@ const AdminUserEditPage = ({ params }) => {
                         type="submit"
                         fullWidth
                         color="primary"
+                        disabled={loadingUpdate}
                       >
                         Update
                       </Button>
-                      {loadingUpdate && <CircularProgress />}
+                      {loadingUpdate && (
+                        <CircularProgress
+                          size={25}
+                          className={classes.buttonProgress}
+                        />
+                      )}
+                    </ListItem>
+                    <ListItem>
+                      <NextLink href="/admin/users" passHref>
+                        <Button variant="contained" fullWidth>
+                          Cancel
+                        </Button>
+                      </NextLink>
                     </ListItem>
                   </List>
                 </form>

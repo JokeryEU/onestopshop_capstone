@@ -8,6 +8,7 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core'
+import Rating from '@material-ui/lab/Rating'
 import axios from 'axios'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
@@ -71,6 +72,7 @@ const HomePage = (props) => {
                   />
                   <CardContent>
                     <Typography noWrap>{product.name}</Typography>
+                    <Rating value={product.rating} readOnly />
                   </CardContent>
                 </CardActionArea>
               </NextLink>
@@ -95,7 +97,7 @@ const HomePage = (props) => {
 
 export async function getServerSideProps() {
   await db.connect()
-  const products = await Product.find({}).lean()
+  const products = await Product.find({}, '-reviews').lean()
   await db.disconnect()
   return {
     props: {

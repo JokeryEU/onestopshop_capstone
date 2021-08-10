@@ -66,7 +66,7 @@ const OrderPage = ({ params }) => {
   const orderId = params.id
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer()
   const classes = useStyles()
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
   const { state } = useContext(Store)
   const { userInfo } = state
