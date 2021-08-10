@@ -1,4 +1,5 @@
-import { Grid } from '@material-ui/core'
+import { Grid, Link, Typography } from '@material-ui/core'
+import NextLink from 'next/link'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
@@ -8,12 +9,15 @@ import Product from '../models/Product'
 import db from '../utils/db'
 import { Store } from '../utils/store'
 import ProductItem from '../components/ProductItem'
+import Carousel from 'react-material-ui-carousel'
+import useStyles from '../utils/styles'
 
 const HomePage = (props) => {
+  const classes = useStyles()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
-  const { products } = props
+  const { topRatedProducts, featuredProducts } = props
 
   const addToCartHandler = async (product) => {
     closeSnackbar()
@@ -33,10 +37,23 @@ const HomePage = (props) => {
 
   return (
     <Layout>
-      <h1>Products</h1>
+      <Carousel className={classes.mt1} animation="slide">
+        {featuredProducts.map((product) => (
+          <NextLink
+            key={product._id}
+            href={`/product/${product.slug}`}
+            passHref
+          >
+            <Link>
+              <img src={product.image[0]} alt={product.name} />
+            </Link>
+          </NextLink>
+        ))}
+      </Carousel>
+      <Typography variant="h2">Popular Products</Typography>
       <Grid container spacing={3}>
-        {products.map((product) => (
-          <Grid item md={3} key={product._id} style={{ display: 'flex' }}>
+        {topRatedProducts.map((product) => (
+          <Grid item md={3} key={product.slug} style={{ display: 'flex' }}>
             <ProductItem
               product={product}
               addToCartHandler={addToCartHandler}
@@ -50,11 +67,23 @@ const HomePage = (props) => {
 
 export async function getServerSideProps() {
   await db.connect()
-  const products = await Product.find({}, '-reviews').lean()
+  const featuredProductsDocs = await Product.find(
+    { isFeatured: true },
+    '-reviews'
+  )
+    .lean()
+    .limit(3)
+  const topRatedProductsDocs = await Product.find({}, '-reviews')
+    .lean()
+    .sort({
+      rating: -1,
+    })
+    .limit(6)
   await db.disconnect()
   return {
     props: {
-      products: products.map(db.convertDocToObj),
+      featuredProducts: featuredProductsDocs.map(db.convertDocToObj),
+      topRatedProducts: topRatedProductsDocs.map(db.convertDocToObj),
     },
   }
 }

@@ -54,7 +54,7 @@ const productSchema = new Schema(
       trim: true,
       required: true,
     },
-    reviews: [reviewSchema],
+
     rating: {
       type: Number,
       required: true,
@@ -77,6 +77,8 @@ const productSchema = new Schema(
       required: true,
       default: 0,
     },
+    reviews: [reviewSchema],
+    isFeatured: { type: Boolean, required: true, default: false },
   },
   { timestamps: true }
 )

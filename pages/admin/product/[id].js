@@ -2,7 +2,7 @@ import axios from 'axios'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
-import { useEffect, useContext, useReducer } from 'react'
+import { useEffect, useContext, useReducer, useState } from 'react'
 import {
   Grid,
   List,
@@ -13,6 +13,8 @@ import {
   ListItemText,
   TextField,
   CircularProgress,
+  Checkbox,
+  FormControlLabel,
 } from '@material-ui/core'
 import { getError } from '../../../utils/error'
 import { Store } from '../../../utils/store'
@@ -43,6 +45,9 @@ function reducer(state, action) {
 const AdminProductEditPage = ({ params }) => {
   const productId = params.id
   const { state } = useContext(Store)
+
+  const [isFeatured, setIsFeatured] = useState(false)
+
   const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
@@ -77,12 +82,14 @@ const AdminProductEditPage = ({ params }) => {
         setValue('brand', data.brand)
         setValue('countInStock', data.countInStock)
         setValue('description', data.description)
+        setIsFeatured(data.isFeatured)
       } catch (error) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(error) })
       }
     }
     fetchData()
   }, [])
+
   const submitHandler = async ({
     name,
     slug,
@@ -100,6 +107,7 @@ const AdminProductEditPage = ({ params }) => {
     form.append('description', description)
     form.append('price', price)
     form.append('brand', brand)
+    form.append('isFeatured', isFeatured)
     form.append('category', category)
     form.append('countInStock', countInStock)
     for (const key of Object.keys(image)) {
@@ -355,6 +363,18 @@ const AdminProductEditPage = ({ params }) => {
                             />
                           </Button>
                         )}
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <FormControlLabel
+                        label="Is Featured"
+                        control={
+                          <Checkbox
+                            onClick={(e) => setIsFeatured(e.target.checked)}
+                            checked={isFeatured}
+                            name="isFeatured"
+                          />
+                        }
                       />
                     </ListItem>
                     <ListItem>

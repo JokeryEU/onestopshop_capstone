@@ -32,6 +32,7 @@ handler.put(async (req, res) => {
     product.image =
       req.files.length > 0 ? req.files.map((img) => img.path) : product.image
     product.brand = req.body.brand || product.brand
+    product.isFeatured = req.body.isFeatured || product.isFeatured
     product.countInStock = req.body.countInStock || product.countInStock
     product.description = req.body.description || product.description
     await product.save()
