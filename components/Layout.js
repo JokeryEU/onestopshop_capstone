@@ -10,6 +10,7 @@ import {
   Divider,
   Drawer,
   IconButton,
+  InputBase,
   Link,
   List,
   ListItem,
@@ -24,6 +25,7 @@ import {
 import MenuIcon from '@material-ui/icons/Menu'
 import CancelIcon from '@material-ui/icons/Cancel'
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded'
+import SearchIcon from '@material-ui/icons/Search'
 import { getError } from '../utils/error'
 import Head from 'next/head'
 import useStyles from '../utils/styles'
@@ -39,6 +41,11 @@ const Layout = ({ description, title, children }) => {
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const { darkMode, cart, userInfo } = state
+
+  const [query, setQuery] = useState('')
+  const [sidbarVisible, setSidebarVisible] = useState(false)
+  const [categories, setCategories] = useState([])
+  const [anchorEl, setAnchorEl] = useState(null)
 
   const theme = createTheme({
     typography: {
@@ -65,7 +72,6 @@ const Layout = ({ description, title, children }) => {
   })
   const classes = useStyles()
 
-  const [sidbarVisible, setSidebarVisible] = useState(false)
   const sidebarOpenHandler = () => {
     setSidebarVisible(true)
   }
@@ -73,7 +79,6 @@ const Layout = ({ description, title, children }) => {
     setSidebarVisible(false)
   }
 
-  const [categories, setCategories] = useState([])
   const { enqueueSnackbar } = useSnackbar()
 
   const fetchCategories = async () => {
@@ -84,6 +89,15 @@ const Layout = ({ description, title, children }) => {
       enqueueSnackbar(getError(err), { variant: 'error' })
     }
   }
+
+  const queryChangeHandler = (e) => {
+    setQuery(e.target.value)
+  }
+  const submitHandler = (e) => {
+    e.preventDefault()
+    router.push(`/search?query=${query}`)
+  }
+
   useEffect(() => {
     fetchCategories()
   }, [])
@@ -101,7 +115,6 @@ const Layout = ({ description, title, children }) => {
     })
   }
 
-  const [anchorEl, setAnchorEl] = useState(null)
   const loginClickHandler = (e) => setAnchorEl(e.currentTarget)
 
   const loginMenuCloseHandler = (e, redirect) => {
@@ -139,6 +152,7 @@ const Layout = ({ description, title, children }) => {
                 edge="start"
                 aria-label="open drawer"
                 onClick={sidebarOpenHandler}
+                className={classes.menuButton}
               >
                 <MenuIcon className={classes.navbarButton} />
               </IconButton>
@@ -187,7 +201,23 @@ const Layout = ({ description, title, children }) => {
                 ))}
               </List>
             </Drawer>
-            <div className={classes.grow}></div>
+            <div className={classes.searchSection}>
+              <form onSubmit={submitHandler} className={classes.searchForm}>
+                <InputBase
+                  name="query"
+                  className={classes.searchInput}
+                  placeholder="Search products"
+                  onChange={queryChangeHandler}
+                />
+                <IconButton
+                  type="submit"
+                  className={classes.iconButton}
+                  aria-label="search"
+                >
+                  <SearchIcon />
+                </IconButton>
+              </form>
+            </div>
             <div>
               <Switch checked={darkMode} onChange={darkModeChangeHandler} />
               <NextLink href="/cart" passHref>
