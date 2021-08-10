@@ -71,7 +71,9 @@ const ProductPage = (props) => {
       enqueueSnackbar(getError(error), { variant: 'error' })
     }
   }
-
+  const existReview = reviews.find(
+    (review) => review.user.toString() === userInfo._id.toString()
+  )
   useEffect(() => {
     fetchReviews()
   }, [])
@@ -234,7 +236,7 @@ const ProductPage = (props) => {
                     color="primary"
                     disabled={loading}
                   >
-                    Submit
+                    {existReview ? 'Update your review' : 'Submit'}
                   </Button>
 
                   {loading && <CircularProgress />}
