@@ -222,22 +222,21 @@ const Layout = ({ description, title, children }) => {
               <Switch checked={darkMode} onChange={darkModeChangeHandler} />
               <NextLink href="/cart" passHref>
                 <Link>
-                  <Typography component="span">
-                    {cart.cartItems.length > 0 ? (
-                      <IconButton>
-                        <Badge
-                          color="secondary"
-                          badgeContent={calculateCartQty}
-                        >
-                          <ShoppingCartRoundedIcon />
-                        </Badge>
-                      </IconButton>
-                    ) : (
-                      <IconButton>
-                        <ShoppingCartRoundedIcon />
-                      </IconButton>
-                    )}
-                  </Typography>
+                  {cart.cartItems.length > 0 ? (
+                    <IconButton>
+                      <Badge color="secondary" badgeContent={calculateCartQty}>
+                        <ShoppingCartRoundedIcon
+                          className={classes.navbarButton}
+                        />
+                      </Badge>
+                    </IconButton>
+                  ) : (
+                    <IconButton>
+                      <ShoppingCartRoundedIcon
+                        className={classes.navbarButton}
+                      />
+                    </IconButton>
+                  )}
                 </Link>
               </NextLink>
               {userInfo ? (
