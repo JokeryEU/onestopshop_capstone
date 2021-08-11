@@ -20,11 +20,15 @@ import {
   Switch,
   ThemeProvider,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import CancelIcon from '@material-ui/icons/Cancel'
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded'
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
+import FavoriteIcon from '@material-ui/icons/Favorite'
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import SearchIcon from '@material-ui/icons/Search'
 import { getError } from '../utils/error'
 import Head from 'next/head'
@@ -40,7 +44,7 @@ import { useEffect } from 'react'
 const Layout = ({ description, title, children }) => {
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
-  const { darkMode, cart, userInfo } = state
+  const { darkMode, cart, userInfo, wish } = state
 
   const [query, setQuery] = useState('')
   const [sidbarVisible, setSidebarVisible] = useState(false)
@@ -222,21 +226,41 @@ const Layout = ({ description, title, children }) => {
               <Switch checked={darkMode} onChange={darkModeChangeHandler} />
               <NextLink href="/cart" passHref>
                 <Link>
-                  {cart.cartItems.length > 0 ? (
-                    <IconButton>
-                      <Badge color="secondary" badgeContent={calculateCartQty}>
-                        <ShoppingCartRoundedIcon
-                          className={classes.navbarButton}
-                        />
-                      </Badge>
+                  <Tooltip title="Shopping Cart" arrow>
+                    <IconButton aria-label="show cart items" color="inherit">
+                      {cart.cartItems.length > 0 ? (
+                        <Badge
+                          color="secondary"
+                          badgeContent={calculateCartQty}
+                        >
+                          <ShoppingCartRoundedIcon />
+                        </Badge>
+                      ) : (
+                        <ShoppingCartOutlinedIcon />
+                      )}
                     </IconButton>
-                  ) : (
-                    <IconButton>
-                      <ShoppingCartRoundedIcon
-                        className={classes.navbarButton}
-                      />
+                  </Tooltip>
+                </Link>
+              </NextLink>
+              <NextLink href="/wishlist" passHref>
+                <Link>
+                  <Tooltip title="Wish List" arrow>
+                    <IconButton
+                      aria-label="show wishlist items"
+                      color="inherit"
+                    >
+                      {wish && wish.wishItems.length > 0 ? (
+                        <Badge
+                          badgeContent={wish.wishItems.length}
+                          color="secondary"
+                        >
+                          <FavoriteIcon />
+                        </Badge>
+                      ) : (
+                        <FavoriteBorderIcon />
+                      )}
                     </IconButton>
-                  )}
+                  </Tooltip>
                 </Link>
               </NextLink>
               {userInfo ? (
@@ -268,14 +292,18 @@ const Layout = ({ description, title, children }) => {
                     >
                       Order History
                     </MenuItem>
+                    <Divider />
                     {userInfo.role === 'Admin' && (
-                      <MenuItem
-                        onClick={(e) =>
-                          loginMenuCloseHandler(e, '/admin/dashboard')
-                        }
-                      >
-                        Admin Dashboard
-                      </MenuItem>
+                      <>
+                        <Divider />
+                        <MenuItem
+                          onClick={(e) =>
+                            loginMenuCloseHandler(e, '/admin/dashboard')
+                          }
+                        >
+                          Admin Dashboard
+                        </MenuItem>
+                      </>
                     )}
                     <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                   </Menu>
