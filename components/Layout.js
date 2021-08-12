@@ -225,43 +225,33 @@ const Layout = ({ description, title, children }) => {
             <div>
               <Switch checked={darkMode} onChange={darkModeChangeHandler} />
               <NextLink href="/cart" passHref>
-                <Link>
-                  <Tooltip title="Shopping Cart" arrow>
-                    <IconButton aria-label="show cart items" color="inherit">
-                      {cart.cartItems.length > 0 ? (
-                        <Badge
-                          color="secondary"
-                          badgeContent={calculateCartQty}
-                        >
-                          <ShoppingCartRoundedIcon />
-                        </Badge>
-                      ) : (
-                        <ShoppingCartOutlinedIcon />
-                      )}
-                    </IconButton>
-                  </Tooltip>
-                </Link>
+                <Tooltip title="Shopping Cart" arrow edge="end">
+                  <IconButton aria-label="show cart items" color="inherit">
+                    {cart.cartItems.length > 0 ? (
+                      <Badge color="secondary" badgeContent={calculateCartQty}>
+                        <ShoppingCartRoundedIcon />
+                      </Badge>
+                    ) : (
+                      <ShoppingCartOutlinedIcon />
+                    )}
+                  </IconButton>
+                </Tooltip>
               </NextLink>
               <NextLink href="/wishlist" passHref>
-                <Link>
-                  <Tooltip title="Wish List" arrow>
-                    <IconButton
-                      aria-label="show wishlist items"
-                      color="inherit"
-                    >
-                      {wish && wish.wishItems.length > 0 ? (
-                        <Badge
-                          badgeContent={wish.wishItems.length}
-                          color="secondary"
-                        >
-                          <FavoriteIcon />
-                        </Badge>
-                      ) : (
-                        <FavoriteBorderIcon />
-                      )}
-                    </IconButton>
-                  </Tooltip>
-                </Link>
+                <Tooltip title="Wish List" arrow>
+                  <IconButton aria-label="show wishlist items" color="inherit">
+                    {wish && wish.wishItems.length > 0 ? (
+                      <Badge
+                        badgeContent={wish.wishItems.length}
+                        color="secondary"
+                      >
+                        <FavoriteIcon />
+                      </Badge>
+                    ) : (
+                      <FavoriteBorderIcon />
+                    )}
+                  </IconButton>
+                </Tooltip>
               </NextLink>
               {userInfo ? (
                 <>

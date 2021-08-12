@@ -5,20 +5,25 @@ export const Store = createContext()
 
 const initialState = {
   darkMode: Cookies.get('darkMode') === 'ON' ? true : false,
+  userInfo: Cookies.get('userInfo')
+    ? JSON.parse(Cookies.get('userInfo'))
+    : null,
   cart: {
     cartItems: Cookies.get('cartItems')
       ? JSON.parse(Cookies.get('cartItems'))
       : [],
     shippingAddress: Cookies.get('shippingAddress')
       ? JSON.parse(Cookies.get('shippingAddress'))
-      : {},
+      : { location: {} },
     paymentMethod: Cookies.get('paymentMethod')
       ? Cookies.get('paymentMethod')
       : '',
   },
-  userInfo: Cookies.get('userInfo')
-    ? JSON.parse(Cookies.get('userInfo'))
-    : null,
+  wish: {
+    wishItems: Cookies.get('wishItems')
+      ? JSON.parse(Cookies.get('wishItems'))
+      : [],
+  },
 }
 
 function reducer(state, action) {
@@ -50,7 +55,24 @@ function reducer(state, action) {
     case 'SAVE_SHIPPING_ADDRESS':
       return {
         ...state,
-        cart: { ...state.cart, shippingAddress: action.payload },
+        cart: {
+          ...state.cart,
+          shippingAddress: {
+            ...state.cart.shippingAddress,
+            ...action.payload,
+          },
+        },
+      }
+    case 'SAVE_SHIPPING_ADDRESS_MAP_LOCATION':
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          shippingAddress: {
+            ...state.cart.shippingAddress,
+            location: action.payload,
+          },
+        },
       }
     case 'SAVE_PAYMENT_METHOD':
       return {
@@ -59,6 +81,45 @@ function reducer(state, action) {
       }
     case 'CART_CLEAR':
       return { ...state, cart: { ...state.cart, cartItems: [] } }
+    case 'WISH_ADD_ITEM': {
+      const item = action.payload
+      const existItem = state.wish.wishItems.find((x) => x.name === item.name)
+      const wishItems = existItem
+        ? state.wish.wishItems.map((x) =>
+            x.name === existItem.name ? item : x
+          )
+        : [...state.wish.wishItems, item]
+      Cookies.set('wishItems', JSON.stringify(wishItems))
+      return {
+        ...state,
+        wish: {
+          ...state.wish,
+          wishItems,
+        },
+      }
+    }
+
+    case 'WISH_CLEAR':
+      return {
+        ...state,
+        wish: {
+          wishItems: [],
+        },
+      }
+
+    case 'WISH_REMOVE_ITEM': {
+      const wishItems = state.wish.wishItems.filter(
+        (x) => x.name !== action.payload.name
+      )
+      Cookies.set('wishItems', JSON.stringify(wishItems))
+      return {
+        ...state,
+        wish: {
+          ...state.wish,
+          wishItems,
+        },
+      }
+    }
     case 'USER_LOGIN':
       return { ...state, userInfo: action.payload }
     case 'USER_LOGOUT':

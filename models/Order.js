@@ -43,6 +43,14 @@ const orderSchema = new Schema(
       country: { type: String, trim: true, required: true },
       postalCode: { type: String, trim: true, required: true },
       phoneNumber: { type: String, trim: true, required: true },
+      location: {
+        lat: String,
+        lng: String,
+        address: String,
+        name: String,
+        vicinity: String,
+        googleAddressId: String,
+      },
     },
     paymentMethod: {
       type: String,
