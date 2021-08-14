@@ -82,7 +82,7 @@ const RegisterPage = () => {
                   variant="outlined"
                   fullWidth
                   id="firstName"
-                  label="First Name"
+                  label="First Name*"
                   error={Boolean(errors.firstName)}
                   helperText={
                     errors.firstName
@@ -110,7 +110,7 @@ const RegisterPage = () => {
                   variant="outlined"
                   fullWidth
                   id="lastName"
-                  label="Last Name"
+                  label="Last Name*"
                   error={Boolean(errors.lastName)}
                   helperText={
                     errors.lastName
@@ -138,7 +138,7 @@ const RegisterPage = () => {
                   variant="outlined"
                   fullWidth
                   id="email"
-                  label="Email"
+                  label="Email*"
                   inputProps={{ type: 'email' }}
                   error={Boolean(errors.email)}
                   helperText={
@@ -167,7 +167,7 @@ const RegisterPage = () => {
                   variant="outlined"
                   fullWidth
                   id="password"
-                  label="Password"
+                  label="Password*"
                   inputProps={{ type: 'password' }}
                   error={Boolean(errors.password)}
                   helperText={
@@ -196,7 +196,7 @@ const RegisterPage = () => {
                   variant="outlined"
                   fullWidth
                   id="confirmPassword"
-                  label="Confirm Password"
+                  label="Confirm Password*"
                   inputProps={{ type: 'password' }}
                   error={Boolean(errors.confirmPassword)}
                   helperText={

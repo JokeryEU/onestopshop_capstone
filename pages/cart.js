@@ -36,7 +36,7 @@ const CartPage = () => {
     closeSnackbar()
     const { data } = await axios.get(`/api/products/${item._id}`)
     if (data.countInStock < quantity) {
-      return enqueueSnackbar('Sorry. Product is out of stock', {
+      return enqueueSnackbar('Sorry, Product is out of stock', {
         variant: 'error',
       })
     }
@@ -103,11 +103,14 @@ const CartPage = () => {
                             updateCartHandler(item, e.target.value)
                           }
                         >
-                          {[...Array(item.countInStock).keys()].map((x) => (
-                            <MenuItem key={x + 1} value={x + 1}>
-                              {x + 1}
-                            </MenuItem>
-                          ))}
+                          {[...Array(item.countInStock).keys()].map(
+                            (x) =>
+                              x < 10 && (
+                                <MenuItem key={x + 1} value={x + 1}>
+                                  {x + 1}
+                                </MenuItem>
+                              )
+                          )}
                         </Select>
                       </TableCell>
                       <TableCell align="right">€{item.price}</TableCell>

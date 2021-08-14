@@ -78,6 +78,7 @@ const productSchema = new Schema(
       default: 0,
     },
     reviews: [reviewSchema],
+    sold: { type: Number, default: 0 },
     isFeatured: { type: Boolean, required: true, default: false },
   },
   { timestamps: true }

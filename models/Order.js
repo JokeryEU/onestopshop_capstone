@@ -98,6 +98,31 @@ const orderSchema = new Schema(
     deliveredAt: {
       type: Date,
     },
+    isSent: {
+      type: Boolean,
+      default: false,
+    },
+    sentAt: {
+      type: Date,
+    },
+    isCanceled: {
+      type: Boolean,
+      default: false,
+    },
+    canceledAt: {
+      type: Date,
+    },
+    isRefunded: {
+      type: Boolean,
+      default: false,
+    },
+    refundedAt: {
+      type: Date,
+    },
+    sold: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 )
