@@ -20,6 +20,7 @@ const ShippingPage = () => {
     control,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm()
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
@@ -27,7 +28,7 @@ const ShippingPage = () => {
     userInfo,
     cart: { shippingAddress },
   } = state
-
+  const { location } = shippingAddress
   useEffect(() => {
     if (!userInfo) return router.push('/login?redirect=/shipping')
 
@@ -58,6 +59,7 @@ const ShippingPage = () => {
         country,
         postalCode,
         phoneNumber,
+        location,
       },
     })
     Cookies.set(
@@ -69,10 +71,46 @@ const ShippingPage = () => {
         country,
         postalCode,
         phoneNumber,
+        location,
       }),
       { sameSite: 'lax' }
     )
     router.push('/payment')
+  }
+
+  const chooseLocationHandler = () => {
+    const fullName = getValues('fullName')
+    const address = getValues('address')
+    const city = getValues('city')
+    const postalCode = getValues('postalCode')
+    const country = getValues('country')
+    const phoneNumber = getValues('phoneNumber')
+    dispatch({
+      type: 'SAVE_SHIPPING_ADDRESS',
+      payload: {
+        fullName,
+        address,
+        city,
+        postalCode,
+        country,
+        phoneNumber,
+        location,
+      },
+    })
+    Cookies.set(
+      'shippingAddress',
+      JSON.stringify({
+        fullName,
+        address,
+        city,
+        postalCode,
+        country,
+        phoneNumber,
+        location,
+      }),
+      { sameSite: 'lax' }
+    )
+    router.push('/map')
   }
 
   return (
@@ -97,7 +135,7 @@ const ShippingPage = () => {
                   variant="outlined"
                   fullWidth
                   id="fullName"
-                  label="Full Name"
+                  label="Full Name*"
                   error={Boolean(errors.fullName)}
                   helperText={
                     errors.fullName
@@ -125,7 +163,7 @@ const ShippingPage = () => {
                   variant="outlined"
                   fullWidth
                   id="address"
-                  label="Address"
+                  label="Address*"
                   error={Boolean(errors.address)}
                   helperText={
                     errors.address
@@ -153,7 +191,7 @@ const ShippingPage = () => {
                   variant="outlined"
                   fullWidth
                   id="city"
-                  label="City"
+                  label="City*"
                   error={Boolean(errors.city)}
                   helperText={
                     errors.city
@@ -181,7 +219,7 @@ const ShippingPage = () => {
                   variant="outlined"
                   fullWidth
                   id="country"
-                  label="Country"
+                  label="Country*"
                   error={Boolean(errors.country)}
                   helperText={
                     errors.country
@@ -209,7 +247,7 @@ const ShippingPage = () => {
                   variant="outlined"
                   fullWidth
                   id="postalCode"
-                  label="Postal Code"
+                  label="Postal Code*"
                   error={Boolean(errors.postalCode)}
                   helperText={
                     errors.postalCode
@@ -237,7 +275,7 @@ const ShippingPage = () => {
                   variant="outlined"
                   fullWidth
                   id="phoneNumber"
-                  label="Phone Number"
+                  label="Phone Number*"
                   error={Boolean(errors.phoneNumber)}
                   helperText={
                     errors.phoneNumber
@@ -250,6 +288,18 @@ const ShippingPage = () => {
                 />
               )}
             />
+          </ListItem>
+          <ListItem>
+            <Button
+              variant="contained"
+              type="button"
+              onClick={chooseLocationHandler}
+            >
+              Choose on map
+            </Button>
+            <Typography>
+              {location.lat && `${location.lat}, ${location.lng}`}
+            </Typography>
           </ListItem>
           <ListItem>
             <Button variant="contained" type="submit" fullWidth color="primary">
