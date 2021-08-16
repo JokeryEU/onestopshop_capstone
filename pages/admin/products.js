@@ -18,7 +18,10 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  IconButton,
 } from '@material-ui/core'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import EditIcon from '@material-ui/icons/Edit'
 import { getError } from '../../utils/error'
 import { Store } from '../../utils/store'
 import Layout from '../../components/Layout'
@@ -218,17 +221,16 @@ const AdminProductsPage = () => {
                                 href={`/admin/product/${product._id}`}
                                 passHref
                               >
-                                <Button size="small" variant="contained">
-                                  Edit
-                                </Button>
+                                <IconButton aria-label="edit">
+                                  <EditIcon color="action" />
+                                </IconButton>
                               </NextLink>{' '}
-                              <Button
+                              <IconButton
+                                aria-label="delete"
                                 onClick={() => deleteHandler(product._id)}
-                                size="small"
-                                variant="contained"
                               >
-                                Delete
-                              </Button>
+                                <DeleteForeverIcon color="error" />
+                              </IconButton>
                             </TableCell>
                           </TableRow>
                         ))}

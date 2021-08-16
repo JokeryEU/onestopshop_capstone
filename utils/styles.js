@@ -66,6 +66,11 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: { padding: 0 },
   mt1: { marginTop: '1rem' },
+  // home page image carousel
+  homeCarousel: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
   // search
   searchSection: {
     display: 'none',

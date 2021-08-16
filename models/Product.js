@@ -7,7 +7,7 @@ const reviewSchema = new Schema(
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true },
     rating: { type: Number, default: 0 },
-    comment: { type: String, required: true, trim: true },
+    comment: { type: String, required: true, trim: true, minLength: 4 },
   },
   {
     timestamps: true,

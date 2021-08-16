@@ -39,6 +39,12 @@ const userSchema = new Schema(
       enum: ['Admin', 'User'],
       default: 'User',
     },
+    wishList: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+      },
+    ],
     refreshToken: { type: String },
     googleId: { type: String },
   },

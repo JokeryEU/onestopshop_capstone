@@ -238,7 +238,7 @@ const Layout = ({ description, title, children }) => {
                 </Tooltip>
               </NextLink>
               <NextLink href="/wishlist" passHref>
-                <Tooltip title="Wish List" arrow>
+                <Tooltip title="Wishlist" arrow>
                   <IconButton aria-label="show wishlist items" color="inherit">
                     {wish && wish.wishItems.length > 0 ? (
                       <Badge

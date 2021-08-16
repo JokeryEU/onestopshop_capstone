@@ -37,10 +37,10 @@ handler.use(isAuth).post(async (req, res) => {
         }
       )
 
-      const updatedProduct = product
+      const updatedProduct = await Product.findById(req.query.id)
       updatedProduct.numReviews = updatedProduct.reviews.length
       updatedProduct.rating =
-        updatedProduct.reviews.reduce((a, product) => product.rating + a, 0) /
+        updatedProduct.reviews.reduce((a, review) => review.rating + a, 0) /
         updatedProduct.reviews.length
       await updatedProduct.save()
 
@@ -56,7 +56,7 @@ handler.use(isAuth).post(async (req, res) => {
       product.reviews.push(review)
       product.numReviews = product.reviews.length
       product.rating =
-        product.reviews.reduce((a, c) => c.rating + a, 0) /
+        product.reviews.reduce((a, review) => review.rating + a, 0) /
         product.reviews.length
       await product.save()
       await db.disconnect()

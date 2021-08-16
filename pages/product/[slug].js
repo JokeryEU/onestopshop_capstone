@@ -38,6 +38,7 @@ const ProductPage = (props) => {
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
   const [loading, setLoading] = useState(false)
+  const [reviewMode, setReviewMode] = useState('CREATE')
 
   const submitHandler = async (e) => {
     e.preventDefault()
@@ -71,12 +72,25 @@ const ProductPage = (props) => {
       enqueueSnackbar(getError(error), { variant: 'error' })
     }
   }
-  const existReview = reviews.find(
-    (review) => review.user.toString() === userInfo._id.toString()
-  )
+
+  const fillUserReview = async () => {
+    const { data } = await axios.get(`/api/products/${product._id}/myreview`, {
+      headers: { authorization: `Bearer ${userInfo.accessToken}` },
+    })
+
+    if (data.review) {
+      setComment(data.review.comment)
+      setRating(data.review.rating)
+      setReviewMode('UPDATE')
+    }
+  }
+
   useEffect(() => {
     fetchReviews()
-  }, [])
+    if (userInfo) {
+      fillUserReview()
+    }
+  }, [userInfo])
 
   const addToCartHandler = async () => {
     closeSnackbar()
@@ -87,7 +101,7 @@ const ProductPage = (props) => {
     const { data } = await axios.get(`/api/products/${product._id}`)
 
     if (data.countInStock < quantity) {
-      return enqueueSnackbar('Sorry. Product is out of stock', {
+      return enqueueSnackbar('Sorry, Product is out of stock', {
         variant: 'error',
       })
     }
@@ -208,13 +222,17 @@ const ProductPage = (props) => {
             <form onSubmit={submitHandler} className={classes.reviewForm}>
               <List>
                 <ListItem>
-                  <Typography variant="h2">Leave your review</Typography>
+                  <Typography variant="h2">
+                    {reviewMode === 'CREATE'
+                      ? 'Review this product'
+                      : 'Update your review'}
+                  </Typography>
                 </ListItem>
                 <ListItem>
                   <Rating
                     name="simple-controlled"
                     value={rating}
-                    onChange={(e) => setRating(e.target.value)}
+                    onChange={(e) => setRating(Number(e.target.value))}
                   />
                 </ListItem>
                 <ListItem>
@@ -236,10 +254,15 @@ const ProductPage = (props) => {
                     color="primary"
                     disabled={loading}
                   >
-                    {existReview ? 'Update your review' : 'Submit'}
+                    {reviewMode === 'CREATE' ? 'Submit' : 'Update'}
                   </Button>
 
-                  {loading && <CircularProgress />}
+                  {loading && (
+                    <CircularProgress
+                      size={25}
+                      className={classes.buttonProgress}
+                    />
+                  )}
                 </ListItem>
               </List>
             </form>

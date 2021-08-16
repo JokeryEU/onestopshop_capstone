@@ -2,6 +2,7 @@ import { Grid, Link, Typography } from '@material-ui/core'
 import NextLink from 'next/link'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import { useSnackbar } from 'notistack'
 import { useContext } from 'react'
 import Layout from '../components/Layout'
@@ -27,7 +28,7 @@ const HomePage = (props) => {
     const quantity = existItem ? existItem.quantity + 1 : 1
     const { data } = await axios.get(`/api/products/${product._id}`)
     if (data.countInStock < quantity) {
-      return enqueueSnackbar('Sorry. Product is out of stock', {
+      return enqueueSnackbar('Sorry, Product is out of stock', {
         variant: 'error',
       })
     }
@@ -37,15 +38,25 @@ const HomePage = (props) => {
 
   return (
     <Layout>
-      <Carousel className={classes.mt1} animation="slide">
+      <Typography variant="h2">Featured Products</Typography>
+      <Carousel
+        className={classes.mt1}
+        animation="slide"
+        navButtonsAlwaysVisible
+      >
         {featuredProducts.map((product) => (
           <NextLink
             key={product._id}
             href={`/product/${product.slug}`}
             passHref
           >
-            <Link>
-              <img src={product.image[0]} alt={product.name} />
+            <Link className={classes.homeCarousel}>
+              <Image
+                src={product.image[0]}
+                alt={product.name}
+                width="500"
+                height="600"
+              />
             </Link>
           </NextLink>
         ))}
@@ -65,7 +76,7 @@ const HomePage = (props) => {
   )
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   await db.connect()
   const featuredProductsDocs = await Product.find(
     { isFeatured: true },
@@ -85,6 +96,7 @@ export async function getServerSideProps() {
       featuredProducts: featuredProductsDocs.map(db.convertDocToObj),
       topRatedProducts: topRatedProductsDocs.map(db.convertDocToObj),
     },
+    revalidate: 30,
   }
 }
 
