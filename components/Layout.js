@@ -137,6 +137,7 @@ const Layout = ({ description, title, children }) => {
     Cookies.remove('cartItems')
     Cookies.remove('shippingAddress')
     Cookies.remove('paymentMethod')
+    Cookies.remove('wishItems')
     router.push('/')
   }
   return (
@@ -225,8 +226,12 @@ const Layout = ({ description, title, children }) => {
             <div>
               <Switch checked={darkMode} onChange={darkModeChangeHandler} />
               <NextLink href="/cart" passHref>
-                <Tooltip title="Shopping Cart" arrow edge="end">
-                  <IconButton aria-label="show cart items" color="inherit">
+                <Tooltip title="Shopping Cart" arrow>
+                  <IconButton
+                    aria-label="show cart items"
+                    color="inherit"
+                    size="small"
+                  >
                     {cart.cartItems.length > 0 ? (
                       <Badge color="secondary" badgeContent={calculateCartQty}>
                         <ShoppingCartRoundedIcon />
@@ -239,13 +244,17 @@ const Layout = ({ description, title, children }) => {
               </NextLink>
               <NextLink href="/wishlist" passHref>
                 <Tooltip title="Wishlist" arrow>
-                  <IconButton aria-label="show wishlist items" color="inherit">
+                  <IconButton
+                    aria-label="show wishlist items"
+                    color="inherit"
+                    size="small"
+                  >
                     {wish && wish.wishItems.length > 0 ? (
                       <Badge
                         badgeContent={wish.wishItems.length}
                         color="secondary"
                       >
-                        <FavoriteIcon />
+                        <FavoriteIcon color="error" />
                       </Badge>
                     ) : (
                       <FavoriteBorderIcon />

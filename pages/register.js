@@ -56,6 +56,9 @@ const RegisterPage = () => {
 
       dispatch({ type: 'USER_LOGIN', payload: data })
       Cookies.set('userInfo', JSON.stringify(data), { sameSite: 'lax' })
+      Cookies.set('wishItems', JSON.stringify(data.wishlist), {
+        sameSite: 'lax',
+      })
       router.push(redirect || '/')
     } catch (error) {
       enqueueSnackbar(getError(error), { variant: 'error' })

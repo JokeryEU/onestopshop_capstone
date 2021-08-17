@@ -13,6 +13,8 @@ import {
   Typography,
 } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
+import FavoriteIcon from '@material-ui/icons/Favorite'
 import Layout from '../../components/Layout'
 import useStyles from '../../utils/styles'
 import Product from '../../models/Product'
@@ -39,6 +41,40 @@ const ProductPage = (props) => {
   const [comment, setComment] = useState('')
   const [loading, setLoading] = useState(false)
   const [reviewMode, setReviewMode] = useState('CREATE')
+
+  const existItemInWishlist = state.wish.wishItems.find(
+    (x) => x.name === product.name
+  )
+
+  const addToWishHandler = async () => {
+    dispatch({
+      type: 'WISH_ADD_ITEM',
+
+      payload: {
+        slug: product.slug,
+        name: product.name,
+        image: product.image,
+        price: product.price,
+        countInStock: product.countInStock,
+      },
+    })
+    try {
+      await axios.post(
+        `/api/products/${product._id}/wishlist`,
+        {},
+        {
+          headers: { authorization: `Bearer ${userInfo.accessToken}` },
+        }
+      )
+
+      enqueueSnackbar('Product added to the Wishlist', { variant: 'success' })
+
+      fetchReviews()
+    } catch (error) {
+      enqueueSnackbar(getError(error), { variant: 'error' })
+    }
+    router.push('/wishlist')
+  }
 
   const submitHandler = async (e) => {
     e.preventDefault()
@@ -187,6 +223,22 @@ const ProductPage = (props) => {
                 >
                   Add to cart
                 </Button>
+              </ListItem>
+              <ListItem>
+                {userInfo && (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="secondary"
+                    onClick={addToWishHandler}
+                  >
+                    {existItemInWishlist && <FavoriteIcon color="error" />}
+                    {!existItemInWishlist && <FavoriteBorderIcon />}
+                    {!existItemInWishlist
+                      ? 'Add to Wishlist'
+                      : 'Remove from wishlist'}
+                  </Button>
+                )}
               </ListItem>
             </List>
           </Card>

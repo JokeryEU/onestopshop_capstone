@@ -39,7 +39,7 @@ const userSchema = new Schema(
       enum: ['Admin', 'User'],
       default: 'User',
     },
-    wishList: [
+    wishlist: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Product',

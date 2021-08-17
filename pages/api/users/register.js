@@ -19,6 +19,7 @@ handler.post(async (req, res) => {
     await db.disconnect()
     res.status(201).send({
       accessToken,
+      wishlist: user.wishlist,
       role: newUser.role,
       _id: newUser._id,
       firstName: newUser.firstName,

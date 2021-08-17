@@ -98,7 +98,6 @@ function reducer(state, action) {
         },
       }
     }
-
     case 'WISH_CLEAR':
       return {
         ...state,
@@ -106,7 +105,6 @@ function reducer(state, action) {
           wishItems: [],
         },
       }
-
     case 'WISH_REMOVE_ITEM': {
       const wishItems = state.wish.wishItems.filter(
         (x) => x.name !== action.payload.name
@@ -127,6 +125,9 @@ function reducer(state, action) {
         ...state,
         userInfo: null,
         cart: { cartItems: [], shippingAddress: {}, paymentMethod: '' },
+        wish: {
+          wishItems: [],
+        },
       }
     default:
       return state

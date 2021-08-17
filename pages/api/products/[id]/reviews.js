@@ -64,7 +64,7 @@ handler.use(isAuth).post(async (req, res) => {
     }
   } else {
     await db.disconnect()
-    res.status(404).send('Product Not Found')
+    res.status(404).send('Product not found')
   }
 })
 

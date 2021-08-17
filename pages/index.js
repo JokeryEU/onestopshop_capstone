@@ -36,6 +36,28 @@ const HomePage = (props) => {
     router.push('/cart')
   }
 
+  const addOrRemoveWishHandler = (product) => {
+    const existInWishlist = state.wish.wishItems.find(
+      (x) => x.name === product.name
+    )
+    existInWishlist
+      ? dispatch({
+          type: 'WISH_REMOVE_ITEM',
+          payload: product,
+        })
+      : dispatch({
+          type: 'WISH_ADD_ITEM',
+
+          payload: {
+            slug: product.slug,
+            name: product.name,
+            image: product.image,
+            price: product.price,
+            countInStock: product.countInStock,
+          },
+        })
+  }
+
   return (
     <Layout>
       <Typography variant="h2">Featured Products</Typography>
@@ -54,8 +76,8 @@ const HomePage = (props) => {
               <Image
                 src={product.image[0]}
                 alt={product.name}
-                width="500"
-                height="600"
+                width="400"
+                height="500"
               />
             </Link>
           </NextLink>
@@ -68,6 +90,7 @@ const HomePage = (props) => {
             <ProductItem
               product={product}
               addToCartHandler={addToCartHandler}
+              addOrRemoveWishHandler={addOrRemoveWishHandler}
             />
           </Grid>
         ))}
@@ -96,7 +119,7 @@ export async function getStaticProps() {
       featuredProducts: featuredProductsDocs.map(db.convertDocToObj),
       topRatedProducts: topRatedProductsDocs.map(db.convertDocToObj),
     },
-    revalidate: 30,
+    revalidate: 60,
   }
 }
 

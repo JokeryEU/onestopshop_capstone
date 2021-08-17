@@ -16,52 +16,54 @@ import {
 } from '@material-ui/core'
 import AddCircleOutlineSharpIcon from '@material-ui/icons/AddCircleOutlineSharp'
 import Layout from '../components/Layout'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
+import Image from 'next/image'
 
 const WishListPage = () => {
   const { state, dispatch } = useContext(Store)
   const { wishItems } = state.wish
+  const router = useRouter()
 
   const removeFromWishHandler = (wishItem) => {
     dispatch({
-      type: WISH_REMOVE_ITEM,
+      type: 'WISH_REMOVE_ITEM',
       payload: wishItem,
     })
   }
 
   const clearWishHandler = () => {
     dispatch({
-      type: WISH_CLEAR,
+      type: 'WISH_CLEAR',
     })
     Cookies.remove('wishItems')
   }
 
   const addToCartHandler = (wishItem) => {
     dispatch({
-      type: CART_ADD_ITEM,
+      type: 'CART_ADD_ITEM',
       payload: {
         slug: wishItem.slug,
         name: wishItem.name,
         image: wishItem.image,
         price: wishItem.price,
         countInStock: wishItem.countInStock,
+        quantity: 1,
       },
     })
 
-    Router.push('/cart')
-    clearWishHandler()
+    router.push('/cart')
   }
 
   return (
-    <Layout title="WishList">
+    <Layout title="Wishlist">
       <Typography variant="h1" component="h1">
-        Wish List
+        Wishlist
       </Typography>
 
       {wishItems.length === 0 ? (
         <div>
-          Wish list is empty.{' '}
+          Wishlist is empty.{' '}
           <NextLink href="/" passHref>
             <Link>Go shopping</Link>
           </NextLink>
@@ -75,7 +77,7 @@ const WishListPage = () => {
                   <TableCell>Image</TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>Price</TableCell>
-                  <TableCell>Quantity</TableCell>
+
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
@@ -83,15 +85,25 @@ const WishListPage = () => {
                 {wishItems.map((wishItem) => (
                   <TableRow key={wishItem.name}>
                     <TableCell component="th" scope="row">
-                      <img
-                        height="150"
-                        alt={wishItem.name}
-                        src={wishItem.image[0]}
-                      ></img>
+                      <NextLink href={`/product/${wishItem.slug}`} passHref>
+                        <Link>
+                          <Image
+                            height="150"
+                            width="150"
+                            alt={wishItem.name}
+                            src={wishItem.image[0]}
+                          />
+                        </Link>
+                      </NextLink>
                     </TableCell>
-                    <TableCell>{wishItem.name}</TableCell>
 
-                    <TableCell>${wishItem.price}</TableCell>
+                    <TableCell>
+                      <NextLink href={`/product/${wishItem.slug}`} passHref>
+                        <Link>{wishItem.name} </Link>
+                      </NextLink>
+                    </TableCell>
+
+                    <TableCell>€{wishItem.price}</TableCell>
 
                     <TableCell>
                       <Button
@@ -100,7 +112,7 @@ const WishListPage = () => {
                         color="secondary"
                         style={{ marginRight: '1rem' }}
                       >
-                        x
+                        X
                       </Button>
                       <Button
                         type="button"
