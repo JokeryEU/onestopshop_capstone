@@ -48,13 +48,15 @@ const HomePage = (props) => {
       : dispatch({
           type: 'WISH_ADD_ITEM',
 
-          payload: {
-            slug: product.slug,
-            name: product.name,
-            image: product.image,
-            price: product.price,
-            countInStock: product.countInStock,
-          },
+          payload: [
+            {
+              slug: product.slug,
+              name: product.name,
+              image: product.image,
+              price: product.price,
+              countInStock: product.countInStock,
+            },
+          ],
         })
   }
 
@@ -119,7 +121,7 @@ export async function getStaticProps() {
       featuredProducts: featuredProductsDocs.map(db.convertDocToObj),
       topRatedProducts: topRatedProductsDocs.map(db.convertDocToObj),
     },
-    revalidate: 60,
+    revalidate: 1800,
   }
 }
 

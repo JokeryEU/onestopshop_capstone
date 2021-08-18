@@ -14,7 +14,6 @@ handler.post(async (req, res) => {
     'wishlist',
     'name image price slug countInStock'
   )
-
   const { accessToken } = tokens
   await db.disconnect()
   res.send({

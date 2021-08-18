@@ -50,13 +50,15 @@ const ProductPage = (props) => {
     dispatch({
       type: 'WISH_ADD_ITEM',
 
-      payload: {
-        slug: product.slug,
-        name: product.name,
-        image: product.image,
-        price: product.price,
-        countInStock: product.countInStock,
-      },
+      payload: [
+        {
+          slug: product.slug,
+          name: product.name,
+          image: product.image,
+          price: product.price,
+          countInStock: product.countInStock,
+        },
+      ],
     })
     try {
       await axios.post(

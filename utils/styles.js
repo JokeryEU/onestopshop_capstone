@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
   fullWidth: {
     width: '100%',
   },
+  // loading circle position
   buttonProgress: {
     color: '#4CAF50',
     position: 'absolute',
@@ -52,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -12,
     marginLeft: -12,
   },
+  //
   reviewForm: {
     maxWidth: 800,
     width: '100%',

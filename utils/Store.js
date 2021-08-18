@@ -88,8 +88,11 @@ function reducer(state, action) {
         ? state.wish.wishItems.map((x) =>
             x.name === existItem.name ? item : x
           )
-        : [...state.wish.wishItems, item]
-      Cookies.set('wishItems', JSON.stringify(wishItems))
+        : [...state.wish.wishItems, ...item]
+
+      Cookies.set('wishItems', JSON.stringify(wishItems), {
+        sameSite: 'lax',
+      })
       return {
         ...state,
         wish: {
@@ -109,7 +112,9 @@ function reducer(state, action) {
       const wishItems = state.wish.wishItems.filter(
         (x) => x.name !== action.payload.name
       )
-      Cookies.set('wishItems', JSON.stringify(wishItems))
+      Cookies.set('wishItems', JSON.stringify(wishItems), {
+        sameSite: 'lax',
+      })
       return {
         ...state,
         wish: {
