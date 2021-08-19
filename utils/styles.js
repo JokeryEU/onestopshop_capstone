@@ -44,16 +44,6 @@ const useStyles = makeStyles((theme) => ({
   fullWidth: {
     width: '100%',
   },
-  // loading circle position
-  buttonProgress: {
-    color: '#4CAF50',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -12,
-    marginLeft: -12,
-  },
-  //
   reviewForm: {
     maxWidth: 800,
     width: '100%',
@@ -72,6 +62,15 @@ const useStyles = makeStyles((theme) => ({
   homeCarousel: {
     display: 'flex',
     justifyContent: 'center',
+  },
+  // loading circle position
+  buttonProgress: {
+    color: '#4CAF50',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
   // search
   searchSection: {

@@ -10,20 +10,18 @@ import {
 } from '@material-ui/core'
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import FavoriteIcon from '@material-ui/icons/Favorite'
-import Image from 'next/image'
-import React, { useContext } from 'react'
 import NextLink from 'next/link'
 import Rating from '@material-ui/lab/Rating'
 import useStyles from '../utils/styles'
-import { Store } from '../utils/store'
 
-const ProductItem = ({ product, addToCartHandler, addOrRemoveWishHandler }) => {
+const ProductItem = ({
+  product,
+  addToCartHandler,
+  addOrRemoveWishHandler,
+  existItemInWishlist,
+  userInfo,
+}) => {
   const classes = useStyles()
-  const { state } = useContext(Store)
-
-  const existItemInWishlist = state.wish.wishItems.find(
-    (x) => x.name === product.name
-  )
 
   return (
     <Card
@@ -35,7 +33,6 @@ const ProductItem = ({ product, addToCartHandler, addOrRemoveWishHandler }) => {
     >
       <NextLink href={`/product/${product.slug}`} passHref>
         <CardActionArea>
-          {/* <Image /> */}
           <CardMedia
             component="img"
             image={product.image[0]}
@@ -52,22 +49,26 @@ const ProductItem = ({ product, addToCartHandler, addOrRemoveWishHandler }) => {
           <strong>€{product.price}</strong>
         </Typography>
         <div className={classes.grow} />
-        {existItemInWishlist ? (
-          <IconButton
-            aria-label="removefavorite"
-            onClick={() => addOrRemoveWishHandler(product)}
-            size="small"
-          >
-            <FavoriteIcon color="error" />
-          </IconButton>
+        {userInfo ? (
+          existItemInWishlist ? (
+            <IconButton
+              aria-label="removefavorite"
+              onClick={() => addOrRemoveWishHandler(product)}
+              size="small"
+            >
+              <FavoriteIcon color="error" />
+            </IconButton>
+          ) : (
+            <IconButton
+              aria-label="addfavorite"
+              onClick={() => addOrRemoveWishHandler(product)}
+              size="small"
+            >
+              <FavoriteBorderIcon />
+            </IconButton>
+          )
         ) : (
-          <IconButton
-            aria-label="addfavorite"
-            onClick={() => addOrRemoveWishHandler(product)}
-            size="small"
-          >
-            <FavoriteBorderIcon />
-          </IconButton>
+          ''
         )}
 
         <Button

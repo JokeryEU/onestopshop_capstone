@@ -19,17 +19,32 @@ import Layout from '../components/Layout'
 import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 import Image from 'next/image'
+import { useSnackbar } from 'notistack'
+import { getError } from '../utils/error'
+import axios from 'axios'
 
 const WishListPage = () => {
   const { state, dispatch } = useContext(Store)
+  const { userInfo } = state
   const { wishItems } = state.wish
+  const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
 
-  const removeFromWishHandler = (wishItem) => {
-    dispatch({
-      type: 'WISH_REMOVE_ITEM',
-      payload: wishItem,
-    })
+  const removeFromWishHandler = async (wishItem) => {
+    try {
+      await axios.delete(`/api/products/${wishItem._id}/wishlist`, {
+        headers: { authorization: `Bearer ${userInfo.accessToken}` },
+      })
+      dispatch({
+        type: 'WISH_REMOVE_ITEM',
+        payload: wishItem,
+      })
+      enqueueSnackbar('Product removed from wishlist', {
+        variant: 'success',
+      })
+    } catch (error) {
+      enqueueSnackbar(getError(error), { variant: 'error' })
+    }
   }
 
   const clearWishHandler = () => {
@@ -62,12 +77,23 @@ const WishListPage = () => {
       </Typography>
 
       {wishItems.length === 0 ? (
-        <div>
-          Wishlist is empty.{' '}
-          <NextLink href="/" passHref>
-            <Link>Go shopping</Link>
-          </NextLink>
-        </div>
+        <>
+          {userInfo ? (
+            <>
+              Wishlist is empty.{' '}
+              <NextLink href="/" passHref>
+                <Link>Go shopping</Link>
+              </NextLink>
+            </>
+          ) : (
+            <>
+              Login to see your wishlist.{' '}
+              <NextLink href="/login" passHref>
+                <Link>Go to login</Link>
+              </NextLink>
+            </>
+          )}
+        </>
       ) : (
         <Grid container>
           <TableContainer>
@@ -88,10 +114,11 @@ const WishListPage = () => {
                       <NextLink href={`/product/${wishItem.slug}`} passHref>
                         <Link>
                           <Image
-                            height="150"
-                            width="150"
+                            height="100"
+                            width="100"
                             alt={wishItem.name}
                             src={wishItem.image[0]}
+                            layout="responsive"
                           />
                         </Link>
                       </NextLink>

@@ -46,36 +46,52 @@ const ProductPage = (props) => {
     (x) => x.name === product.name
   )
 
-  const addToWishHandler = async () => {
-    dispatch({
-      type: 'WISH_ADD_ITEM',
-
-      payload: [
-        {
-          slug: product.slug,
-          name: product.name,
-          image: product.image,
-          price: product.price,
-          countInStock: product.countInStock,
-        },
-      ],
-    })
-    try {
-      await axios.post(
-        `/api/products/${product._id}/wishlist`,
-        {},
-        {
+  const addOrRemoveWishHandler = async () => {
+    if (existItemInWishlist) {
+      try {
+        await axios.delete(`/api/products/${product._id}/wishlist`, {
           headers: { authorization: `Bearer ${userInfo.accessToken}` },
-        }
-      )
+        })
+        dispatch({
+          type: 'WISH_REMOVE_ITEM',
+          payload: existItemInWishlist,
+        })
+        enqueueSnackbar('Product removed from wishlist', {
+          variant: 'success',
+        })
+      } catch (error) {
+        enqueueSnackbar(getError(error), { variant: 'error' })
+      }
+    } else {
+      try {
+        await axios.post(
+          `/api/products/${product._id}/wishlist`,
+          {},
+          {
+            headers: { authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        dispatch({
+          type: 'WISH_ADD_ITEM',
 
-      enqueueSnackbar('Product added to the Wishlist', { variant: 'success' })
+          payload: [
+            {
+              slug: product.slug,
+              name: product.name,
+              image: product.image,
+              price: product.price,
+              countInStock: product.countInStock,
+            },
+          ],
+        })
 
-      fetchReviews()
-    } catch (error) {
-      enqueueSnackbar(getError(error), { variant: 'error' })
+        enqueueSnackbar('Product added to wishlist', { variant: 'success' })
+
+        router.push('/wishlist')
+      } catch (error) {
+        enqueueSnackbar(getError(error), { variant: 'error' })
+      }
     }
-    router.push('/wishlist')
   }
 
   const submitHandler = async (e) => {
@@ -232,13 +248,13 @@ const ProductPage = (props) => {
                     fullWidth
                     variant="contained"
                     color="secondary"
-                    onClick={addToWishHandler}
+                    onClick={addOrRemoveWishHandler}
                   >
                     {existItemInWishlist && <FavoriteIcon color="error" />}
-                    {!existItemInWishlist && <FavoriteBorderIcon />}
+                    {!existItemInWishlist && <FavoriteBorderIcon />}&nbsp;
                     {!existItemInWishlist
                       ? 'Add to Wishlist'
-                      : 'Remove from wishlist'}
+                      : 'Remove from Wishlist'}
                   </Button>
                 )}
               </ListItem>

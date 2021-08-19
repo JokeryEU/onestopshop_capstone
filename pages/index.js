@@ -12,6 +12,7 @@ import { Store } from '../utils/store'
 import ProductItem from '../components/ProductItem'
 import Carousel from 'react-material-ui-carousel'
 import useStyles from '../utils/styles'
+import { getError } from '../utils/error'
 
 const HomePage = (props) => {
   const classes = useStyles()
@@ -19,6 +20,9 @@ const HomePage = (props) => {
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const { topRatedProducts, featuredProducts } = props
+
+  const existItemInWishlist = (product) =>
+    state.wish.wishItems.find((x) => x.name === product.name)
 
   const addToCartHandler = async (product) => {
     closeSnackbar()
@@ -36,16 +40,35 @@ const HomePage = (props) => {
     router.push('/cart')
   }
 
-  const addOrRemoveWishHandler = (product) => {
+  const addOrRemoveWishHandler = async (product) => {
     const existInWishlist = state.wish.wishItems.find(
       (x) => x.name === product.name
     )
-    existInWishlist
-      ? dispatch({
+    if (existInWishlist) {
+      try {
+        await axios.delete(`/api/products/${product._id}/wishlist`, {
+          headers: { authorization: `Bearer ${state.userInfo.accessToken}` },
+        })
+        dispatch({
           type: 'WISH_REMOVE_ITEM',
           payload: product,
         })
-      : dispatch({
+        enqueueSnackbar('Product removed from wishlist', {
+          variant: 'success',
+        })
+      } catch (error) {
+        enqueueSnackbar(getError(error), { variant: 'error' })
+      }
+    } else {
+      try {
+        await axios.post(
+          `/api/products/${product._id}/wishlist`,
+          {},
+          {
+            headers: { authorization: `Bearer ${state.userInfo.accessToken}` },
+          }
+        )
+        dispatch({
           type: 'WISH_ADD_ITEM',
 
           payload: [
@@ -58,6 +81,12 @@ const HomePage = (props) => {
             },
           ],
         })
+
+        enqueueSnackbar('Product added to wishlist', { variant: 'success' })
+      } catch (error) {
+        enqueueSnackbar(getError(error), { variant: 'error' })
+      }
+    }
   }
 
   return (
@@ -93,6 +122,8 @@ const HomePage = (props) => {
               product={product}
               addToCartHandler={addToCartHandler}
               addOrRemoveWishHandler={addOrRemoveWishHandler}
+              existItemInWishlist={existItemInWishlist(product)}
+              userInfo={state.userInfo}
             />
           </Grid>
         ))}
