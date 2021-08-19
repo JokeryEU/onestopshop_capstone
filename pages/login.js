@@ -10,7 +10,7 @@ import Layout from '../components/Layout'
 import useStyles from '../utils/styles'
 import NextLink from 'next/link'
 import axios from 'axios'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { Store } from '../utils/store'
 import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
@@ -27,11 +27,8 @@ const LoginPage = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const router = useRouter()
   const { redirect } = router.query
-  const { state, dispatch } = useContext(Store)
-  const { userInfo } = state
-  useEffect(() => {
-    if (userInfo) return router.push('/')
-  }, [])
+  const { dispatch } = useContext(Store)
+
   const classes = useStyles()
 
   const submitHandler = async ({ email, password }) => {
@@ -128,6 +125,23 @@ const LoginPage = () => {
       </form>
     </Layout>
   )
+}
+
+export function getServerSideProps(context) {
+  const user = context.req.headers.cookie.includes('accessToken')
+
+  if (!user) {
+    return {
+      props: {},
+    }
+  } else {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
 }
 
 export default LoginPage

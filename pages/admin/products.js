@@ -71,9 +71,6 @@ const AdminProductsPage = () => {
   })
 
   useEffect(() => {
-    if (!userInfo) return router.push('/login')
-    if (userInfo.role !== 'Admin') return router.replace('/')
-
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_PRODUCTS_REQUEST' })
@@ -245,6 +242,31 @@ const AdminProductsPage = () => {
       </Grid>
     </Layout>
   )
+}
+
+export async function getServerSideProps(context) {
+  const user = await context.req.headers.cookie.includes('accessToken')
+  const role = await context.req.headers.cookie.includes('Admin')
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  } else if (!role) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  } else {
+    return {
+      props: {},
+    }
+  }
 }
 
 export default dynamic(() => Promise.resolve(AdminProductsPage), { ssr: false })

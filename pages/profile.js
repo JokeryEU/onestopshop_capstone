@@ -284,4 +284,21 @@ const ProfilePage = () => {
   )
 }
 
+export function getServerSideProps(context) {
+  const user = context.req.headers.cookie.includes('accessToken')
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  } else {
+    return {
+      props: {},
+    }
+  }
+}
+
 export default dynamic(() => Promise.resolve(ProfilePage), { ssr: false })
