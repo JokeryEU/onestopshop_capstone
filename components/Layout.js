@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import {
   AppBar,
+  Avatar,
   Badge,
   Box,
   Button,
@@ -230,7 +231,7 @@ const Layout = ({ description, title, children }) => {
                   <IconButton
                     aria-label="show cart items"
                     color="inherit"
-                    size="small"
+                    edge="end"
                   >
                     {cart.cartItems.length > 0 ? (
                       <Badge color="secondary" badgeContent={calculateCartQty}>
@@ -244,11 +245,7 @@ const Layout = ({ description, title, children }) => {
               </NextLink>
               <NextLink href="/wishlist" passHref>
                 <Tooltip title="Wishlist" arrow>
-                  <IconButton
-                    aria-label="show wishlist items"
-                    color="inherit"
-                    size="small"
-                  >
+                  <IconButton aria-label="show wishlist items" color="inherit">
                     {wish && wish.wishItems.length > 0 ? (
                       <Badge
                         badgeContent={wish.wishItems.length}
@@ -264,14 +261,20 @@ const Layout = ({ description, title, children }) => {
               </NextLink>
               {userInfo ? (
                 <>
-                  <Button
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={loginClickHandler}
-                    className={classes.navbarButton}
-                  >
-                    {userInfo.firstName + ' ' + userInfo.lastName}
-                  </Button>
+                  <Tooltip title="Account" arrow size="small">
+                    <IconButton
+                      aria-label="account options"
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      onClick={loginClickHandler}
+                      edge="end"
+                    >
+                      <Avatar
+                        alt={userInfo.firstname + ' ' + userInfo.lastName}
+                        src={userInfo?.profilePic}
+                      />
+                    </IconButton>
+                  </Tooltip>
                   <Menu
                     id="simple-menu"
                     anchorEl={anchorEl}

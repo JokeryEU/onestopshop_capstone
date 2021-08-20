@@ -91,11 +91,7 @@ const HomePage = (props) => {
 
   return (
     <Layout>
-      <Carousel
-        className={classes.mt1}
-        animation="slide"
-        navButtonsAlwaysVisible
-      >
+      <Carousel className={classes.mt1} animation="slide">
         {featuredProducts.map((product) => (
           <NextLink
             key={product._id}
