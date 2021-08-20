@@ -91,7 +91,6 @@ const HomePage = (props) => {
 
   return (
     <Layout>
-      <Typography variant="h2">Featured Products</Typography>
       <Carousel
         className={classes.mt1}
         animation="slide"
@@ -114,7 +113,25 @@ const HomePage = (props) => {
           </NextLink>
         ))}
       </Carousel>
-      <Typography variant="h2">Popular Products</Typography>
+      <Typography variant="h2" gutterBottom>
+        Featured
+      </Typography>
+      <Grid container spacing={3}>
+        {featuredProducts.map((product) => (
+          <Grid item md={3} key={product.slug} style={{ display: 'flex' }}>
+            <ProductItem
+              product={product}
+              addToCartHandler={addToCartHandler}
+              addOrRemoveWishHandler={addOrRemoveWishHandler}
+              existItemInWishlist={existItemInWishlist(product)}
+              userInfo={state.userInfo}
+            />
+          </Grid>
+        ))}
+      </Grid>
+      <Typography variant="h2" gutterBottom>
+        Popular Products
+      </Typography>
       <Grid container spacing={3}>
         {topRatedProducts.map((product) => (
           <Grid item md={3} key={product.slug} style={{ display: 'flex' }}>
@@ -145,7 +162,7 @@ export async function getStaticProps() {
     .sort({
       rating: -1,
     })
-    .limit(6)
+    .limit(4)
   await db.disconnect()
   return {
     props: {
