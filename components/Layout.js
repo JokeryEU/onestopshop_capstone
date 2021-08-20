@@ -48,7 +48,7 @@ const Layout = ({ description, title, children }) => {
   const { darkMode, cart, userInfo, wish } = state
 
   const [query, setQuery] = useState('')
-  const [sidbarVisible, setSidebarVisible] = useState(false)
+  const [sidebarVisible, setSidebarVisible] = useState(false)
   const [categories, setCategories] = useState([])
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -168,11 +168,7 @@ const Layout = ({ description, title, children }) => {
                 </Link>
               </NextLink>
             </Box>
-            <Drawer
-              anchor="left"
-              open={sidbarVisible}
-              onClose={sidebarCloseHandler}
-            >
+            <Drawer open={sidebarVisible} onClose={sidebarCloseHandler}>
               <List>
                 <ListItem>
                   <Box
