@@ -1,4 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import { Carousel } from 'react-responsive-carousel'
 import NextLink from 'next/link'
 import Image from 'next/image'
 import {
@@ -175,13 +177,11 @@ const ProductPage = (props) => {
       </div>
       <Grid container spacing={1}>
         <Grid item md={6} xs={12}>
-          <Image
-            src={product.image[0]}
-            alt={product.name}
-            width={640}
-            height={640}
-            layout="responsive"
-          />
+          <Carousel infiniteLoop showStatus={false}>
+            {product.image.map((img, index) => (
+              <img key={index} src={img} alt={product.name} />
+            ))}
+          </Carousel>
         </Grid>
         <Grid item md={3} xs={12}>
           <List>

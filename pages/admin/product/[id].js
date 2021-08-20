@@ -412,9 +412,36 @@ const AdminProductEditPage = ({ params }) => {
   )
 }
 
-export async function getServerSideProps({ params }) {
-  return {
-    props: { params },
+export function getServerSideProps({ req, params }) {
+  if (!req.headers.cookie) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+  const user = req.headers.cookie.includes('accessToken')
+  const role = req.headers.cookie.includes('Admin')
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  } else if (!role) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  } else {
+    return {
+      props: { params },
+    }
   }
 }
 

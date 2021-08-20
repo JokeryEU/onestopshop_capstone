@@ -73,27 +73,23 @@ const AdminUserEditPage = ({ params }) => {
   const { userInfo } = state
 
   useEffect(() => {
-    if (!userInfo) {
-      return router.push('/login')
-    } else {
-      const fetchData = async () => {
-        try {
-          dispatch({ type: 'FETCH_REQUEST' })
-          const { data } = await axios.get(`/api/admin/users/${userId}`, {
-            headers: { authorization: `Bearer ${userInfo.accessToken}` },
-          })
+    const fetchData = async () => {
+      try {
+        dispatch({ type: 'FETCH_REQUEST' })
+        const { data } = await axios.get(`/api/admin/users/${userId}`, {
+          headers: { authorization: `Bearer ${userInfo.accessToken}` },
+        })
 
-          dispatch({ type: 'FETCH_SUCCESS' })
-          setValue('firstName', data.firstName)
-          setValue('lastName', data.lastName)
-          setValue('email', data.email)
-          setRole(data.role)
-        } catch (error) {
-          dispatch({ type: 'FETCH_FAIL', payload: getError(error) })
-        }
+        dispatch({ type: 'FETCH_SUCCESS' })
+        setValue('firstName', data.firstName)
+        setValue('lastName', data.lastName)
+        setValue('email', data.email)
+        setRole(data.role)
+      } catch (error) {
+        dispatch({ type: 'FETCH_FAIL', payload: getError(error) })
       }
-      fetchData()
     }
+    fetchData()
   }, [])
 
   const submitHandler = async ({ firstName, lastName, email }) => {
@@ -304,9 +300,36 @@ const AdminUserEditPage = ({ params }) => {
   )
 }
 
-export async function getServerSideProps({ params }) {
-  return {
-    props: { params },
+export function getServerSideProps({ req, params }) {
+  if (!req.headers.cookie) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+  const user = req.headers.cookie.includes('accessToken')
+  const role = req.headers.cookie.includes('Admin')
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  } else if (!role) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  } else {
+    return {
+      props: { params },
+    }
   }
 }
 

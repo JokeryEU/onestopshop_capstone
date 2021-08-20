@@ -244,9 +244,17 @@ const AdminProductsPage = () => {
   )
 }
 
-export async function getServerSideProps(context) {
-  const user = await context.req.headers.cookie.includes('accessToken')
-  const role = await context.req.headers.cookie.includes('Admin')
+export function getServerSideProps({ req }) {
+  if (!req.headers.cookie) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+  const user = req.headers.cookie.includes('accessToken')
+  const role = req.headers.cookie.includes('Admin')
 
   if (!user) {
     return {

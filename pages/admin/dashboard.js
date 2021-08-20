@@ -1,6 +1,5 @@
 import axios from 'axios'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
 import NextLink from 'next/link'
 import { useContext, useEffect, useReducer } from 'react'
 import {
@@ -36,7 +35,6 @@ function reducer(state, action) {
 
 const AdminDashboardPage = () => {
   const { state } = useContext(Store)
-  const router = useRouter()
   const classes = useStyles()
   const { userInfo } = state
 
@@ -47,9 +45,6 @@ const AdminDashboardPage = () => {
   })
 
   useEffect(() => {
-    if (!userInfo) return router.push('/login')
-    if (userInfo.role !== 'Admin') return router.replace('/')
-
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_SUMMARY_REQUEST' })
@@ -202,6 +197,39 @@ const AdminDashboardPage = () => {
       </Grid>
     </Layout>
   )
+}
+
+export function getServerSideProps({ req }) {
+  if (!req.headers.cookie) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+  const user = req.headers.cookie.includes('accessToken')
+  const role = req.headers.cookie.includes('Admin')
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  } else if (!role) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  } else {
+    return {
+      props: {},
+    }
+  }
 }
 
 export default dynamic(() => Promise.resolve(AdminDashboardPage), {

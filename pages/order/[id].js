@@ -22,7 +22,6 @@ import NextLink from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import axios from 'axios'
-import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import useStyles from '../../utils/styles'
 import { getError } from '../../utils/error'
@@ -67,7 +66,6 @@ const OrderPage = ({ params }) => {
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer()
   const classes = useStyles()
   const { enqueueSnackbar } = useSnackbar()
-  const router = useRouter()
   const { state } = useContext(Store)
   const { userInfo } = state
 
@@ -94,8 +92,6 @@ const OrderPage = ({ params }) => {
   } = order
 
   useEffect(() => {
-    if (!userInfo) return router.push('/login')
-
     const fetchOrder = async () => {
       try {
         dispatch({ type: 'FETCH_ORDER_REQUEST' })
@@ -406,8 +402,29 @@ const OrderPage = ({ params }) => {
   )
 }
 
-export async function getServerSideProps({ params }) {
-  return { props: { params } }
+export function getServerSideProps({ req, params }) {
+  if (!req.headers.cookie) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+  const user = req.headers.cookie.includes('accessToken')
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  } else {
+    return {
+      props: { params },
+    }
+  }
 }
 
 export default dynamic(() => Promise.resolve(OrderPage), { ssr: false })

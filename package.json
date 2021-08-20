@@ -15,21 +15,22 @@
     "@react-google-maps/api": "^2.2.0",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
-    "chart.js": "^3.5.0",
+    "chart.js": "^3.5.1",
     "cloudinary": "^1.26.3",
     "date-fns": "^2.23.0",
     "js-cookie": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.13.5",
-    "multer": "^1.4.2",
+    "mongoose": "^5.13.7",
+    "multer": "^1.4.3",
     "multer-storage-cloudinary": "^4.0.0",
-    "next": "11.0.1",
+    "next": "11.1.0",
     "next-connect": "^0.10.2",
     "notistack": "^1.0.10",
     "react": "17.0.2",
     "react-chartjs-2": "^3.0.4",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.12.2",
-    "react-material-ui-carousel": "^2.2.7"
+    "react-material-ui-carousel": "^2.3.1",
+    "react-responsive-carousel": "^3.2.21"
   }
 }

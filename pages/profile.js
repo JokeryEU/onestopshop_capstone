@@ -36,8 +36,6 @@ const ProfilePage = () => {
   const classes = useStyles()
 
   useEffect(() => {
-    if (!userInfo) return router.push('/login')
-
     setValue('firstName', userInfo.firstName)
     setValue('lastName', userInfo.lastName)
     setValue('email', userInfo.email)
@@ -284,8 +282,16 @@ const ProfilePage = () => {
   )
 }
 
-export function getServerSideProps(context) {
-  const user = context.req.headers.cookie.includes('accessToken')
+export function getServerSideProps({ req }) {
+  if (!req.headers.cookie) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+  const user = req.headers.cookie.includes('accessToken')
 
   if (!user) {
     return {

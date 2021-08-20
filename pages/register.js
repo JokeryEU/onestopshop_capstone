@@ -231,4 +231,26 @@ const RegisterPage = () => {
   )
 }
 
+export function getServerSideProps({ req }) {
+  if (!req.headers.cookie) {
+    return {
+      props: {},
+    }
+  }
+  const user = req.headers.cookie.includes('accessToken')
+
+  if (!user) {
+    return {
+      props: {},
+    }
+  } else {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+}
+
 export default RegisterPage

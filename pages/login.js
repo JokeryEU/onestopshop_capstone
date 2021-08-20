@@ -127,8 +127,13 @@ const LoginPage = () => {
   )
 }
 
-export function getServerSideProps(context) {
-  const user = context.req.headers.cookie.includes('accessToken')
+export function getServerSideProps({ req }) {
+  if (!req.headers.cookie) {
+    return {
+      props: {},
+    }
+  }
+  const user = req.headers.cookie.includes('accessToken')
 
   if (!user) {
     return {

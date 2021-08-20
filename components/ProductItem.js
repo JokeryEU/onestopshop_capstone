@@ -67,9 +67,7 @@ const ProductItem = ({
               <FavoriteBorderIcon />
             </IconButton>
           )
-        ) : (
-          ''
-        )}
+        ) : null}
 
         <Button
           size="small"

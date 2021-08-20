@@ -30,8 +30,6 @@ const ShippingPage = () => {
   } = state
   const { location } = shippingAddress
   useEffect(() => {
-    if (!userInfo) return router.push('/login?redirect=/shipping')
-
     setValue('fullName', shippingAddress.fullName)
     setValue('address', shippingAddress.address)
     setValue('city', shippingAddress.city)
@@ -310,6 +308,31 @@ const ShippingPage = () => {
       </form>
     </Layout>
   )
+}
+
+export function getServerSideProps({ req }) {
+  if (!req.headers.cookie) {
+    return {
+      redirect: {
+        destination: '/login?redirect=/shipping',
+        permanent: false,
+      },
+    }
+  }
+  const user = req.headers.cookie.includes('accessToken')
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login?redirect=/shipping',
+        permanent: false,
+      },
+    }
+  } else {
+    return {
+      props: {},
+    }
+  }
 }
 
 export default ShippingPage

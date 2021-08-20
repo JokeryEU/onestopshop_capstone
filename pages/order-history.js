@@ -52,8 +52,6 @@ const OrderHistoryPage = () => {
   })
 
   useEffect(() => {
-    if (!userInfo) return router.push('/login')
-
     const fetchOrders = async () => {
       try {
         dispatch({ type: 'FETCH_ORDERS_REQUEST' })
@@ -155,6 +153,31 @@ const OrderHistoryPage = () => {
       </Grid>
     </Layout>
   )
+}
+
+export function getServerSideProps({ req }) {
+  if (!req.headers.cookie) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+  const user = req.headers.cookie.includes('accessToken')
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  } else {
+    return {
+      props: {},
+    }
+  }
 }
 
 export default dynamic(() => Promise.resolve(OrderHistoryPage), { ssr: false })
