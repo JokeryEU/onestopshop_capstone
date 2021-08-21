@@ -106,6 +106,7 @@ const Layout = ({ description, title, children }) => {
 
   useEffect(() => {
     fetchCategories()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const calculateCartQty = cart.cartItems.reduce(

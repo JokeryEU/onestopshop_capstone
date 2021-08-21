@@ -78,7 +78,7 @@ const AdminUsersPage = () => {
     } else {
       fetchData()
     }
-  }, [successDelete])
+  }, [successDelete, userInfo])
 
   const { enqueueSnackbar } = useSnackbar()
 

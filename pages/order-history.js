@@ -17,7 +17,6 @@ import {
 import axios from 'axios'
 import NextLink from 'next/link'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
 import { useContext, useEffect, useReducer } from 'react'
 import Layout from '../components/Layout'
 import { getError } from '../utils/error'
@@ -40,7 +39,6 @@ function reducer(state, action) {
 }
 
 const OrderHistoryPage = () => {
-  const router = useRouter()
   const { state } = useContext(Store)
   const { userInfo } = state
   const classes = useStyles()
@@ -64,7 +62,7 @@ const OrderHistoryPage = () => {
       }
     }
     fetchOrders()
-  }, [])
+  }, [userInfo])
 
   return (
     <Layout title={'Order History'}>

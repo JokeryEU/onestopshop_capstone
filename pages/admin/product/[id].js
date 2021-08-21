@@ -64,9 +64,6 @@ const AdminProductEditPage = ({ params }) => {
   const { userInfo } = state
 
   useEffect(() => {
-    if (!userInfo) return router.push('/login')
-    if (userInfo.role !== 'Admin') return router.replace('/')
-
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' })
@@ -88,7 +85,7 @@ const AdminProductEditPage = ({ params }) => {
       }
     }
     fetchData()
-  }, [])
+  }, [userInfo, productId, setValue])
 
   const submitHandler = async ({
     name,

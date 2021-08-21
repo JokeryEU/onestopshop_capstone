@@ -39,7 +39,8 @@ const MapPage = () => {
       }
     }
     fetchGoogleApiKey()
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userInfo])
 
   const [center, setCenter] = useState(defaultLocation)
   const [location, setLocation] = useState(center)

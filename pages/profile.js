@@ -41,7 +41,7 @@ const ProfilePage = () => {
     setValue('email', userInfo.email)
     setValue('password', '')
     setValue('confirmPassword', '')
-  }, [])
+  }, [userInfo, setValue])
   const submitHandler = async ({
     firstName,
     lastName,
@@ -181,6 +181,7 @@ const ProfilePage = () => {
                         rules={{
                           required: true,
                           pattern:
+                            // eslint-disable-next-line no-useless-escape
                             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
                         }}
                         render={({ field }) => (

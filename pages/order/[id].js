@@ -129,7 +129,8 @@ const OrderPage = ({ params }) => {
       }
       loadPaypalScript()
     }
-  }, [order, successPay, successDeliver])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [order, successPay, successDeliver, userInfo, orderId])
 
   function createOrder(data, actions) {
     return actions.order

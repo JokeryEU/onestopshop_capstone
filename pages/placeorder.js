@@ -49,7 +49,7 @@ const PlaceOrderPage = () => {
   useEffect(() => {
     if (!paymentMethod) return router.push('/payment')
     if (cartItems.length === 0) return router.push('/cart')
-  }, [cartItems])
+  }, [cartItems, router, paymentMethod])
 
   const placeOrderHandler = async () => {
     closeSnackbar()

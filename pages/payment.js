@@ -33,7 +33,7 @@ const PaymentPage = () => {
     } else {
       setPaymentMethod(Cookies.get('paymentMethod') || '')
     }
-  }, [])
+  }, [shippingAddress, router])
 
   const submitHandler = (e) => {
     closeSnackbar()

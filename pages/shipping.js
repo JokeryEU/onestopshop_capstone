@@ -24,8 +24,8 @@ const ShippingPage = () => {
   } = useForm()
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
+
   const {
-    userInfo,
     cart: { shippingAddress },
   } = state
   const { location } = shippingAddress
@@ -36,7 +36,7 @@ const ShippingPage = () => {
     setValue('country', shippingAddress.country)
     setValue('postalCode', shippingAddress.postalCode)
     setValue('phoneNumber', shippingAddress.phoneNumber)
-  }, [])
+  }, [setValue, shippingAddress])
 
   const classes = useStyles()
 

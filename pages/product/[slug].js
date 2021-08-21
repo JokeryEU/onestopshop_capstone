@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useContext, useEffect, useState } from 'react'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { Carousel } from 'react-responsive-carousel'
@@ -145,6 +146,7 @@ const ProductPage = (props) => {
     if (userInfo) {
       fillUserReview()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userInfo])
 
   const addToCartHandler = async () => {
@@ -178,6 +180,7 @@ const ProductPage = (props) => {
         <Grid item md={6} xs={12}>
           <Carousel infiniteLoop showStatus={false}>
             {product.image.map((img, index) => (
+              // eslint-disable-next-line @next/next/no-img-element
               <img key={index} src={img} alt={product.name} />
             ))}
           </Carousel>

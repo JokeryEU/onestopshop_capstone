@@ -90,7 +90,7 @@ const AdminUserEditPage = ({ params }) => {
       }
     }
     fetchData()
-  }, [])
+  }, [userInfo, userId, setValue])
 
   const submitHandler = async ({ firstName, lastName, email }) => {
     closeSnackbar()
@@ -227,6 +227,7 @@ const AdminUserEditPage = ({ params }) => {
                         rules={{
                           required: true,
                           pattern:
+                            // eslint-disable-next-line no-useless-escape
                             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
                         }}
                         render={({ field }) => (

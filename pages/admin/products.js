@@ -87,7 +87,7 @@ const AdminProductsPage = () => {
     } else {
       fetchData()
     }
-  }, [successDelete])
+  }, [successDelete, userInfo])
 
   const { enqueueSnackbar } = useSnackbar()
 

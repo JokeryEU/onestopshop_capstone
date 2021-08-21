@@ -57,7 +57,7 @@ const AdminDashboardPage = () => {
       }
     }
     fetchData()
-  }, [])
+  }, [userInfo])
 
   return (
     <Layout title="Admin Dashboard">

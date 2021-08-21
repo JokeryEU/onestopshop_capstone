@@ -59,6 +59,7 @@ const LoginPage = () => {
               defaultValue=""
               rules={{
                 required: true,
+                // eslint-disable-next-line no-useless-escape
                 pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
               }}
               render={({ field }) => (
@@ -116,7 +117,7 @@ const LoginPage = () => {
             </Button>
           </ListItem>
           <ListItem>
-            Don't have an account? &nbsp;
+            Don&apos;t have an account? &nbsp;
             <NextLink href={`/register?redirect=${redirect || '/'}`} passHref>
               <Link>Register</Link>
             </NextLink>

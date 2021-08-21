@@ -10,7 +10,7 @@ import Layout from '../components/Layout'
 import useStyles from '../utils/styles'
 import NextLink from 'next/link'
 import axios from 'axios'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { Store } from '../utils/store'
 import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
@@ -27,11 +27,7 @@ const RegisterPage = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const router = useRouter()
   const { redirect } = router.query
-  const { state, dispatch } = useContext(Store)
-  const { userInfo } = state
-  useEffect(() => {
-    if (userInfo) return router.push('/')
-  }, [])
+  const { dispatch } = useContext(Store)
 
   const classes = useStyles()
 
@@ -134,6 +130,7 @@ const RegisterPage = () => {
               defaultValue=""
               rules={{
                 required: true,
+                // eslint-disable-next-line no-useless-escape
                 pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
               }}
               render={({ field }) => (

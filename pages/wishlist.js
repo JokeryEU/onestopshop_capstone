@@ -17,7 +17,7 @@ import {
 import AddCircleOutlineSharpIcon from '@material-ui/icons/AddCircleOutlineSharp'
 import Layout from '../components/Layout'
 import { useRouter } from 'next/router'
-import Cookies from 'js-cookie'
+// import Cookies from 'js-cookie'
 import Image from 'next/image'
 import { useSnackbar } from 'notistack'
 import { getError } from '../utils/error'
@@ -47,12 +47,12 @@ const WishListPage = () => {
     }
   }
 
-  const clearWishHandler = () => {
-    dispatch({
-      type: 'WISH_CLEAR',
-    })
-    Cookies.remove('wishItems')
-  }
+  // const clearWishHandler = () => {
+  //   dispatch({
+  //     type: 'WISH_CLEAR',
+  //   })
+  //   Cookies.remove('wishItems')
+  // }
 
   const addToCartHandler = (wishItem) => {
     dispatch({
@@ -162,6 +162,4 @@ const WishListPage = () => {
   )
 }
 
-export default dynamic(() => Promise.resolve(WishListPage), {
-  ssr: false,
-})
+export default dynamic(() => Promise.resolve(WishListPage), { ssr: false })

@@ -62,7 +62,7 @@ const AdminOrdersPage = () => {
       }
     }
     fetchData()
-  }, [])
+  }, [userInfo])
   return (
     <Layout title="Admin Orders">
       <Grid container spacing={1}>
