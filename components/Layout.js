@@ -4,7 +4,6 @@ import {
   Avatar,
   Badge,
   Box,
-  Button,
   Container,
   createTheme,
   CssBaseline,
@@ -30,6 +29,7 @@ import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded'
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import SearchIcon from '@material-ui/icons/Search'
 import { getError } from '../utils/error'
 import Head from 'next/head'
@@ -38,6 +38,7 @@ import NextLink from 'next/link'
 import { Store } from '../utils/store'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import { useSnackbar } from 'notistack'
 import axios from 'axios'
 import { useEffect } from 'react'
@@ -221,7 +222,14 @@ const Layout = ({ description, title, children }) => {
               </form>
             </div>
             <div>
-              <Switch checked={darkMode} onChange={darkModeChangeHandler} />
+              <Switch
+                checked={darkMode}
+                onChange={darkModeChangeHandler}
+                checkedIcon={
+                  <Image src="/moon.svg" alt="M" width="24" height="22" />
+                }
+                icon={<Image src="/sunny.svg" alt="S" width="24" height="24" />}
+              />
               <NextLink href="/cart" passHref>
                 <Tooltip title="Shopping Cart" arrow>
                   <IconButton
@@ -305,9 +313,16 @@ const Layout = ({ description, title, children }) => {
                 </>
               ) : (
                 <NextLink href="/login" passHref>
-                  <Link>
-                    <Typography component="span">Login</Typography>
-                  </Link>
+                  <Tooltip title="Login" arrow>
+                    <IconButton
+                      aria-label="login"
+                      color="inherit"
+                      size="small"
+                      edge="start"
+                    >
+                      <AccountCircleIcon fontSize="large" />
+                    </IconButton>
+                  </Tooltip>
                 </NextLink>
               )}
             </div>

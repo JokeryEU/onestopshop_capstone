@@ -266,7 +266,7 @@ const ShippingPage = () => {
               defaultValue=""
               rules={{
                 required: true,
-                minLength: 5,
+                minLength: 6,
               }}
               render={({ field }) => (
                 <TextField
@@ -278,7 +278,7 @@ const ShippingPage = () => {
                   helperText={
                     errors.phoneNumber
                       ? errors.phoneNumber.type === 'minLength'
-                        ? 'Phone Number must be at least 5 characters long'
+                        ? 'Phone Number must be at least 6 characters long'
                         : 'Phone Number is required'
                       : ''
                   }
@@ -296,7 +296,7 @@ const ShippingPage = () => {
               Choose on map
             </Button>
             <Typography>
-              {location.lat && `${location.lat}, ${location.lng}`}
+              {location?.lat && `${location.lat}, ${location.lng}`}
             </Typography>
           </ListItem>
           <ListItem>
