@@ -29,7 +29,7 @@ import { getError } from '../../utils/error'
 import { format, parseISO } from 'date-fns'
 
 const ProductPage = (props) => {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const { userInfo } = state
@@ -150,7 +150,6 @@ const ProductPage = (props) => {
   }, [userInfo])
 
   const addToCartHandler = async () => {
-    closeSnackbar()
     const existItem = state.cart.cartItems.find(
       (item) => item._id === product._id
     )

@@ -208,7 +208,7 @@ const OrderPage = ({ params }) => {
                   {shippingAddress.city}, {shippingAddress.postalCode},{' '}
                   {shippingAddress.country}, {shippingAddress.phoneNumber}
                   &nbsp;
-                  {shippingAddress.location && (
+                  {shippingAddress?.location && (
                     <Link
                       variant="button"
                       target="_new"

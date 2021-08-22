@@ -52,8 +52,8 @@ const ProductItem = ({
             <strong>€{product.price}</strong>
           </Typography>
           <div className={classes.grow} />
-          {userInfo ? (
-            existItemInWishlist ? (
+          {userInfo &&
+            (existItemInWishlist ? (
               <Tooltip title="Remove from wishlist" arrow>
                 <IconButton
                   aria-label="removefavorite"
@@ -71,8 +71,7 @@ const ProductItem = ({
                   <FavoriteBorderIcon />
                 </IconButton>
               </Tooltip>
-            )
-          ) : null}
+            ))}
           <Tooltip title="Add to cart" arrow>
             <IconButton
               aria-label="addtocart"
