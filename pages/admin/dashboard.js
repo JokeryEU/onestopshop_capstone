@@ -189,7 +189,7 @@ const AdminDashboardPage = () => {
                   options={{
                     legend: { display: true, position: 'right' },
                   }}
-                ></Bar>
+                />
               </ListItem>
             </List>
           </Card>

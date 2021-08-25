@@ -152,7 +152,7 @@ export async function getStaticProps() {
     '-reviews'
   )
     .lean()
-    .limit(3)
+    .limit(4)
   const topRatedProductsDocs = await Product.find({}, '-reviews')
     .lean()
     .sort({

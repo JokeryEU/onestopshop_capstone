@@ -9,7 +9,7 @@ const CheckoutWizard = ({ activeStep = 0 }) => {
       alternativeLabel
       className={classes.transparentBackground}
     >
-      {['Login', 'Shipping Address', 'Payment Method', 'Place Order'].map(
+      {['Login', 'Shipping Address', 'Payment Method', 'Review Order'].map(
         (step) => (
           <Step key={step}>
             <StepLabel>{step}</StepLabel>
