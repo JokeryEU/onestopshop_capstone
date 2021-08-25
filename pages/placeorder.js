@@ -233,15 +233,19 @@ const PlaceOrderPage = () => {
                   color="primary"
                   fullWidth
                   onClick={placeOrderHandler}
+                  disabled={loading}
                 >
                   Place Order
                 </Button>
+                {loading && (
+                  <ListItem>
+                    <CircularProgress
+                      size={25}
+                      className={classes.buttonProgress}
+                    />
+                  </ListItem>
+                )}
               </ListItem>
-              {loading && (
-                <ListItem>
-                  <CircularProgress />
-                </ListItem>
-              )}
             </List>
           </Card>
         </Grid>

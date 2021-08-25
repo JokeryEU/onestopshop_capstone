@@ -184,7 +184,7 @@ const ProductPage = (props) => {
             ))}
           </Carousel>
         </Grid>
-        <Grid item md={3} xs={12}>
+        <Grid item md={4} xs={12}>
           <List>
             <ListItem>
               <Typography component="h1" variant="h1">
@@ -208,7 +208,7 @@ const ProductPage = (props) => {
             </ListItem>
           </List>
         </Grid>
-        <Grid item md={3} xs={12}>
+        <Grid item md={2} xs={12}>
           <Card>
             <List>
               <ListItem>
@@ -253,9 +253,7 @@ const ProductPage = (props) => {
                   >
                     {existItemInWishlist && <FavoriteIcon color="error" />}
                     {!existItemInWishlist && <FavoriteBorderIcon />}&nbsp;
-                    {!existItemInWishlist
-                      ? 'Add to Wishlist'
-                      : 'Remove from Wishlist'}
+                    {!existItemInWishlist ? 'Add Wish' : 'Remove Wish'}
                   </Button>
                 )}
               </ListItem>

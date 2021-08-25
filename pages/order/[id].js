@@ -376,15 +376,21 @@ const OrderPage = ({ params }) => {
                   order.isPaid &&
                   !order.isDelivered && (
                     <ListItem>
-                      {loadingDeliver && <CircularProgress />}
                       <Button
                         fullWidth
                         variant="contained"
                         color="primary"
                         onClick={deliverOrderHandler}
+                        disabled={loadingDeliver}
                       >
                         Deliver Order
                       </Button>
+                      {loadingDeliver && (
+                        <CircularProgress
+                          size={25}
+                          className={classes.buttonProgress}
+                        />
+                      )}
                     </ListItem>
                   )}
                 <ListItem>
