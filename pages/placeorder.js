@@ -48,8 +48,7 @@ const PlaceOrderPage = () => {
 
   useEffect(() => {
     if (!paymentMethod) return router.push('/payment')
-    if (cartItems.length === 0) return router.push('/cart')
-  }, [cartItems, router, paymentMethod])
+  }, [router, paymentMethod])
 
   const placeOrderHandler = async () => {
     closeSnackbar()
@@ -238,12 +237,10 @@ const PlaceOrderPage = () => {
                   Place Order
                 </Button>
                 {loading && (
-                  <ListItem>
-                    <CircularProgress
-                      size={25}
-                      className={classes.buttonProgress}
-                    />
-                  </ListItem>
+                  <CircularProgress
+                    size={25}
+                    className={classes.buttonProgress}
+                  />
                 )}
               </ListItem>
             </List>

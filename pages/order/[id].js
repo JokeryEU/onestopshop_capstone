@@ -360,7 +360,10 @@ const OrderPage = ({ params }) => {
                 {!isPaid && (
                   <ListItem>
                     {isPending ? (
-                      <CircularProgress />
+                      <CircularProgress
+                        size={25}
+                        className={classes.buttonProgress}
+                      />
                     ) : (
                       <div className={classes.fullWidth}>
                         <PayPalButtons
