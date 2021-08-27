@@ -237,6 +237,7 @@ const Layout = ({ description, title, children }) => {
                     aria-label="show cart items"
                     color="inherit"
                     edge="end"
+                    size="small"
                   >
                     {cart.cartItems.length > 0 ? (
                       <Badge color="secondary" badgeContent={calculateCartQty}>
@@ -250,7 +251,11 @@ const Layout = ({ description, title, children }) => {
               </NextLink>
               <NextLink href="/wishlist" passHref>
                 <Tooltip title="Wishlist" arrow>
-                  <IconButton aria-label="show wishlist items" color="inherit">
+                  <IconButton
+                    aria-label="show wishlist items"
+                    color="inherit"
+                    size="small"
+                  >
                     {wish && wish.wishItems.length > 0 ? (
                       <Badge
                         badgeContent={wish.wishItems.length}
@@ -321,7 +326,7 @@ const Layout = ({ description, title, children }) => {
                       size="small"
                       edge="start"
                     >
-                      <AccountCircleIcon fontSize="large" />
+                      <AccountCircleIcon />
                     </IconButton>
                   </Tooltip>
                 </NextLink>
