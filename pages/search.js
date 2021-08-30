@@ -21,6 +21,7 @@ import axios from 'axios'
 import Rating from '@material-ui/lab/Rating'
 import { Pagination } from '@material-ui/lab'
 import { useSnackbar } from 'notistack'
+import { getError } from '../utils/error'
 
 const PAGE_SIZE = 5
 
@@ -46,7 +47,7 @@ const prices = [
 const ratings = [1, 2, 3, 4, 5]
 
 const Search = (props) => {
-  const { enqueueSnackbar } = useSnackbar()
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const classes = useStyles()
   const router = useRouter()
   const {
@@ -119,6 +120,64 @@ const Search = (props) => {
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
     router.push('/cart')
   }
+  const existItemInWishlist = (product) =>
+    state.wish.wishItems.find((x) => x.name === product.name)
+
+  const addOrRemoveWishHandler = async (product) => {
+    closeSnackbar()
+    if (!state.userInfo) {
+      return enqueueSnackbar('Please login to add to wishlist', {
+        variant: 'error',
+      })
+    }
+    const existInWishlist = state.wish.wishItems.find(
+      (x) => x.name === product.name
+    )
+    if (existInWishlist) {
+      try {
+        await axios.delete(`/api/products/${product._id}/wishlist`, {
+          headers: { authorization: `Bearer ${state.userInfo.accessToken}` },
+        })
+        dispatch({
+          type: 'WISH_REMOVE_ITEM',
+          payload: product,
+        })
+        enqueueSnackbar('Product removed from wishlist', {
+          variant: 'success',
+        })
+      } catch (error) {
+        enqueueSnackbar(getError(error), { variant: 'error' })
+      }
+    } else {
+      try {
+        await axios.post(
+          `/api/products/${product._id}/wishlist`,
+          {},
+          {
+            headers: { authorization: `Bearer ${state.userInfo.accessToken}` },
+          }
+        )
+        dispatch({
+          type: 'WISH_ADD_ITEM',
+
+          payload: [
+            {
+              slug: product.slug,
+              name: product.name,
+              image: product.image,
+              price: product.price,
+              countInStock: product.countInStock,
+            },
+          ],
+        })
+
+        enqueueSnackbar('Product added to wishlist', { variant: 'success' })
+      } catch (error) {
+        enqueueSnackbar(getError(error), { variant: 'error' })
+      }
+    }
+  }
+
   return (
     <Layout title="Search">
       <Grid className={classes.mt1} container spacing={1}>
@@ -214,10 +273,17 @@ const Search = (props) => {
           </Grid>
           <Grid className={classes.mt1} container spacing={3}>
             {products.map((product, i) => (
-              <Grid item md={4} key={product.name + i}>
+              <Grid
+                item
+                md={3}
+                key={product.name + i}
+                style={{ display: 'flex' }}
+              >
                 <ProductItem
                   product={product}
                   addToCartHandler={addToCartHandler}
+                  addOrRemoveWishHandler={addOrRemoveWishHandler}
+                  existItemInWishlist={existItemInWishlist(product)}
                 />
               </Grid>
             ))}

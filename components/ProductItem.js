@@ -21,7 +21,6 @@ const ProductItem = ({
   addToCartHandler,
   addOrRemoveWishHandler,
   existItemInWishlist,
-  userInfo,
 }) => {
   const classes = useStyles()
 
@@ -52,26 +51,25 @@ const ProductItem = ({
             <strong>€{product.price}</strong>
           </Typography>
           <div className={classes.grow} />
-          {userInfo &&
-            (existItemInWishlist ? (
-              <Tooltip title="Remove from wishlist" arrow>
-                <IconButton
-                  aria-label="removefavorite"
-                  onClick={() => addOrRemoveWishHandler(product)}
-                >
-                  <FavoriteIcon color="error" />
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Add to wishlist" arrow>
-                <IconButton
-                  aria-label="addfavorite"
-                  onClick={() => addOrRemoveWishHandler(product)}
-                >
-                  <FavoriteBorderIcon />
-                </IconButton>
-              </Tooltip>
-            ))}
+          {existItemInWishlist ? (
+            <Tooltip title="Remove from wishlist" arrow>
+              <IconButton
+                aria-label="removefavorite"
+                onClick={() => addOrRemoveWishHandler(product)}
+              >
+                <FavoriteIcon color="error" />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <Tooltip title="Add to wishlist" arrow>
+              <IconButton
+                aria-label="addfavorite"
+                onClick={() => addOrRemoveWishHandler(product)}
+              >
+                <FavoriteBorderIcon />
+              </IconButton>
+            </Tooltip>
+          )}
           <Tooltip title="Add to cart" arrow>
             <IconButton
               aria-label="addtocart"

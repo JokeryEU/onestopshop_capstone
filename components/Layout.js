@@ -277,7 +277,6 @@ const Layout = ({ description, title, children }) => {
                       aria-controls="simple-menu"
                       aria-haspopup="true"
                       onClick={loginClickHandler}
-                      edge="end"
                     >
                       <Avatar
                         alt={userInfo.firstname + ' ' + userInfo.lastName}
@@ -320,12 +319,7 @@ const Layout = ({ description, title, children }) => {
               ) : (
                 <NextLink href="/login" passHref>
                   <Tooltip title="Login" arrow>
-                    <IconButton
-                      aria-label="login"
-                      color="inherit"
-                      size="small"
-                      edge="start"
-                    >
+                    <IconButton aria-label="login" color="inherit" size="small">
                       <AccountCircleIcon />
                     </IconButton>
                   </Tooltip>

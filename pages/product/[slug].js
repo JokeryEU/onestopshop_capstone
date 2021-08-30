@@ -350,8 +350,7 @@ const ProductPage = (props) => {
   )
 }
 
-export async function getServerSideProps(context) {
-  const { params } = context
+export async function getServerSideProps({ params }) {
   const { slug } = params
   await db.connect()
   const product = await Product.findOne({ slug }, '-reviews').lean()

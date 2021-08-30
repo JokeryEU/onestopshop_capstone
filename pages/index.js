@@ -41,6 +41,12 @@ const HomePage = (props) => {
   }
 
   const addOrRemoveWishHandler = async (product) => {
+    closeSnackbar()
+    if (!state.userInfo) {
+      return enqueueSnackbar('Please login to add to wishlist', {
+        variant: 'error',
+      })
+    }
     const existInWishlist = state.wish.wishItems.find(
       (x) => x.name === product.name
     )
@@ -114,13 +120,18 @@ const HomePage = (props) => {
       </Typography>
       <Grid container spacing={3}>
         {featuredProducts.map((product) => (
-          <Grid item md={3} key={product.slug} style={{ display: 'flex' }}>
+          <Grid
+            item
+            md={3}
+            lg={2}
+            key={product.slug}
+            style={{ display: 'flex' }}
+          >
             <ProductItem
               product={product}
               addToCartHandler={addToCartHandler}
               addOrRemoveWishHandler={addOrRemoveWishHandler}
               existItemInWishlist={existItemInWishlist(product)}
-              userInfo={state.userInfo}
             />
           </Grid>
         ))}
@@ -130,13 +141,18 @@ const HomePage = (props) => {
       </Typography>
       <Grid container spacing={3}>
         {topRatedProducts.map((product) => (
-          <Grid item md={3} key={product.slug} style={{ display: 'flex' }}>
+          <Grid
+            item
+            md={3}
+            lg={2}
+            key={product.slug}
+            style={{ display: 'flex' }}
+          >
             <ProductItem
               product={product}
               addToCartHandler={addToCartHandler}
               addOrRemoveWishHandler={addOrRemoveWishHandler}
               existItemInWishlist={existItemInWishlist(product)}
-              userInfo={state.userInfo}
             />
           </Grid>
         ))}
@@ -152,13 +168,13 @@ export async function getStaticProps() {
     '-reviews'
   )
     .lean()
-    .limit(4)
+    .limit(6)
   const topRatedProductsDocs = await Product.find({}, '-reviews')
     .lean()
     .sort({
       rating: -1,
     })
-    .limit(4)
+    .limit(6)
   await db.disconnect()
   return {
     props: {
