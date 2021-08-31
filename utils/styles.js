@@ -11,6 +11,9 @@ const useStyles = makeStyles((theme) => ({
   brand: {
     fontWeight: 'bold',
     fontSize: '1.5rem',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   grow: {
     flexGrow: 1,
@@ -77,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
   // search
   searchSection: {
     display: 'none',
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('sm')]: {
       display: 'flex',
     },
   },
@@ -116,6 +119,22 @@ const useStyles = makeStyles((theme) => ({
     height: 40,
     '& input': {
       width: 250,
+    },
+  },
+  productContainer: {
+    '& .product-card img': {
+      height: '20vmax',
+      objectFit: 'contain',
+    },
+
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      '& .product-card': {
+        width: '100%',
+        '& img': {
+          height: '35vmax',
+        },
+      },
     },
   },
 }))

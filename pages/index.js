@@ -118,7 +118,7 @@ const HomePage = (props) => {
       <Typography variant="h2" gutterBottom>
         Featured
       </Typography>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} className={classes.productContainer}>
         {featuredProducts.map((product) => (
           <Grid
             item
@@ -139,7 +139,7 @@ const HomePage = (props) => {
       <Typography variant="h2" gutterBottom>
         Popular Products
       </Typography>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} className={classes.productContainer}>
         {topRatedProducts.map((product) => (
           <Grid
             item

@@ -27,6 +27,7 @@ const ProductItem = ({
   return (
     <Grow in>
       <Card
+        className="product-card"
         style={{
           display: 'flex',
           justifyContent: 'space-between',
