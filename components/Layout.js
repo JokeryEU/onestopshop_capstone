@@ -227,9 +227,12 @@ const Layout = ({ description, title, children }) => {
                 checked={darkMode}
                 onChange={darkModeChangeHandler}
                 checkedIcon={
-                  <Image src="/moon.svg" alt="M" width="24" height="22" />
+                  <Image src="/moon.svg" alt="moon" width="24" height="22" />
                 }
-                icon={<Image src="/sunny.svg" alt="S" width="24" height="24" />}
+                icon={
+                  <Image src="/sunny.svg" alt="sun" width="24" height="24" />
+                }
+                edge="end"
               />
               <NextLink href="/cart" passHref>
                 <Tooltip title="Shopping Cart" arrow>
