@@ -28,7 +28,6 @@ const RegisterPage = () => {
   const router = useRouter()
   const { redirect } = router.query
   const { dispatch } = useContext(Store)
-
   const classes = useStyles()
 
   const submitHandler = async ({
