@@ -80,10 +80,10 @@ const PlaceOrderPage = () => {
   }
 
   return (
-    <Layout title="Place Order">
+    <Layout title="Review Order">
       <CheckoutWizard activeStep={3} />
       <Typography component="h1" variant="h1">
-        Place Order
+        Review Order
       </Typography>
       <Grid container spacing={1}>
         <Grid item md={9} xs={12}>

@@ -121,6 +121,7 @@ const useStyles = makeStyles((theme) => ({
       width: 250,
     },
   },
+  // home page product cards
   productContainer: {
     '& .product-card img': {
       height: '20vmax',
