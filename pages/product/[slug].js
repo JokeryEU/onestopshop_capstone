@@ -177,7 +177,11 @@ const ProductPage = (props) => {
       </div>
       <Grid container spacing={1}>
         <Grid item md={6} xs={12}>
-          <Carousel infiniteLoop showStatus={false}>
+          <Carousel
+            infiniteLoop
+            showStatus={false}
+            className={classes.productCarousel}
+          >
             {product.image.map((img, index) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img key={index} src={img} alt={product.name} />

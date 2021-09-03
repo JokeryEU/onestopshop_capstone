@@ -67,7 +67,16 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
   },
-
+  productCarousel: {
+    '& .slider img': {
+      height: '55vh',
+      objectFit: 'contain',
+    },
+    '& .thumbs img': {
+      height: '7vh',
+      objectFit: 'contain',
+    },
+  },
   // loading circle position
   buttonProgress: {
     color: '#4CAF50',
