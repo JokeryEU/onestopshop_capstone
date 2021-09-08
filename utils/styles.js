@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
       objectFit: 'contain',
     },
   },
-  // loading circle position
+  // loading circle on button position
   buttonProgress: {
     color: '#4CAF50',
     position: 'absolute',
