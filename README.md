@@ -77,7 +77,7 @@ Room for improvement:
 
 To do:
 
-- Add to cancel/refund orders
+- Add cancel/refund orders
 - Add coupons and discounts
 - Add pay with cash/Stripe
 - ...
