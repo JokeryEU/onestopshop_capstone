@@ -80,6 +80,7 @@ To do:
 - Add cancel/refund orders
 - Add coupons and discounts
 - Add pay with cash/Stripe
+- Add OAuth
 - ...
 
 ## Contact 📩
