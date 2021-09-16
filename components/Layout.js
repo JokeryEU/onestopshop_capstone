@@ -331,7 +331,9 @@ const Layout = ({ description, title, children }) => {
             </div>
           </Toolbar>
         </AppBar>
-        <Container className={classes.main}>{children}</Container>
+        <Container maxWidth="xl" className={classes.main}>
+          {children}
+        </Container>
         <footer className={classes.footer}>
           <Typography>All rights reserved. OneStopShop.</Typography>
         </footer>
