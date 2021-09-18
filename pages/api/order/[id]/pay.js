@@ -16,7 +16,8 @@ handler.put(async (req, res) => {
     order.paymentResult = {
       id: req.body.id,
       status: req.body.status,
-      email_address: req.body.email_address,
+      email_address: req.body.payer.email_address,
+      update_time: req.body.update_time,
     }
     const paidOrder = await order.save()
     await db.disconnect()

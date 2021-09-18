@@ -65,7 +65,7 @@ const PaymentPage = () => {
               >
                 <FormControlLabel
                   label="PayPal"
-                  value="Paypal"
+                  value="PayPal"
                   control={<Radio />}
                 />
                 <FormControlLabel

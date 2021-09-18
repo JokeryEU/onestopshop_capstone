@@ -17,7 +17,6 @@ import {
 import AddCircleOutlineSharpIcon from '@material-ui/icons/AddCircleOutlineSharp'
 import Layout from '../components/Layout'
 import { useRouter } from 'next/router'
-// import Cookies from 'js-cookie'
 import Image from 'next/image'
 import { useSnackbar } from 'notistack'
 import { getError } from '../utils/error'
@@ -59,6 +58,7 @@ const WishListPage = () => {
       type: 'CART_ADD_ITEM',
       payload: {
         slug: wishItem.slug,
+        _id: wishItem._id,
         name: wishItem.name,
         image: wishItem.image,
         price: wishItem.price,

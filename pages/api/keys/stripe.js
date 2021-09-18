@@ -4,7 +4,7 @@ import { isAuth } from '../../../utils/auth'
 const handler = nc()
 
 handler.use(isAuth).get(async (req, res) => {
-  res.send(process.env.GOOGLE_API_KEY || 'nokey')
+  res.send(process.env.STRIPE_CLIENT_ID || 'nokey')
 })
 
 export default handler

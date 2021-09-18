@@ -26,6 +26,8 @@ import { useSnackbar } from 'notistack'
 import useStyles from '../../utils/styles'
 import { getError } from '../../utils/error'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
+import { loadPaypalScript } from '../../utils/payScripts'
+import PaypalButton from '../../components/PaypalButton'
 
 function reducer(state, action) {
   switch (action.type) {
@@ -113,58 +115,11 @@ const OrderPage = ({ params }) => {
       fetchOrder()
       if (successPay) dispatch({ type: 'PAY_RESET' })
       if (successDeliver) dispatch({ type: 'DELIVER_RESET' })
-    } else {
-      const loadPaypalScript = async () => {
-        const { data: clientId } = await axios.get('/api/keys/paypal', {
-          headers: { authorization: `Bearer ${userInfo.accessToken}` },
-        })
-        paypalDispatch({
-          type: 'resetOptions',
-          value: {
-            'client-id': clientId,
-            currency: 'EUR',
-          },
-        })
-        paypalDispatch({ type: 'setLoadingStatus', value: 'pending' })
-      }
-      loadPaypalScript()
+    } else if (paymentMethod === 'PayPal') {
+      loadPaypalScript(userInfo, paypalDispatch)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order, successPay, successDeliver, userInfo, orderId])
-
-  function createOrder(data, actions) {
-    return actions.order
-      .create({
-        purchase_units: [
-          {
-            amount: { value: totalPrice },
-          },
-        ],
-      })
-      .then((orderID) => orderID)
-  }
-  function onApprove(data, actions) {
-    return actions.order.capture().then(async function (details) {
-      try {
-        dispatch({ type: 'PAY_REQUEST' })
-        const { data } = await axios.put(
-          `/api/order/${order._id}/pay`,
-          { details },
-          {
-            headers: { authorization: `Bearer ${userInfo.accessToken}` },
-          }
-        )
-        dispatch({ type: 'PAY_SUCCESS', payload: data })
-        enqueueSnackbar('Order is paid', { variant: 'success' })
-      } catch (error) {
-        dispatch({ type: 'PAY_FAIL', payload: getError(error) })
-        enqueueSnackbar(getError(error), { variant: 'error' })
-      }
-    })
-  }
-  function onError(error) {
-    enqueueSnackbar(getError(error), { variant: 'error' })
-  }
 
   async function deliverOrderHandler() {
     try {
@@ -357,23 +312,15 @@ const OrderPage = ({ params }) => {
                     </Typography>
                   </Grid>
                 </ListItem>
-                {!isPaid && (
-                  <ListItem>
-                    {isPending ? (
-                      <CircularProgress
-                        size={25}
-                        className={classes.buttonProgress}
-                      />
-                    ) : (
-                      <div className={classes.fullWidth}>
-                        <PayPalButtons
-                          createOrder={createOrder}
-                          onApprove={onApprove}
-                          onError={onError}
-                        />
-                      </div>
-                    )}
-                  </ListItem>
+                {!isPaid && paymentMethod === 'PayPal' && (
+                  <PaypalButton
+                    userInfo={userInfo}
+                    totalPrice={totalPrice}
+                    order={order}
+                    dispatch={dispatch}
+                    isPending={isPending}
+                    PayPalButtons={PayPalButtons}
+                  />
                 )}
                 {userInfo.role === 'Admin' &&
                   order.isPaid &&
