@@ -25,8 +25,6 @@ import axios from 'axios'
 import { useSnackbar } from 'notistack'
 import useStyles from '../../utils/styles'
 import { getError } from '../../utils/error'
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
-import { loadPaypalScript } from '../../utils/payScripts'
 import PaypalButton from '../../components/PaypalButton'
 
 function reducer(state, action) {
@@ -65,7 +63,6 @@ function reducer(state, action) {
 
 const OrderPage = ({ params }) => {
   const orderId = params.id
-  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer()
   const classes = useStyles()
   const { enqueueSnackbar } = useSnackbar()
   const { state } = useContext(Store)
@@ -115,8 +112,6 @@ const OrderPage = ({ params }) => {
       fetchOrder()
       if (successPay) dispatch({ type: 'PAY_RESET' })
       if (successDeliver) dispatch({ type: 'DELIVER_RESET' })
-    } else if (paymentMethod === 'PayPal') {
-      loadPaypalScript(userInfo, paypalDispatch)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order, successPay, successDeliver, userInfo, orderId])
@@ -318,8 +313,6 @@ const OrderPage = ({ params }) => {
                     totalPrice={totalPrice}
                     order={order}
                     dispatch={dispatch}
-                    isPending={isPending}
-                    PayPalButtons={PayPalButtons}
                   />
                 )}
                 {userInfo.role === 'Admin' &&

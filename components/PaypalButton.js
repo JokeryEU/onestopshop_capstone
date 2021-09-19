@@ -1,19 +1,32 @@
 import { CircularProgress, ListItem } from '@material-ui/core'
+import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 import axios from 'axios'
 import { useSnackbar } from 'notistack'
+import { useEffect } from 'react'
 import { getError } from '../utils/error'
 import useStyles from '../utils/styles'
 
-const PaypalButton = ({
-  userInfo,
-  totalPrice,
-  order,
-  dispatch,
-  isPending,
-  PayPalButtons,
-}) => {
+const PaypalButton = ({ userInfo, totalPrice, order, dispatch }) => {
   const { enqueueSnackbar } = useSnackbar()
   const classes = useStyles()
+  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer()
+
+  useEffect(() => {
+    const loadPaypalScript = async () => {
+      const { data: clientId } = await axios.get('/api/keys/paypal', {
+        headers: { authorization: `Bearer ${userInfo.accessToken}` },
+      })
+      paypalDispatch({
+        type: 'resetOptions',
+        value: {
+          'client-id': clientId,
+          currency: 'EUR',
+        },
+      })
+      paypalDispatch({ type: 'setLoadingStatus', value: 'pending' })
+    }
+    loadPaypalScript()
+  }, [userInfo, paypalDispatch])
 
   function createOrder(data, actions) {
     return actions.order
