@@ -26,6 +26,7 @@ import { useSnackbar } from 'notistack'
 import useStyles from '../../utils/styles'
 import { getError } from '../../utils/error'
 import PaypalButton from '../../components/PaypalButton'
+import StripeContainer from '../../components/StripeContainer'
 
 function reducer(state, action) {
   switch (action.type) {
@@ -310,7 +311,13 @@ const OrderPage = ({ params }) => {
                 {!isPaid && paymentMethod === 'PayPal' && (
                   <PaypalButton
                     userInfo={userInfo}
-                    totalPrice={totalPrice}
+                    order={order}
+                    dispatch={dispatch}
+                  />
+                )}
+                {!isPaid && paymentMethod === 'Stripe' && (
+                  <StripeContainer
+                    userInfo={userInfo}
                     order={order}
                     dispatch={dispatch}
                   />

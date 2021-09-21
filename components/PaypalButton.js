@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 import { getError } from '../utils/error'
 import useStyles from '../utils/styles'
 
-const PaypalButton = ({ userInfo, totalPrice, order, dispatch }) => {
+const PaypalButton = ({ userInfo, order, dispatch }) => {
   const { enqueueSnackbar } = useSnackbar()
   const classes = useStyles()
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer()
@@ -33,7 +33,7 @@ const PaypalButton = ({ userInfo, totalPrice, order, dispatch }) => {
       .create({
         purchase_units: [
           {
-            amount: { value: totalPrice },
+            amount: { value: order.totalPrice },
           },
         ],
       })
@@ -44,7 +44,7 @@ const PaypalButton = ({ userInfo, totalPrice, order, dispatch }) => {
       try {
         dispatch({ type: 'PAY_REQUEST' })
         const { data } = await axios.put(
-          `/api/order/${order._id}/pay`,
+          `/api/order/${order._id}/paypal`,
           details,
           {
             headers: { authorization: `Bearer ${userInfo.accessToken}` },

@@ -85,6 +85,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -12,
     marginLeft: -12,
   },
+  buttonMargin: {
+    marginTop: 20,
+  },
   // search
   searchSection: {
     display: 'none',
