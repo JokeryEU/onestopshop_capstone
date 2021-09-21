@@ -54,7 +54,7 @@
 - Change theme to dark/light mode
 - Register a new account
 - Login into your account
-- Buy products with paypal
+- Buy products with paypal/stripe
 - Add products to your wishlist
 - Check your order history
 - Change your profile info and password
@@ -79,7 +79,7 @@ To do:
 
 - Add cancel/refund orders
 - Add coupons and discounts
-- Add pay with cash/Stripe
+- Add pay with cash
 - Add OAuth
 - ...
 
