@@ -2,6 +2,32 @@ import mongoose from 'mongoose'
 
 const { Schema, model, models } = mongoose
 
+const orderItemSchema = new Schema({
+  name: { type: String, required: true },
+  quantity: { type: Number, required: true },
+  slug: { type: String, required: true },
+  image: [{ type: String, required: true }],
+  price: { type: Number, required: true },
+  product: {
+    type: Schema.Types.ObjectId,
+    ref: 'Product',
+  },
+})
+
+const transactionSchema = new Schema(
+  {
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    userName: String,
+    transactionType: {
+      type: String,
+      enum: ['CREATED', 'PAID', 'SENT', 'DELIVERED', 'CANCELLED', 'REFUNDED'],
+      required: true,
+    },
+    description: { type: String },
+  },
+  { timestamps: true }
+)
+
 const orderSchema = new Schema(
   {
     user: {
@@ -10,32 +36,8 @@ const orderSchema = new Schema(
       required: true,
       immutable: true,
     },
-    orderItems: [
-      {
-        name: {
-          type: String,
-          required: true,
-        },
-        slug: {
-          type: String,
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
-        image: [
-          {
-            type: String,
-            required: true,
-          },
-        ],
-        price: {
-          type: Number,
-          required: true,
-        },
-      },
-    ],
+    orderItems: [orderItemSchema],
+    transactions: [transactionSchema],
     shippingAddress: {
       fullName: { type: String, trim: true, required: true },
       address: { type: String, trim: true, required: true },
@@ -57,10 +59,10 @@ const orderSchema = new Schema(
       required: true,
     },
     paymentResult: {
-      id: { type: String },
-      status: { type: String },
-      update_time: { type: String },
-      email_address: { type: String },
+      id: String,
+      status: String,
+      update_time: String,
+      email_address: String,
     },
     itemsPrice: {
       type: Number,

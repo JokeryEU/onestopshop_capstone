@@ -13,6 +13,19 @@ const reviewSchema = new Schema(
     timestamps: true,
   }
 )
+const transactionSchema = new Schema(
+  {
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    transactionType: {
+      type: String,
+      enum: ['BOUGHT', 'SOLD', 'REFUND', 'CANCELLED'],
+      required: true,
+    },
+    quantity: { type: Number, required: true },
+    description: String,
+  },
+  { timestamps: true }
+)
 
 const productSchema = new Schema(
   {
@@ -26,6 +39,7 @@ const productSchema = new Schema(
       type: String,
       trim: true,
       required: true,
+      lowercase: true,
       unique: true,
     },
     name: {
@@ -39,10 +53,11 @@ const productSchema = new Schema(
         required: true,
       },
     ],
+    transactions: [transactionSchema],
     brand: {
       type: String,
-      required: true,
       trim: true,
+      required: true,
     },
     category: {
       type: String,
