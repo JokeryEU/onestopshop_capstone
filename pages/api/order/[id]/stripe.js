@@ -15,14 +15,14 @@ handler.put(async (req, res) => {
   const { amount, id } = req.body
 
   const payment = await stripeK.paymentIntents.create({
-    amount,
-    currency: 'EUR',
+    amount: parseInt(amount),
+    currency: 'eur',
     payment_method: id,
     payment_method_types: ['card'],
     confirm: true,
   })
 
-  if (payment.charges.data[0].paid === true) {
+  if (payment.status === 'succeeded') {
     const order = await Order.findById(req.query.id)
     if (order) {
       order.isPaid = true

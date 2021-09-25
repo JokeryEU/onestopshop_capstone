@@ -33,7 +33,7 @@ const StripeButton = ({ userInfo, order, dispatch }) => {
         dispatch({ type: 'PAY_REQUEST' })
         const { data } = await axios.put(
           `/api/order/${order._id}/stripe`,
-          { amount: order.totalPrice * 100, id },
+          { amount: (order.totalPrice * 100).toFixed(2), id },
           {
             headers: { authorization: `Bearer ${userInfo.accessToken}` },
           }
