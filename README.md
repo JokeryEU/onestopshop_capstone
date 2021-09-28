@@ -61,10 +61,10 @@
 - Add products to your wishlist
 - Check your order history
 - Change your profile info and password
-- As admin check the chart for number of sales/orders for each month
+- As admin check the chart for number of sales/orders/users
 - As admin review customer orders and mark them to be delivered
 - As admin check the number of products and add new products
-- As admin check the number of users and their role
+- As admin check the number of users and their role and modify or delete them
 
 ## Project Status ⬇️
 
@@ -83,6 +83,8 @@ To do:
 - Add cancel/refund orders
 - Add coupons and discounts
 - Add pay with cash
+- Add User address in the database
+- Add forgot password
 - Add OAuth
 - ...
 
