@@ -13,7 +13,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@paypal/react-paypal-js": "^7.3.3",
-    "@react-google-maps/api": "^2.4.0",
+    "@react-google-maps/api": "^2.4.1",
     "@stripe/react-stripe-js": "^1.5.0",
     "@stripe/stripe-js": "^1.18.0",
     "axios": "^0.21.4",
@@ -36,7 +36,7 @@
     "react-material-ui-carousel": "^2.3.5",
     "react-responsive-carousel": "^3.2.21",
     "sharp": "^0.29.1",
-    "stripe": "^8.176.0"
+    "stripe": "^8.177.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

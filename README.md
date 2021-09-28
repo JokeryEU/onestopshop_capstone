@@ -25,23 +25,26 @@
 - Next.js - version 11.1.2
 - React - version 17.0.2
 - Chart.js - version 3.5.1
-- React-chartjs-2 - version 3.0.4
+- React-chartjs-2 - version 3.0.5
 - Next-connect - version 0.10.2
 - Notistack - version 1.0.10
 - Jsonwebtoken - version 8.5.1
 - Bcrypt - version 5.0.1
 - Axios - version 0.21.4
 - Multer - version 1.4.3
-- Cloudinary - version 1.26.3
+- Cloudinary - version 1.27.0
 - Multer-storage-cloudinary - version 4.0.0
-- Date-fns - version 2.23.0
+- Date-fns - version 2.24.0
 - Sharp - version 0.29.1
-- Mongoose - version 6.0.5
-- React-hook-form - version 7.15.1
+- Mongoose - version 6.0.8
+- React-hook-form - version 7.16.1
 - Js-cookie - version 3.0.1
-- React-material-ui-carousel - version 2.3.1
+- React-material-ui-carousel - version 2.3.5
 - @paypal/react-paypal-js - version 7.3.3
-- @react-google-maps/api - version 2.2.0
+- stripe - version 8.177.0
+- @stripe/react-stripe-js - version 1.5.0
+- @stripe/stripe-js - version 1.18.0
+- @react-google-maps/api - version 2.4.1
 - @material-ui/core - version 4.12.3
 - @material-ui/icons - version 4.11.2
 - @material-ui/lab - version 4.0.0-alpha.60
@@ -95,4 +98,4 @@ React.js - https://onestopshop-test.vercel.app will update it with all the featu
 
 Old capstone client - https://github.com/JokeryEU/capstone_client
 
-Old capstone server - https://github.com/JokeryEU/capstone_server
+Old capstone server - https://github.com/JokeryEU/capstone_server - its being hosted on heroku free plan so it may take 5-10 sec for the data to show up in the client
