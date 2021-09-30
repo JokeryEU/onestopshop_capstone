@@ -3,6 +3,7 @@ import Order from '../../../../models/Order'
 import { isAuth } from '../../../../utils/auth'
 import { onError } from '../../../../utils/error'
 import db from '../../../../utils/db'
+import Product from '../../../../models/Product'
 
 const handler = nc({ onError })
 handler.use(isAuth)
@@ -19,7 +20,28 @@ handler.put(async (req, res) => {
       email_address: req.body.payer.email_address,
       update_time: req.body.update_time,
     }
+    order.transactions.push({
+      user: req.user._id,
+      userName: req.user.firstName + ' ' + req.user.lastName,
+      transactionType: 'PAID',
+    })
     const paidOrder = await order.save()
+
+    for (const index in paidOrder.orderItems) {
+      const item = paidOrder.orderItems[index]
+      const product = await Product.findById(item.product)
+      product.countInStock -= item.quantity
+      product.sold += item.quantity
+      product.transactions.push({
+        user: req.user._id,
+        qty: -item.quantity,
+        transactionType: 'SOLD',
+        description: `Sold to ${
+          req.user.firstName + ' ' + req.user.lastName
+        } on order ${paidOrder._id}`,
+      })
+      await product.save()
+    }
     await db.disconnect()
     res.send('Order paid', { order: paidOrder })
   } else {

@@ -15,6 +15,11 @@ handler.put(async (req, res) => {
   if (order) {
     order.isDelivered = true
     order.deliveredAt = Date.now()
+    order.transactions.push({
+      user: req.user._id,
+      userName: req.user.name,
+      transactionType: 'DELIVERED',
+    })
     const deliveredOrder = await order.save()
     await db.disconnect()
     res.send('Order delivered', { order: deliveredOrder })
