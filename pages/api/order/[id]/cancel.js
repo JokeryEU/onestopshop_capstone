@@ -24,23 +24,40 @@ handler.put(async (req, res) => {
     })
 
     const updatedOrder = await order.save()
+    if (updatedOrder.isPaid) {
+      for (const index in updatedOrder.orderItems) {
+        const item = updatedOrder.orderItems[index]
+        const product = await Product.findById(item.product)
+        product.countInStock += item.quantity
 
-    for (const index in updatedOrder.orderItems) {
-      const item = updatedOrder.orderItems[index]
-      const product = await Product.findById(item.product)
-      product.countInStock += item.quantity
+        product.sold -= item.quantity
+        product.transactions.push({
+          user: req.user._id,
+          qty: -item.quantity,
+          transactionType: 'CANCELLED',
 
-      product.sold -= item.quantity
-      product.transactions.push({
-        user: req.user._id,
-        qty: -item.quantity,
-        transactionType: 'CANCELLED',
+          description: `Cancelled order ${updatedOrder._id}`,
+        })
 
-        description: `Cancelled order ${updatedOrder._id}`,
-      })
+        await product.save()
+      }
+    } else {
+      for (const index in updatedOrder.orderItems) {
+        const item = updatedOrder.orderItems[index]
+        const product = await Product.findById(item.product)
 
-      await product.save()
+        product.transactions.push({
+          user: req.user._id,
+          qty: 0,
+          transactionType: 'CANCELLED',
+
+          description: `Cancelled order ${updatedOrder._id} . No payment has been made.`,
+        })
+
+        await product.save()
+      }
     }
+
     await db.disconnect()
     res.send({ message: 'Order Cancelled', order: updatedOrder })
   } else {
