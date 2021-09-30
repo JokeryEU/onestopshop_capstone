@@ -107,11 +107,11 @@ const orderSchema = new Schema(
     sentAt: {
       type: Date,
     },
-    isCanceled: {
+    isCancelled: {
       type: Boolean,
       default: false,
     },
-    canceledAt: {
+    cancelledAt: {
       type: Date,
     },
     isRefunded: {

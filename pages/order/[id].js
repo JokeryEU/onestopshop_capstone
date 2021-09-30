@@ -57,6 +57,19 @@ function reducer(state, action) {
         successDeliver: false,
         errorDeliver: '',
       }
+    case 'ORDER_CANCEL_REQUEST':
+      return { ...state, loadingCancel: true }
+    case 'ORDER_CANCEL_SUCCESS':
+      return { ...state, loadingCancel: false, successCancel: true }
+    case 'ORDER_CANCEL_FAIL':
+      return { ...state, loadingCancel: false, errorCancel: action.payload }
+    case 'ORDER_CANCEL_RESET':
+      return {
+        ...state,
+        loadingCancel: false,
+        successCancel: false,
+        errorCancel: '',
+      }
     default:
       return state
   }
@@ -70,10 +83,21 @@ const OrderPage = ({ params }) => {
   const { userInfo } = state
 
   const [
-    { loading, error, order, successPay, loadingDeliver, successDeliver },
+    {
+      loading,
+      error,
+      order,
+      successPay,
+      loadingCancel,
+      successCancel,
+      loadingDeliver,
+      successDeliver,
+    },
     dispatch,
   ] = useReducer(reducer, {
     loading: true,
+    loadingCancel: false,
+    successCancel: false,
     order: {},
     error: '',
   })
@@ -107,17 +131,40 @@ const OrderPage = ({ params }) => {
     if (
       !order._id ||
       successPay ||
+      successCancel ||
       successDeliver ||
       (order._id && order._id !== orderId)
     ) {
       fetchOrder()
       if (successPay) dispatch({ type: 'PAY_RESET' })
       if (successDeliver) dispatch({ type: 'DELIVER_RESET' })
+      if (successCancel) dispatch({ type: 'ORDER_CANCEL_RESET' })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [order, successPay, successDeliver, userInfo, orderId])
+  }, [order, successPay, successDeliver, successCancel, userInfo, orderId])
 
-  async function deliverOrderHandler() {
+  const handleCancelOrder = async (order) => {
+    dispatch({ type: 'ORDER_CANCEL_REQUEST', payload: {} })
+    try {
+      const { data } = await axios.put(
+        `/api/orders/${order._id}/cancel`,
+        {},
+        {
+          headers: { authorization: `Bearer ${userInfo.accessToken}` },
+        }
+      )
+      dispatch({ type: 'ORDER_CANCEL_SUCCESS', payload: data })
+      enqueueSnackbar('Order cancelled', { variant: 'success' })
+    } catch (error) {
+      dispatch({
+        type: 'ORDER_CANCEL_FAIL',
+        payload: getError(error),
+      })
+      enqueueSnackbar(getError(error), { variant: 'error' })
+    }
+  }
+
+  const deliverOrderHandler = async () => {
     try {
       dispatch({ type: 'DELIVER_REQUEST' })
       const { data } = await axios.put(
@@ -308,19 +355,42 @@ const OrderPage = ({ params }) => {
                     </Typography>
                   </Grid>
                 </ListItem>
-                {!isPaid && paymentMethod === 'PayPal' && (
-                  <PaypalButton
-                    userInfo={userInfo}
-                    order={order}
-                    dispatch={dispatch}
-                  />
-                )}
-                {!isPaid && paymentMethod === 'Stripe' && (
-                  <StripeContainer
-                    userInfo={userInfo}
-                    order={order}
-                    dispatch={dispatch}
-                  />
+                {!isPaid &&
+                  paymentMethod === 'PayPal' &&
+                  !order.isCancelled && (
+                    <PaypalButton
+                      userInfo={userInfo}
+                      order={order}
+                      dispatch={dispatch}
+                    />
+                  )}
+                {!isPaid &&
+                  paymentMethod === 'Stripe' &&
+                  !order.isCancelled && (
+                    <StripeContainer
+                      userInfo={userInfo}
+                      order={order}
+                      dispatch={dispatch}
+                    />
+                  )}
+                {!order.isDelivered && !order.isCancelled && (
+                  <ListItem>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={handleCancelOrder}
+                      disabled={loadingCancel}
+                    >
+                      Cancel Order
+                      {loadingCancel && (
+                        <CircularProgress
+                          size={25}
+                          className={classes.buttonProgress}
+                        />
+                      )}
+                    </Button>
+                  </ListItem>
                 )}
                 {userInfo.role === 'Admin' &&
                   order.isPaid &&
@@ -345,7 +415,11 @@ const OrderPage = ({ params }) => {
                   )}
                 <ListItem>
                   <NextLink href="/" passHref>
-                    <Button fullWidth variant="outlined">
+                    <Button
+                      fullWidth
+                      variant="outlined"
+                      onClick={!order.isCancelled && handleCancelOrder}
+                    >
                       Back to Products
                     </Button>
                   </NextLink>
