@@ -89,10 +89,10 @@ const StripeButton = ({ userInfo, order, dispatch }) => {
             className={classes.buttonMargin}
           >
             Pay with Stripe €{order.totalPrice}
+            {loading && (
+              <CircularProgress size={25} className={classes.buttonProgress} />
+            )}
           </Button>
-          {loading && (
-            <CircularProgress size={25} className={classes.buttonProgress} />
-          )}
         </form>
       </div>
     </ListItem>

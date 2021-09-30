@@ -17,12 +17,14 @@ import {
   TableCell,
   TableBody,
 } from '@material-ui/core'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import { getError } from '../../utils/error'
 import Layout from '../../components/Layout'
 import useStyles from '../../utils/styles'
 import { format, parseISO } from 'date-fns'
 import { useContext, useEffect, useReducer } from 'react'
 import { Store } from '../../utils/store'
+import { useSnackbar } from 'notistack'
 
 function reducer(state, action) {
   switch (action.type) {
@@ -32,6 +34,19 @@ function reducer(state, action) {
       return { ...state, loading: false, orders: action.payload, error: '' }
     case 'FETCH_ORDERS_FAIL':
       return { ...state, loading: false, error: action.payload }
+    case 'ORDER_DELETE_REQUEST':
+      return { ...state, loadingDelete: true }
+    case 'ORDER_DELETE_SUCCESS':
+      return { ...state, loadingDelete: false, successDelete: true }
+    case 'ORDER_DELETE_FAIL':
+      return { ...state, loadingDelete: false, errorDelete: action.payload }
+    case 'ORDER_DELETE_RESET':
+      return {
+        ...state,
+        loadingDelete: false,
+        successDelete: false,
+        errorDelete: '',
+      }
     default:
       state
   }
@@ -39,17 +54,23 @@ function reducer(state, action) {
 
 const AdminOrdersPage = () => {
   const { state } = useContext(Store)
-
+  const { enqueueSnackbar } = useSnackbar()
   const classes = useStyles()
   const { userInfo } = state
 
-  const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
-    loading: true,
-    orders: [],
-    error: '',
-  })
+  const [{ loading, error, orders, loadingDelete, successDelete }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      orders: [],
+      error: '',
+      loadingDelete: false,
+      successDelete: false,
+    })
 
   useEffect(() => {
+    if (successDelete) {
+      dispatch({ type: 'ORDER_DELETE_RESET' })
+    }
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_ORDERS_REQUEST' })
@@ -62,9 +83,26 @@ const AdminOrdersPage = () => {
       }
     }
     fetchData()
-  }, [userInfo])
+  }, [successDelete, userInfo])
+
+  const deleteOrderHandler = async (order) => {
+    if (!window.confirm('Are you sure to delete?')) {
+      return
+    }
+    dispatch({ type: 'ORDER_DELETE_REQUEST' })
+    try {
+      const { data } = await axios.delete(`/api/order/${order._id}`, {
+        headers: { authorization: `Bearer ${userInfo.accessToken}` },
+      })
+      dispatch({ type: 'ORDER_DELETE_SUCCESS', payload: data })
+    } catch (error) {
+      dispatch({ type: 'ORDER_DELETE_FAIL', payload: getError(error) })
+      enqueueSnackbar(getError(error), { variant: 'error' })
+    }
+  }
+
   return (
-    <Layout title="Admin Orders">
+    <Layout title="Admin Order History">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
@@ -155,6 +193,18 @@ const AdminOrdersPage = () => {
                               <NextLink href={`/order/${order._id}`} passHref>
                                 <Button variant="contained">Details</Button>
                               </NextLink>
+                              <Button
+                                onClick={() => deleteOrderHandler(order)}
+                                disabled={loadingDelete}
+                              >
+                                <DeleteForeverIcon color="error" />
+                                {loadingDelete && (
+                                  <CircularProgress
+                                    size={25}
+                                    className={classes.buttonProgress}
+                                  />
+                                )}
+                              </Button>
                             </TableCell>
                           </TableRow>
                         ))}

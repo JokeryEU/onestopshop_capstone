@@ -37,11 +37,11 @@
 - Date-fns - version 2.24.0
 - Sharp - version 0.29.1
 - Mongoose - version 6.0.8
-- React-hook-form - version 7.16.1
+- React-hook-form - version 7.16.2
 - Js-cookie - version 3.0.1
 - React-material-ui-carousel - version 2.3.5
 - @paypal/react-paypal-js - version 7.3.3
-- stripe - version 8.177.0
+- stripe - version 8.178.0
 - @stripe/react-stripe-js - version 1.5.0
 - @stripe/stripe-js - version 1.18.0
 - @react-google-maps/api - version 2.4.1
@@ -62,7 +62,7 @@
 - Check your order history
 - Change your profile info and password
 - As admin check the chart for number of sales/orders/users
-- As admin review customer orders and mark them to be delivered
+- As admin review customer orders and mark them to be delivered, also you can delete them if isnt paid
 - As admin check the number of products and add new products
 - As admin check the number of users and their role and modify or delete them
 

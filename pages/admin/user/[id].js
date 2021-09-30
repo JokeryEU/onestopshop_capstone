@@ -275,13 +275,13 @@ const AdminUserEditPage = ({ params }) => {
                         disabled={loadingUpdate}
                       >
                         Update
+                        {loadingUpdate && (
+                          <CircularProgress
+                            size={25}
+                            className={classes.buttonProgress}
+                          />
+                        )}
                       </Button>
-                      {loadingUpdate && (
-                        <CircularProgress
-                          size={25}
-                          className={classes.buttonProgress}
-                        />
-                      )}
                     </ListItem>
                     <ListItem>
                       <NextLink href="/admin/users" passHref>

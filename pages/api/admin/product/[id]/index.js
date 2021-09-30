@@ -12,7 +12,7 @@ export const config = {
 }
 
 const handler = nc({ onError })
-handler.use(isAuth, isAdmin, multerImageArray)
+handler.use(isAuth, isAdmin)
 
 handler.get(async (req, res) => {
   await db.connect()
@@ -21,7 +21,7 @@ handler.get(async (req, res) => {
   res.send(product)
 })
 
-handler.put(async (req, res) => {
+handler.use(multerImageArray).put(async (req, res) => {
   await db.connect()
   const product = await Product.findById(req.query.id)
   if (product) {

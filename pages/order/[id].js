@@ -334,13 +334,13 @@ const OrderPage = ({ params }) => {
                         disabled={loadingDeliver}
                       >
                         Deliver Order
+                        {loadingDeliver && (
+                          <CircularProgress
+                            size={25}
+                            className={classes.buttonProgress}
+                          />
+                        )}
                       </Button>
-                      {loadingDeliver && (
-                        <CircularProgress
-                          size={25}
-                          className={classes.buttonProgress}
-                        />
-                      )}
                     </ListItem>
                   )}
                 <ListItem>
