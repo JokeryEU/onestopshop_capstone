@@ -79,6 +79,7 @@ const HomePage = (props) => {
 
           payload: [
             {
+              _id: product._id,
               slug: product.slug,
               name: product.name,
               image: product.image,

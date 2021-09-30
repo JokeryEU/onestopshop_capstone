@@ -21,7 +21,7 @@ const transactionSchema = new Schema(
       enum: ['BOUGHT', 'SOLD', 'REFUND', 'CANCELLED'],
       required: true,
     },
-    quantity: { type: Number, required: true },
+    qty: { type: Number, required: true },
     description: String,
   },
   { timestamps: true }

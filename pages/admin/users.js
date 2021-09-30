@@ -83,7 +83,7 @@ const AdminUsersPage = () => {
   const { enqueueSnackbar } = useSnackbar()
 
   const deleteHandler = async (userId) => {
-    if (!window.confirm('Are you sure?')) {
+    if (!window.confirm('Are you sure to delete?')) {
       return
     }
     try {
