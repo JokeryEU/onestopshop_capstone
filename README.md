@@ -60,6 +60,7 @@
 - Buy products with paypal/stripe
 - Add products to your wishlist
 - Check your order history
+- Can cancel your order
 - Change your profile info and password
 - As admin check the chart for number of sales/orders/users
 - As admin review customer orders and mark them to be delivered, also you can delete them if isnt paid
@@ -80,7 +81,7 @@ Room for improvement:
 
 To do:
 
-- Add cancel/refund orders
+- Add refund orders
 - Add coupons and discounts
 - Add pay with cash
 - Add User address in the database
