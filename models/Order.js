@@ -121,10 +121,6 @@ const orderSchema = new Schema(
     refundedAt: {
       type: Date,
     },
-    sold: {
-      type: Number,
-      default: 0,
-    },
   },
   { timestamps: true }
 )

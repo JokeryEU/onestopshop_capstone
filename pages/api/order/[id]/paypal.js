@@ -29,7 +29,7 @@ handler.put(async (req, res) => {
 
     for (const index in paidOrder.orderItems) {
       const item = paidOrder.orderItems[index]
-      const product = await Product.findById(item.product)
+      const product = await Product.findById(item._id)
       product.countInStock -= item.quantity
       product.sold += item.quantity
       product.transactions.push({

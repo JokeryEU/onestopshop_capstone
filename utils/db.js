@@ -34,6 +34,9 @@ function convertDocToObj(doc) {
   doc.createdAt = doc.createdAt.toString()
   doc.updatedAt = doc.updatedAt.toString()
   doc.user = doc.user.toString()
+  if (doc.transactions) {
+    doc.transactions = doc.transactions.map(convertDocToObj)
+  }
   return doc
 }
 

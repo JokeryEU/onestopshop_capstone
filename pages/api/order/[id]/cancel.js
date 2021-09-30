@@ -14,9 +14,10 @@ handler.use(isAuth)
 handler.put(async (req, res) => {
   await db.connect()
   const order = await Order.findById(req.query.id)
+
   if (order) {
-    order.isCanceled = true
-    order.canceledAt = Date.now()
+    order.isCancelled = true
+    order.cancelledAt = Date.now()
     order.transactions.push({
       user: req.user._id,
       userName: req.user.firstName + ' ' + req.user.lastName,
@@ -27,7 +28,7 @@ handler.put(async (req, res) => {
     if (updatedOrder.isPaid) {
       for (const index in updatedOrder.orderItems) {
         const item = updatedOrder.orderItems[index]
-        const product = await Product.findById(item.product)
+        const product = await Product.findById(item._id)
         product.countInStock += item.quantity
 
         product.sold -= item.quantity
@@ -44,8 +45,7 @@ handler.put(async (req, res) => {
     } else {
       for (const index in updatedOrder.orderItems) {
         const item = updatedOrder.orderItems[index]
-        const product = await Product.findById(item.product)
-
+        const product = await Product.findById(item._id)
         product.transactions.push({
           user: req.user._id,
           qty: 0,

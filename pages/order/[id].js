@@ -143,11 +143,11 @@ const OrderPage = ({ params }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order, successPay, successDeliver, successCancel, userInfo, orderId])
 
-  const handleCancelOrder = async (order) => {
+  const handleCancelOrder = async () => {
     dispatch({ type: 'ORDER_CANCEL_REQUEST', payload: {} })
     try {
       const { data } = await axios.put(
-        `/api/orders/${order._id}/cancel`,
+        `/api/order/${order._id}/cancel`,
         {},
         {
           headers: { authorization: `Bearer ${userInfo.accessToken}` },
@@ -394,6 +394,7 @@ const OrderPage = ({ params }) => {
                 )}
                 {userInfo.role === 'Admin' &&
                   order.isPaid &&
+                  !order.isCancelled &&
                   !order.isDelivered && (
                     <ListItem>
                       <Button
