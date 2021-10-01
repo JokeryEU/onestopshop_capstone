@@ -88,6 +88,7 @@ const OrderPage = ({ params }) => {
       error,
       order,
       successPay,
+      loadingPay,
       loadingCancel,
       successCancel,
       loadingDeliver,
@@ -95,6 +96,8 @@ const OrderPage = ({ params }) => {
     },
     dispatch,
   ] = useReducer(reducer, {
+    successPay,
+    loadingPay,
     loading: true,
     loadingCancel: false,
     successCancel: false,
@@ -160,6 +163,29 @@ const OrderPage = ({ params }) => {
         type: 'ORDER_CANCEL_FAIL',
         payload: getError(error),
       })
+      enqueueSnackbar(getError(error), { variant: 'error' })
+    }
+  }
+
+  const handleSuccessCashPayment = async () => {
+    dispatch({ type: 'PAY_REQUEST' })
+    try {
+      const { data } = await axios.put(
+        `/api/order/${order._id}/cashpay`,
+        {
+          id: '',
+          status: 'Paid by Cash',
+          update_time: '',
+          email_address: `${userInfo.email}`,
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo.accessToken}` },
+        }
+      )
+      dispatch({ type: 'PAY_SUCCESS', payload: data })
+      enqueueSnackbar('Order marked as paid', { variant: 'success' })
+    } catch (error) {
+      dispatch({ type: 'PAY_FAIL', payload: getError(error) })
       enqueueSnackbar(getError(error), { variant: 'error' })
     }
   }
@@ -373,6 +399,35 @@ const OrderPage = ({ params }) => {
                       dispatch={dispatch}
                     />
                   )}
+                {userInfo.role === 'Admin' &&
+                  !order.isPaid &&
+                  order.paymentMethod === 'Cash' && (
+                    <ListItem>
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleSuccessCashPayment()}
+                        disabled={loadingPay}
+                      >
+                        Confirm Payment
+                        {loadingPay && (
+                          <CircularProgress
+                            size={25}
+                            className={classes.buttonProgress}
+                          />
+                        )}
+                      </Button>
+                    </ListItem>
+                  )}
+                {!order.isPaid && order.paymentMethod === 'Cash' && (
+                  <ListItem>
+                    <Typography variant="h2">
+                      Your Order is completed. Please wait until shipment and
+                      provide cash at the delivery.
+                    </Typography>
+                  </ListItem>
+                )}
                 {!order.isDelivered && !order.isCancelled && (
                   <ListItem>
                     <Button
@@ -414,13 +469,10 @@ const OrderPage = ({ params }) => {
                       </Button>
                     </ListItem>
                   )}
+
                 <ListItem>
                   <NextLink href="/" passHref>
-                    <Button
-                      fullWidth
-                      variant="outlined"
-                      onClick={!order.isCancelled && handleCancelOrder}
-                    >
+                    <Button fullWidth variant="outlined">
                       Back to Products
                     </Button>
                   </NextLink>

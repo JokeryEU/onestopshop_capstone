@@ -25,6 +25,14 @@ handler.use(multerImageArray).put(async (req, res) => {
   await db.connect()
   const product = await Product.findById(req.query.id)
   if (product) {
+    if (product.countInStock < req.body.countInStock) {
+      product.transactions.push({
+        user: req.user._id,
+        qty: req.body.countInStock - product.countInStock,
+        transactionType: 'BOUGHT',
+        description: 'Add new items',
+      })
+    }
     product.name = req.body.name || product.name
     product.slug = req.body.slug || product.slug
     product.price = req.body.price || product.price
@@ -38,7 +46,7 @@ handler.use(multerImageArray).put(async (req, res) => {
     await product.save()
     await db.disconnect()
 
-    res.send('Product Updated Successfully')
+    res.send('Product Updated')
   } else {
     await db.disconnect()
     res.status(404).send('Product Not Found')

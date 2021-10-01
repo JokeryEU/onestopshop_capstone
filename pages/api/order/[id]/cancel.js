@@ -30,8 +30,8 @@ handler.put(async (req, res) => {
         const item = updatedOrder.orderItems[index]
         const product = await Product.findById(item._id)
         product.countInStock += item.quantity
-
         product.sold -= item.quantity
+
         product.transactions.push({
           user: req.user._id,
           qty: -item.quantity,

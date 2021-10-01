@@ -84,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12,
+    zIndex: 10,
   },
   buttonMargin: {
     marginTop: 20,
