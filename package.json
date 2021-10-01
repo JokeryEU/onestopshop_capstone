@@ -16,7 +16,7 @@
     "@react-google-maps/api": "^2.4.1",
     "@stripe/react-stripe-js": "^1.5.0",
     "@stripe/stripe-js": "^1.18.0",
-    "axios": "^0.21.4",
+    "axios": "^0.22.0",
     "bcrypt": "^5.0.1",
     "chart.js": "^3.5.1",
     "cloudinary": "^1.27.0",
