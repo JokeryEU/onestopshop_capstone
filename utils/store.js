@@ -24,6 +24,7 @@ const initialState = {
       ? JSON.parse(Cookies.get('wishItems'))
       : [],
   },
+  discount: 0,
 }
 
 function reducer(state, action) {
@@ -123,6 +124,17 @@ function reducer(state, action) {
         },
       }
     }
+    case 'ORDER_APPLY_COUPON_REQUEST':
+      return { ...state, loadingCoupon: true }
+    case 'ORDER_APPLY_COUPON_SUCCESS':
+      return {
+        ...state,
+        loadingCoupon: false,
+        discount: action.payload.discount,
+      }
+    case 'ORDER_APPLY_COUPON_FAIL':
+      return { ...state, loadingCoupon: false, errorCoupon: action.payload }
+
     case 'USER_LOGIN':
       return { ...state, userInfo: action.payload }
     case 'USER_LOGOUT':

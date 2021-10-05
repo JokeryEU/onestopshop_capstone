@@ -34,10 +34,10 @@
 - Multer - version 1.4.3
 - Cloudinary - version 1.27.0
 - Multer-storage-cloudinary - version 4.0.0
-- Date-fns - version 2.24.0
+- Date-fns - version 2.25.0
 - Sharp - version 0.29.1
 - Mongoose - version 6.0.9
-- React-hook-form - version 7.17.0
+- React-hook-form - version 7.17.1
 - Js-cookie - version 3.0.1
 - React-material-ui-carousel - version 2.3.5
 - @paypal/react-paypal-js - version 7.3.3

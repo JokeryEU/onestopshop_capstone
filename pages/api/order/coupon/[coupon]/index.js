@@ -10,13 +10,16 @@ const handler = nc({
 
 handler.use(isAuth).get(async (req, res) => {
   await db.connect()
-  const coupon = await Coupon.findOne({ name: req.query.coupon })
+  const coupon = await Coupon.findOne({
+    name: req.query.coupon,
+    expiry: { $gt: Date.now() },
+  })
   if (coupon) {
     await db.disconnect()
     res.send({ discount: coupon.discount })
   } else {
     await db.disconnect()
-    res.status(400).send({ message: 'Invalid Coupon' })
+    res.status(400).send('Invalid Coupon')
   }
 })
 

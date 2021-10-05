@@ -111,6 +111,7 @@ const HomePage = (props) => {
                 alt={product.name}
                 width="400"
                 height="500"
+                unoptimized
               />
             </Link>
           </NextLink>

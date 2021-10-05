@@ -12,6 +12,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from '@material-ui/core'
 import { useContext, useEffect, useState } from 'react'
@@ -33,10 +34,13 @@ const PlaceOrderPage = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [coupon, setCoupon] = useState('')
   const { state, dispatch } = useContext(Store)
   const {
     userInfo,
     cart: { cartItems, shippingAddress, paymentMethod },
+    loadingCoupon,
+    discount,
   } = state
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100
   const itemsPrice = round2(
@@ -45,6 +49,8 @@ const PlaceOrderPage = () => {
   const shippingPrice = itemsPrice > 200 ? 0 : 15
   const taxPrice = round2(itemsPrice * 0.19)
   const totalPrice = round2(itemsPrice + shippingPrice + taxPrice)
+  const discountPrice = round2((totalPrice * discount) / 100)
+  const netPrice = round2(totalPrice - discountPrice)
 
   useEffect(() => {
     if (!paymentMethod) return router.push('/payment')
@@ -75,6 +81,28 @@ const PlaceOrderPage = () => {
       router.push(`/order/${data._id}`)
     } catch (error) {
       setLoading(false)
+      enqueueSnackbar(getError(error), { variant: 'error' })
+    }
+  }
+  const applyCouponHandler = async () => {
+    dispatch({ type: 'ORDER_APPLY_COUPON_REQUEST' })
+    try {
+      const { data } = await axios.get(
+        '/api/order/coupon/' + coupon,
+
+        {
+          headers: { authorization: `Bearer ${userInfo.accessToken}` },
+        }
+      )
+      dispatch({ type: 'ORDER_APPLY_COUPON_SUCCESS', payload: data })
+      enqueueSnackbar(`Cupon ${coupon} applied successfully  `, {
+        variant: 'success',
+      })
+    } catch (error) {
+      dispatch({
+        type: 'ORDER_APPLY_COUPON_FAIL',
+        payload: getError(error),
+      })
       enqueueSnackbar(getError(error), { variant: 'error' })
     }
   }
@@ -226,6 +254,57 @@ const PlaceOrderPage = () => {
                   </Typography>
                 </Grid>
               </ListItem>
+              <ListItem>
+                <Grid item xs={6}>
+                  <Typography>
+                    <strong>Discount:</strong>
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography align="right">
+                    <strong>€{discountPrice}</strong>
+                  </Typography>
+                </Grid>
+              </ListItem>
+              <ListItem>
+                <Grid item xs={6}>
+                  <Typography>
+                    <strong>Net Price:</strong>
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography align="right">
+                    <strong>€{netPrice}</strong>
+                  </Typography>
+                </Grid>
+              </ListItem>
+              <List>
+                <ListItem>
+                  <Typography>Do you have coupon?</Typography>
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    placeholder="Coupon Code"
+                    id="coupon"
+                    value={coupon}
+                    onChange={(e) => setCoupon(e.target.value)}
+                  />
+
+                  <Button
+                    variant="contained"
+                    onClick={() => applyCouponHandler()}
+                    disabled={loadingCoupon}
+                  >
+                    Apply
+                    {loadingCoupon && (
+                      <CircularProgress
+                        size={25}
+                        className={classes.buttonProgress}
+                      />
+                    )}
+                  </Button>
+                </ListItem>
+              </List>
               <ListItem>
                 <Button
                   variant="contained"

@@ -59,10 +59,10 @@ handler.put(async (req, res) => {
     }
 
     await db.disconnect()
-    res.send({ message: 'Order Cancelled', order: updatedOrder })
+    res.send('Order Cancelled', { order: updatedOrder })
   } else {
     await db.disconnect()
-    res.status(404).send({ message: 'Order Not Found' })
+    res.status(404).send('Order Not Found')
   }
 })
 
