@@ -1,6 +1,5 @@
 import axios from 'axios'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
 import NextLink from 'next/link'
 import { useEffect, useContext, useReducer } from 'react'
 import {
@@ -10,7 +9,6 @@ import {
   ListItem,
   Typography,
   Card,
-  Button,
   ListItemText,
   TableContainer,
   Table,
@@ -19,118 +17,143 @@ import {
   TableCell,
   TableBody,
   IconButton,
+  Button,
+  InputBase,
 } from '@material-ui/core'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import EditIcon from '@material-ui/icons/Edit'
-import { getError } from '../../utils/error'
-import { Store } from '../../utils/store'
-import Layout from '../../components/Layout'
-import useStyles from '../../utils/styles'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
+import SearchIcon from '@material-ui/icons/Search'
+import { getError } from '../../../utils/error'
+import { Store } from '../../../utils/store'
+import Layout from '../../../components/Layout'
+import useStyles from '../../../utils/styles'
 import { useSnackbar } from 'notistack'
+import { useRouter } from 'next/router'
+import { format, parseISO } from 'date-fns'
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'FETCH_PRODUCTS_REQUEST':
-      return { ...state, loading: true, error: '' }
-    case 'FETCH_PRODUCTS_SUCCESS':
-      return { ...state, loading: false, products: action.payload, error: '' }
-    case 'FETCH_PRODUCTS_FAIL':
+    case 'COUPON_LIST_REQUEST':
+      return { ...state, loading: true }
+    case 'COUPON_LIST_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        coupons: action.payload.coupons,
+      }
+    case 'COUPON_LIST_FAIL':
       return { ...state, loading: false, error: action.payload }
-    case 'CREATE_PRODUCT_REQUEST':
+    case 'COUPON_CREATE_REQUEST':
       return { ...state, loadingCreate: true }
-    case 'CREATE_PRODUCT_SUCCESS':
+    case 'COUPON_CREATE_SUCCESS':
       return { ...state, loadingCreate: false }
-    case 'CREATE_PRODUCT_FAIL':
+    case 'COUPON_CREATE_FAIL':
       return { ...state, loadingCreate: false }
-    case 'DELETE_PRODUCT_REQUEST':
+    case 'COUPON_DELETE_REQUEST':
       return { ...state, loadingDelete: true }
-    case 'DELETE_PRODUCT_SUCCESS':
-      return { ...state, loadingDelete: false, successDelete: true }
-    case 'DELETE_PRODUCT_FAIL':
-      return { ...state, loadingDelete: false }
-    case 'DELETE_PRODUCT_RESET':
-      return { ...state, loadingDelete: false, successDelete: false }
+    case 'COUPON_DELETE_SUCCESS':
+      return { ...state, loadingDelete: false, success: true }
+    case 'COUPON_DELETE_FAIL':
+      return { ...state, loadingDelete: false, errorDelete: action.payload }
+    case 'COUPON_DELETE_RESET':
+      return {
+        ...state,
+        loadingDelete: false,
+        successDelete: false,
+        errorDelete: '',
+      }
     default:
-      state
+      return state
   }
 }
 
-const AdminProductsPage = () => {
-  const { state } = useContext(Store)
-  const router = useRouter()
+const AdminCouponsPage = () => {
   const classes = useStyles()
-  const { userInfo } = state
 
   const [
-    { loading, error, products, loadingCreate, successDelete, loadingDelete },
+    { loading, error, coupons, successDelete, loadingCreate, loadingDelete },
     dispatch,
   ] = useReducer(reducer, {
     loading: true,
-    products: [],
+    loadingDelete: false,
+    successDelete: false,
+    coupons: [],
     error: '',
   })
+  const { state } = useContext(Store)
+  const { userInfo } = state
+  const router = useRouter()
+  const { query = 'all' } = router.query
 
   useEffect(() => {
-    const fetchData = async () => {
+    if (successDelete) {
+      dispatch({ type: 'COUPON_DELETE_RESET' })
+    }
+    const fetchCoupons = async () => {
+      dispatch({ type: 'COUPON_LIST_REQUEST', payload: { query: '' } })
       try {
-        dispatch({ type: 'FETCH_PRODUCTS_REQUEST' })
-        const { data } = await axios.get(`/api/admin/products`, {
+        const { data } = await axios.get(`/api/admin/coupon?query=${query}`, {
           headers: { authorization: `Bearer ${userInfo.accessToken}` },
         })
-        dispatch({ type: 'FETCH_PRODUCTS_SUCCESS', payload: data })
-      } catch (error) {
-        dispatch({ type: 'FETCH_PRODUCTS_FAIL', payload: getError(error) })
+        dispatch({ type: 'COUPON_LIST_SUCCESS', payload: data })
+      } catch (err) {
+        dispatch({
+          type: 'COUPON_LIST_FAIL',
+          payload: getError(err),
+        })
       }
     }
-    if (successDelete) {
-      dispatch({ type: 'DELETE_PRODUCT_RESET' })
-    } else {
-      fetchData()
-    }
-  }, [successDelete, userInfo])
+
+    fetchCoupons()
+  }, [successDelete, userInfo, query])
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const createHandler = async () => {
-    if (!window.confirm('Are you sure?')) {
+  const deleteCouponHandler = async (couponId) => {
+    if (!window.confirm('Are you sure to delete?')) {
       return
     }
+    dispatch({ type: 'COUPON_DELETE_REQUEST' })
     try {
-      dispatch({ type: 'CREATE_PRODUCT_REQUEST' })
+      const { data } = await axios.delete(`/api/admin/coupon/${couponId}`, {
+        headers: { authorization: `Bearer ${userInfo.accessToken}` },
+      })
+      dispatch({ type: 'COUPON_DELETE_SUCCESS', payload: data })
+      enqueueSnackbar('Coupon deleted', { variant: 'success' })
+    } catch (error) {
+      dispatch({
+        type: 'COUPON_DELETE_FAIL',
+        payload: getError(error),
+      })
+      enqueueSnackbar(getError(error), { variant: 'error' })
+    }
+  }
+
+  const createCouponHandler = async () => {
+    dispatch({ type: 'COUPON_CREATE_REQUEST' })
+    try {
       const { data } = await axios.post(
-        '/api/admin/product',
+        `/api/admin/coupon`,
         {},
         {
           headers: { authorization: `Bearer ${userInfo.accessToken}` },
         }
       )
-      dispatch({ type: 'CREATE_PRODUCT_SUCCESS' })
 
-      enqueueSnackbar('Product created successfully', { variant: 'success' })
-      router.push(`/admin/product/${data._id}`)
+      dispatch({ type: 'COUPON_CREATE_SUCCESS', payload: data })
+      router.push(`/admin/coupons/${data._id}`)
     } catch (error) {
-      dispatch({ type: 'CREATE_PRODUCT_FAIL' })
-      enqueueSnackbar(getError(error), { variant: 'error' })
-    }
-  }
-  const deleteHandler = async (productId) => {
-    if (!window.confirm('Are you sure?')) {
-      return
-    }
-    try {
-      dispatch({ type: 'DELETE_PRODUCT_REQUEST' })
-      await axios.delete(`/api/admin/product/${productId}`, {
-        headers: { authorization: `Bearer ${userInfo.accessToken}` },
+      dispatch({
+        type: 'COUPON_CREATE_FAIL',
+        payload: getError(error),
       })
-      dispatch({ type: 'DELETE_PRODUCT_SUCCESS' })
-      enqueueSnackbar('Product deleted', { variant: 'success' })
-    } catch (error) {
-      dispatch({ type: 'DELETE_PRODUCT_FAIL' })
       enqueueSnackbar(getError(error), { variant: 'error' })
     }
   }
+
   return (
-    <Layout title="Admin Products">
+    <Layout title="Admin Coupons">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
@@ -146,13 +169,13 @@ const AdminProductsPage = () => {
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/products" passHref>
-                <ListItem selected button component="a">
+                <ListItem button component="a">
                   <ListItemText primary="Products" />
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/coupons" passHref>
                 <ListItem button component="a">
-                  <ListItemText primary="Coupons" />
+                  <ListItemText selected primary="Coupons" />
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/users" passHref>
@@ -167,21 +190,44 @@ const AdminProductsPage = () => {
           <Card className={classes.section}>
             <List>
               <ListItem>
-                <Grid container alignItems="center">
-                  <Grid item xs={6}>
+                <Grid
+                  container
+                  alignItems="center"
+                  alignContent="space-between"
+                >
+                  <Grid item>
                     <Typography component="h1" variant="h1">
-                      Products &nbsp;&nbsp;&nbsp;
-                      {loadingDelete && <CircularProgress size={24} />}
+                      Coupons &nbsp;&nbsp;&nbsp;
+                      {loadingDelete && <CircularProgress />}
                     </Typography>
                   </Grid>
-                  <Grid align="right" item xs={6}>
+                  <Grid item>
+                    {coupons.length === 0 ? 'No' : coupons.length} Results:{' '}
+                    {query !== 'all' && query !== '' && ' : ' + query}
+                    {query !== 'all' && query !== '' ? (
+                      <Button onClick={() => router.push('/admin/coupons')}>
+                        <HighlightOffIcon />
+                      </Button>
+                    ) : null}
+                  </Grid>
+                  <Grid>
+                    <form action="/admin/coupons">
+                      <SearchIcon />
+                      <InputBase
+                        placeholder="Search for Coupons here…"
+                        name="query"
+                        inputProps={{ 'aria-label': 'search' }}
+                      />
+                    </form>
+                  </Grid>
+                  <Grid item>
                     <Button
-                      onClick={createHandler}
+                      onClick={() => createCouponHandler()}
                       color="primary"
                       variant="contained"
                       disabled={loadingCreate}
                     >
-                      Create Product
+                      Create Coupon
                       {loadingCreate && (
                         <CircularProgress
                           size={25}
@@ -195,7 +241,7 @@ const AdminProductsPage = () => {
 
               <ListItem>
                 {loading ? (
-                  <CircularProgress size={52} />
+                  <CircularProgress />
                 ) : error ? (
                   <Typography className={classes.error}>{error}</Typography>
                 ) : (
@@ -205,27 +251,27 @@ const AdminProductsPage = () => {
                         <TableRow>
                           <TableCell>ID</TableCell>
                           <TableCell>NAME</TableCell>
-                          <TableCell>PRICE</TableCell>
-                          <TableCell>CATEGORY</TableCell>
-                          <TableCell>COUNT</TableCell>
-                          <TableCell>RATING</TableCell>
+                          <TableCell>DISCOUNT</TableCell>
+                          <TableCell>CREATED</TableCell>
+                          <TableCell>EXPIRY</TableCell>
                           <TableCell>ACTIONS</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {products.map((product) => (
-                          <TableRow key={product._id}>
+                        {coupons.map((coupon) => (
+                          <TableRow key={coupon._id}>
+                            <TableCell>{coupon._id}</TableCell>
+                            <TableCell>{coupon.name}</TableCell>
+                            <TableCell>{coupon.discount}</TableCell>
                             <TableCell>
-                              {product._id.substring(16, 24)}
+                              {format(parseISO(coupon.createdAt), 'dd-MM-yyyy')}
                             </TableCell>
-                            <TableCell>{product.name}</TableCell>
-                            <TableCell>€{product.price}</TableCell>
-                            <TableCell>{product.category}</TableCell>
-                            <TableCell>{product.countInStock}</TableCell>
-                            <TableCell>{product.rating}</TableCell>
+                            <TableCell>
+                              {format(parseISO(coupon.expiry), 'dd-MM-yyyy')}
+                            </TableCell>
                             <TableCell>
                               <NextLink
-                                href={`/admin/product/${product._id}`}
+                                href={`/admin/coupons/${coupon._id}`}
                                 passHref
                               >
                                 <IconButton aria-label="edit">
@@ -234,7 +280,7 @@ const AdminProductsPage = () => {
                               </NextLink>{' '}
                               <IconButton
                                 aria-label="delete"
-                                onClick={() => deleteHandler(product._id)}
+                                onClick={() => deleteCouponHandler(coupon._id)}
                               >
                                 <DeleteForeverIcon color="error" />
                               </IconButton>
@@ -287,4 +333,4 @@ export function getServerSideProps({ req }) {
   }
 }
 
-export default dynamic(() => Promise.resolve(AdminProductsPage), { ssr: false })
+export default dynamic(() => Promise.resolve(AdminCouponsPage), { ssr: false })

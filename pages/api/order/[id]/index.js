@@ -23,7 +23,7 @@ handler.use(isAdmin).delete(async (req, res) => {
   if (order) {
     const deletedOrder = await order.remove()
     await db.disconnect()
-    res.send('Order Deleted', { order: deletedOrder })
+    res.send(deletedOrder)
   } else {
     await db.disconnect()
     res.status(404).send('Order Not Found')

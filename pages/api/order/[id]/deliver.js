@@ -22,7 +22,7 @@ handler.put(async (req, res) => {
     })
     const deliveredOrder = await order.save()
     await db.disconnect()
-    res.send('Order delivered', { order: deliveredOrder })
+    res.send(deliveredOrder)
   } else {
     await db.disconnect()
     res.status(404).send('Order not found')

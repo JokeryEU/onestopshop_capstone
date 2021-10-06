@@ -99,29 +99,29 @@ const AdminUsersPage = () => {
     }
   }
   return (
-    <Layout title="Users">
+    <Layout title="Admin Users">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
             <List>
               <NextLink href="/admin/dashboard" passHref>
                 <ListItem button component="a">
-                  <ListItemText primary="Admin Dashboard"></ListItemText>
+                  <ListItemText primary="Admin Dashboard" />
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/orders" passHref>
                 <ListItem button component="a">
-                  <ListItemText primary="Orders"></ListItemText>
+                  <ListItemText primary="Orders" />
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/products" passHref>
                 <ListItem button component="a">
-                  <ListItemText primary="Products"></ListItemText>
+                  <ListItemText primary="Products" />
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/users" passHref>
                 <ListItem selected button component="a">
-                  <ListItemText primary="Users"></ListItemText>
+                  <ListItemText primary="Users" />
                 </ListItem>
               </NextLink>
             </List>

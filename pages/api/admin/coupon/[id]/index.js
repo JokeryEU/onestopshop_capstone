@@ -26,7 +26,7 @@ handler.put(async (req, res) => {
     coupon.discount = req.body.discount || coupon.discount
     const updatedCoupon = await coupon.save()
     await db.disconnect()
-    res.send('Coupon Updated By Admin', { coupon: updatedCoupon })
+    res.send(updatedCoupon)
   } else {
     await db.disconnect()
     res.status(404).send('Coupon Not Found')

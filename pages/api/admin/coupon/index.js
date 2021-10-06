@@ -40,7 +40,7 @@ handler.post(async (req, res) => {
   })
   const createdCoupon = await coupon.save()
   await db.disconnect()
-  res.send('Coupon created successfully', { coupon: createdCoupon })
+  res.send(createdCoupon)
 })
 
 export default handler

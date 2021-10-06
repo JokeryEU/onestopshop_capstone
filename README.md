@@ -42,7 +42,7 @@
 - React-material-ui-carousel - version 2.3.5
 - @paypal/react-paypal-js - version 7.3.3
 - stripe - version 8.178.0
-- @stripe/react-stripe-js - version 1.5.0
+- @stripe/react-stripe-js - version 1.6.0
 - @stripe/stripe-js - version 1.19.1
 - @react-google-maps/api - version 2.4.1
 - @material-ui/core - version 4.12.3
