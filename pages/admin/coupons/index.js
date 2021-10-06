@@ -53,7 +53,7 @@ function reducer(state, action) {
     case 'COUPON_DELETE_REQUEST':
       return { ...state, loadingDelete: true }
     case 'COUPON_DELETE_SUCCESS':
-      return { ...state, loadingDelete: false, success: true }
+      return { ...state, loadingDelete: false, successDelete: true }
     case 'COUPON_DELETE_FAIL':
       return { ...state, loadingDelete: false, errorDelete: action.payload }
     case 'COUPON_DELETE_RESET':
@@ -190,11 +190,7 @@ const AdminCouponsPage = () => {
           <Card className={classes.section}>
             <List>
               <ListItem>
-                <Grid
-                  container
-                  alignItems="center"
-                  alignContent="space-between"
-                >
+                <Grid container alignItems="center">
                   <Grid item>
                     <Typography component="h1" variant="h1">
                       Coupons &nbsp;&nbsp;&nbsp;
@@ -210,7 +206,7 @@ const AdminCouponsPage = () => {
                       </Button>
                     ) : null}
                   </Grid>
-                  <Grid>
+                  <Grid item>
                     <form action="/admin/coupons">
                       <SearchIcon />
                       <InputBase
@@ -222,7 +218,7 @@ const AdminCouponsPage = () => {
                   </Grid>
                   <Grid item>
                     <Button
-                      onClick={() => createCouponHandler()}
+                      onClick={createCouponHandler}
                       color="primary"
                       variant="contained"
                       disabled={loadingCreate}
