@@ -37,7 +37,7 @@
 - Date-fns - version 2.25.0
 - Sharp - version 0.29.1
 - Mongoose - version 6.0.9
-- React-hook-form - version 7.17.1
+- React-hook-form - version 7.15.4
 - Js-cookie - version 3.0.1
 - React-material-ui-carousel - version 2.3.5
 - @paypal/react-paypal-js - version 7.3.3
