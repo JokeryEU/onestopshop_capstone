@@ -66,6 +66,7 @@
 - As admin review customer orders and mark them to be delivered, also you can delete them if isnt paid
 - As admin check the number of products and add new products
 - As admin check the number of users and their role and modify or delete them
+- As admin check the number of coupons, edit, delete or create a new one
 
 ## Project Status ⬇️
 
@@ -82,7 +83,6 @@ Room for improvement:
 To do:
 
 - Add refund orders
-- Add coupons and discounts
 - Add User address in the database
 - Add forgot password
 - Add OAuth
