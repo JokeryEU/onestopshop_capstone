@@ -33,7 +33,7 @@ const StripeButton = ({ userInfo, order, dispatch }) => {
         dispatch({ type: 'PAY_REQUEST' })
         const { data } = await axios.put(
           `/api/order/${order._id}/stripe`,
-          { amount: (order.totalPrice * 100).toFixed(2), id },
+          { amount: (order.netPrice * 100).toFixed(2), id },
           {
             headers: { authorization: `Bearer ${userInfo.accessToken}` },
           }
@@ -88,7 +88,7 @@ const StripeButton = ({ userInfo, order, dispatch }) => {
             disabled={loading}
             className={classes.buttonMargin}
           >
-            Pay with Stripe €{order.totalPrice}
+            Pay with Stripe €{order.netPrice}
             {loading && (
               <CircularProgress size={25} className={classes.buttonProgress} />
             )}

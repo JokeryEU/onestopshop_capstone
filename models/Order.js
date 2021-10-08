@@ -8,10 +8,7 @@ const orderItemSchema = new Schema({
   slug: { type: String, required: true },
   image: [{ type: String, required: true }],
   price: { type: Number, required: true },
-  product: {
-    type: Schema.Types.ObjectId,
-    ref: 'Product',
-  },
+  product: { type: Schema.Types.ObjectId, ref: 'Product' },
 })
 
 const transactionSchema = new Schema(
@@ -84,6 +81,18 @@ const orderSchema = new Schema(
       required: true,
       default: 0.0,
     },
+    netPrice: {
+      type: Number,
+      required: true,
+      default: 0.0,
+    },
+    discountPrice: {
+      type: Number,
+      required: true,
+      default: 0.0,
+    },
+    usedCoupon: String,
+
     isPaid: {
       type: Boolean,
       required: true,

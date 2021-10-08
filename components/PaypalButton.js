@@ -33,7 +33,7 @@ const PaypalButton = ({ userInfo, order, dispatch }) => {
       .create({
         purchase_units: [
           {
-            amount: { value: order.totalPrice },
+            amount: { value: order.netPrice },
           },
         ],
       })

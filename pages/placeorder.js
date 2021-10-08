@@ -70,6 +70,9 @@ const PlaceOrderPage = () => {
           shippingPrice,
           taxPrice,
           totalPrice,
+          netPrice,
+          discountPrice,
+          usedCoupon: coupon,
         },
         {
           headers: { authorization: `Bearer ${userInfo.accessToken}` },
@@ -215,9 +218,9 @@ const PlaceOrderPage = () => {
                   <Grid item xs={6}>
                     <Typography>Items:</Typography>
                   </Grid>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography align="right">€{itemsPrice}</Typography>
+                  <Grid item xs={6}>
+                    <Typography align="right">€{itemsPrice}</Typography>
+                  </Grid>
                 </Grid>
               </ListItem>
               <ListItem>
@@ -225,9 +228,9 @@ const PlaceOrderPage = () => {
                   <Grid item xs={6}>
                     <Typography>Tax:</Typography>
                   </Grid>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography align="right">€{taxPrice}</Typography>
+                  <Grid item xs={6}>
+                    <Typography align="right">€{taxPrice}</Typography>
+                  </Grid>
                 </Grid>
               </ListItem>
               <ListItem>
@@ -235,9 +238,9 @@ const PlaceOrderPage = () => {
                   <Grid item xs={6}>
                     <Typography>Shipping:</Typography>
                   </Grid>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography align="right">€{shippingPrice}</Typography>
+                  <Grid item xs={6}>
+                    <Typography align="right">€{shippingPrice}</Typography>
+                  </Grid>
                 </Grid>
               </ListItem>
               <ListItem>
@@ -247,35 +250,39 @@ const PlaceOrderPage = () => {
                       <strong>Total:</strong>
                     </Typography>
                   </Grid>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography align="right">
-                    <strong>€{totalPrice}</strong>
-                  </Typography>
-                </Grid>
-              </ListItem>
-              <ListItem>
-                <Grid item xs={6}>
-                  <Typography>
-                    <strong>Discount:</strong>
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography align="right">
-                    <strong>€{discountPrice}</strong>
-                  </Typography>
+                  <Grid item xs={6}>
+                    <Typography align="right">
+                      <strong>€{totalPrice}</strong>
+                    </Typography>
+                  </Grid>
                 </Grid>
               </ListItem>
               <ListItem>
-                <Grid item xs={6}>
-                  <Typography>
-                    <strong>Net Price:</strong>
-                  </Typography>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>
+                      <strong>Discount:</strong>
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography align="right">
+                      <strong>€{discountPrice}</strong>
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                  <Typography align="right">
-                    <strong>€{netPrice}</strong>
-                  </Typography>
+              </ListItem>
+              <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>
+                      <strong>Net Price:</strong>
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography align="right">
+                      <strong>€{netPrice}</strong>
+                    </Typography>
+                  </Grid>
                 </Grid>
               </ListItem>
               <List>
