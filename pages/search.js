@@ -46,7 +46,7 @@ const prices = [
 
 const ratings = [1, 2, 3, 4, 5]
 
-const Search = (props) => {
+const SearchPage = (props) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const classes = useStyles()
   const router = useRouter()
@@ -395,4 +395,4 @@ export async function getServerSideProps({ query }) {
   }
 }
 
-export default Search
+export default SearchPage
