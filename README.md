@@ -36,11 +36,11 @@
 - Multer-storage-cloudinary - version 4.0.0
 - Date-fns - version 2.25.0
 - Sharp - version 0.29.1
-- Mongoose - version 6.0.9
+- Mongoose - version 6.0.10
 - React-hook-form - version 7.15.4
 - Js-cookie - version 3.0.1
 - React-material-ui-carousel - version 2.3.5
-- @paypal/react-paypal-js - version 7.3.3
+- @paypal/react-paypal-js - version 7.4.0
 - stripe - version 8.179.0
 - @stripe/react-stripe-js - version 1.6.0
 - @stripe/stripe-js - version 1.19.1
