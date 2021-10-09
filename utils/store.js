@@ -131,9 +131,12 @@ function reducer(state, action) {
         ...state,
         loadingCoupon: false,
         discount: action.payload.discount,
+        couponName: action.payload.couponName,
       }
     case 'ORDER_APPLY_COUPON_FAIL':
       return { ...state, loadingCoupon: false, errorCoupon: action.payload }
+    case 'ORDER_REMOVE_APPLIED_COUPON':
+      return { ...state, discount: '', couponName: '' }
 
     case 'USER_LOGIN':
       return { ...state, userInfo: action.payload }

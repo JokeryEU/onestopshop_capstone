@@ -41,6 +41,7 @@ const PlaceOrderPage = () => {
     cart: { cartItems, shippingAddress, paymentMethod },
     loadingCoupon,
     discount,
+    couponName,
   } = state
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100
   const itemsPrice = round2(
@@ -72,7 +73,7 @@ const PlaceOrderPage = () => {
           totalPrice,
           netPrice,
           discountPrice,
-          usedCoupon: coupon,
+          usedCoupon: couponName,
         },
         {
           headers: { authorization: `Bearer ${userInfo.accessToken}` },
@@ -88,6 +89,16 @@ const PlaceOrderPage = () => {
     }
   }
   const applyCouponHandler = async () => {
+    if (couponName === coupon.toUpperCase()) {
+      return enqueueSnackbar('Coupon already applied', {
+        variant: 'warning',
+      })
+    }
+    if (couponName) {
+      return enqueueSnackbar('Only 1 valid cupon per order is allowed', {
+        variant: 'error',
+      })
+    }
     dispatch({ type: 'ORDER_APPLY_COUPON_REQUEST' })
     try {
       const { data } = await axios.get(
@@ -98,7 +109,7 @@ const PlaceOrderPage = () => {
         }
       )
       dispatch({ type: 'ORDER_APPLY_COUPON_SUCCESS', payload: data })
-      enqueueSnackbar(`Cupon ${coupon} applied successfully  `, {
+      enqueueSnackbar(`Cupon ${coupon.toUpperCase()} applied successfully  `, {
         variant: 'success',
       })
     } catch (error) {
@@ -108,6 +119,10 @@ const PlaceOrderPage = () => {
       })
       enqueueSnackbar(getError(error), { variant: 'error' })
     }
+  }
+
+  const removeCouponHandler = () => {
+    dispatch({ type: 'ORDER_REMOVE_APPLIED_COUPON' })
   }
 
   return (
@@ -287,22 +302,30 @@ const PlaceOrderPage = () => {
               </ListItem>
               <List>
                 <ListItem>
-                  <Typography>Do you have coupon?</Typography>
+                  <Typography>
+                    {!couponName
+                      ? 'Do you have coupon?'
+                      : 'Want to use a different coupon?'}
+                  </Typography>
                 </ListItem>
                 <ListItem>
-                  <TextField
-                    placeholder="Coupon Code"
-                    id="coupon"
-                    value={coupon}
-                    onChange={(e) => setCoupon(e.target.value)}
-                  />
+                  {!couponName && (
+                    <TextField
+                      placeholder="Coupon Code"
+                      id="coupon"
+                      value={coupon}
+                      onChange={(e) => setCoupon(e.target.value)}
+                    />
+                  )}
 
                   <Button
                     variant="contained"
-                    onClick={() => applyCouponHandler()}
+                    onClick={() =>
+                      !couponName ? applyCouponHandler() : removeCouponHandler()
+                    }
                     disabled={loadingCoupon}
                   >
-                    Apply
+                    {!couponName ? 'Apply' : 'Remove Coupon'}
                     {loadingCoupon && (
                       <CircularProgress
                         size={25}

@@ -16,7 +16,7 @@ handler.use(isAuth).get(async (req, res) => {
   })
   if (coupon) {
     await db.disconnect()
-    res.send({ discount: coupon.discount })
+    res.send({ discount: coupon.discount, couponName: coupon.name })
   } else {
     await db.disconnect()
     res.status(400).send('Invalid Coupon')

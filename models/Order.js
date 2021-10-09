@@ -91,7 +91,7 @@ const orderSchema = new Schema(
       required: true,
       default: 0.0,
     },
-    usedCoupon: String,
+    usedCoupon: { type: String, uppercase: true, trim: true },
     isPaid: {
       type: Boolean,
       required: true,
