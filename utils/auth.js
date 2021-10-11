@@ -18,7 +18,7 @@ const verifyJWT = (token) =>
   new Promise((res, rej) =>
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
       if (error) {
-        const err = new Error("Token isn't valid")
+        const err = new Error('Invalid token')
         err.httpStatusCode = 401
         rej(err)
       }
@@ -91,7 +91,7 @@ export const isAuth = async (req, res, next) => {
     const decoded = await verifyJWT(token)
     const user = await User.findOne({ _id: decoded._id })
     if (!user) {
-      const error = new Error(`Please sign in again`)
+      const error = new Error('Please sign in again')
       error.httpStatusCode = 400
       throw error
     }

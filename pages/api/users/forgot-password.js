@@ -37,7 +37,7 @@ handler.post(async (req, res) => {
   await user.updateOne({ resetPasswordToken: token })
   await db.disconnect()
 
-  const link = 'http://' + req.headers.host + '/reset-password/' + token
+  const link = 'http://' + req.headers.host + '/user/reset-password/' + token
   const emailReady = forgotPwEmailTemplate(email, link, user.lastName)
 
   await sendgrid.send(emailReady)
@@ -45,6 +45,42 @@ handler.post(async (req, res) => {
   res.send({
     message: `Email has been sent to ${email}. The reset link is valid in 1 hour.`,
   })
+})
+
+handler.put(async (req, res) => {
+  const { resetPasswordToken, newPassword } = req.body
+  if (resetPasswordToken) {
+    await new Promise((res, rej) =>
+      jwt.verify(
+        resetPasswordToken,
+        process.env.FORGOT_PASSWORD_TOKEN,
+        (error, decoded) => {
+          if (error) {
+            const err = new Error('Invalid token')
+            err.httpStatusCode = 401
+            rej(err)
+          }
+          res(decoded)
+        }
+      )
+    )
+    await db.connect()
+    const user = await User.findOne({ resetPasswordToken })
+
+    if (!user) {
+      await db.disconnect()
+      return res.status(401).send({ message: 'Invalid token' })
+    }
+    user.resetPasswordToken = ''
+    user.password = newPassword
+    await user.save()
+    await db.disconnect()
+    return res.send({
+      message: 'Success! You can now login with your new password',
+    })
+  }
+
+  res.status(400).send({ message: 'No valid token provided' })
 })
 
 export default handler

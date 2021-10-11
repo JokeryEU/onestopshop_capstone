@@ -336,7 +336,7 @@ const Layout = ({ description, title, children }) => {
         </Container>
         <footer className={classes.footer}>
           <Typography>
-            All rights reserved. Copyright &copy; OneStopShop.
+            All rights reserved. Copyright &copy; OneStopShop
           </Typography>
         </footer>
       </ThemeProvider>
