@@ -1,7 +1,7 @@
 export const forgotPwEmailTemplate = (email, link, name) => {
   return {
     to: email,
-    from: process.env.SENDER_EMAIL_FORGOT_PW,
+    from: `OneStopShop <${process.env.SENDER_EMAIL_FORGOT_PW}>`,
     subject: 'Password reset link',
     html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
       <html lang="en">
@@ -19,8 +19,8 @@ export const forgotPwEmailTemplate = (email, link, name) => {
       
       <body>
       <h1>Hi ${name}, do you want to reset your password?</h1> 	
-	  <h3>Someone requested to reset your OneStopShop account password.If it wasn't you, please ignore this e-mail and no changes will be made to your account.</h3> 
-      <h3>However, if you have requested to reset your password, please click the link below.You will be redirected to the OneStopShop password reset form.</h3>      
+	  <h3>Someone requested to reset your OneStopShop account password. If it wasn't you, please ignore this e-mail and no changes will be made to your account.</h3> 
+      <h3>However, if you have requested to reset your password, please click the link below. You will be redirected to the OneStopShop password reset form.</h3>      
       <br>
       <p>Please use the following link to reset your password:</p>
       <a href=${link} style="text-decoration: underline; color: #252525; font-size: 14px;">

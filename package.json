@@ -22,7 +22,7 @@
     "axios": "^0.22.0",
     "bcrypt": "^5.0.1",
     "chart.js": "^3.5.1",
-    "cloudinary": "^1.27.0",
+    "cloudinary": "^1.27.1",
     "date-fns": "^2.25.0",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
