@@ -1,5 +1,6 @@
 import {
   Button,
+  Grid,
   Link,
   List,
   ListItem,
@@ -117,10 +118,23 @@ const LoginPage = () => {
             </Button>
           </ListItem>
           <ListItem>
-            Don&apos;t have an account? &nbsp;
-            <NextLink href={`/register?redirect=${redirect || '/'}`} passHref>
-              <Link>Register</Link>
-            </NextLink>
+            <Grid container>
+              <Grid item xs={6}>
+                Don&apos;t have an account? &nbsp;
+                <NextLink
+                  href={`/register?redirect=${redirect || '/'}`}
+                  passHref
+                >
+                  <Link>Register</Link>
+                </NextLink>
+              </Grid>
+              <Grid item xs={6} align="right">
+                Forgot Password? &nbsp;
+                <NextLink href={`/forgot-password`} passHref>
+                  <Link>Click here</Link>
+                </NextLink>
+              </Grid>
+            </Grid>
           </ListItem>
         </List>
       </form>

@@ -32,7 +32,7 @@
 - Bcrypt - version 5.0.1
 - Axios - version 0.22.0
 - Multer - version 1.4.3
-- Cloudinary - version 1.27.0
+- Cloudinary - version 1.27.1
 - Multer-storage-cloudinary - version 4.0.0
 - Date-fns - version 2.25.0
 - Sharp - version 0.29.1

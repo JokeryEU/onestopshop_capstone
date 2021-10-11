@@ -26,7 +26,7 @@ handler.post(async (req, res) => {
     jwt.sign(
       { email },
       process.env.FORGOT_PASSWORD_TOKEN,
-      { expiresIn: '60m' },
+      { expiresIn: '1h' },
       (error, token) => {
         if (error) rej(error)
         res(token)

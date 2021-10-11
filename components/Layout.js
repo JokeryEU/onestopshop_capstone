@@ -147,7 +147,7 @@ const Layout = ({ description, title, children }) => {
     <>
       <Head>
         <title>
-          {title ? `${title} - OneStopShop` : 'Welcome to OneStopShop'}
+          {title ? `${title} · OneStopShop` : 'Welcome to OneStopShop'}
         </title>
         {description && <meta name="description" content={description}></meta>}
       </Head>
@@ -335,7 +335,9 @@ const Layout = ({ description, title, children }) => {
           {children}
         </Container>
         <footer className={classes.footer}>
-          <Typography>All rights reserved. OneStopShop.</Typography>
+          <Typography>
+            All rights reserved. Copyright &copy; OneStopShop.
+          </Typography>
         </footer>
       </ThemeProvider>
     </>
