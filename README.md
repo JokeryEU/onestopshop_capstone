@@ -40,7 +40,8 @@
 - React-hook-form - version 7.15.4
 - Js-cookie - version 3.0.1
 - React-material-ui-carousel - version 2.3.5
-- @paypal/react-paypal-js - version 7.4.0
+- @sendgrid/mail - version 7.4.7
+- @paypal/react-paypal-js - version 7.4.1
 - stripe - version 8.179.0
 - @stripe/react-stripe-js - version 1.6.0
 - @stripe/stripe-js - version 1.19.1

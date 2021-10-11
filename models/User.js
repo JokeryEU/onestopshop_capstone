@@ -30,9 +30,6 @@ const userSchema = new Schema(
       required: true,
       minlength: [8, 'Minimum length must be at least 8 chars'],
     },
-    profilePic: {
-      type: String,
-    },
     role: {
       type: String,
       required: true,
@@ -45,8 +42,10 @@ const userSchema = new Schema(
         ref: 'Product',
       },
     ],
-    refreshToken: { type: String },
-    googleId: { type: String },
+    profilePic: String,
+    resetPasswordToken: String,
+    refreshToken: String,
+    googleId: String,
   },
   { timestamps: true }
 )

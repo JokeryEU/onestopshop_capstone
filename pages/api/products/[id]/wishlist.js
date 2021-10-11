@@ -21,7 +21,7 @@ handler.post(async (req, res) => {
 
     if (existItem) {
       await db.disconnect()
-      throw new Error('Product already in wishlist')
+      throw new Error('Product already in the wishlist')
     }
     const wish = req.query.id
     user.wishlist.push(wish)
