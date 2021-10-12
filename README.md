@@ -42,7 +42,7 @@
 - React-material-ui-carousel - version 2.3.5
 - @sendgrid/mail - version 7.4.7
 - @paypal/react-paypal-js - version 7.4.1
-- stripe - version 8.179.0
+- stripe - version 8.181.0
 - @stripe/react-stripe-js - version 1.6.0
 - @stripe/stripe-js - version 1.19.1
 - @react-google-maps/api - version 2.4.1
@@ -85,6 +85,7 @@ Room for improvement:
 To do:
 
 - Add refund orders
+- Add verify email
 - Add User address in the database
 - Add OAuth
 - ...

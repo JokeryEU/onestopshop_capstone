@@ -100,5 +100,4 @@ const productSchema = new Schema(
 )
 
 const Product = models.Product || model('Product', productSchema)
-
 export default Product
