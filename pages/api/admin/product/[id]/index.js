@@ -46,10 +46,10 @@ handler.use(multerImageArray).put(async (req, res) => {
     await product.save()
     await db.disconnect()
 
-    res.send('Product Updated')
+    res.send({ message: 'Product Updated' })
   } else {
     await db.disconnect()
-    res.status(404).send('Product Not Found')
+    res.status(404).send({ message: 'Product Not Found' })
   }
 })
 
@@ -59,10 +59,10 @@ handler.delete(async (req, res) => {
   if (product) {
     await product.remove()
     await db.disconnect()
-    res.send('Product Deleted')
+    res.status(204).send()
   } else {
     await db.disconnect()
-    res.status(404).send('Product Not Found')
+    res.status(404).send({ message: 'Product Not Found' })
   }
 })
 

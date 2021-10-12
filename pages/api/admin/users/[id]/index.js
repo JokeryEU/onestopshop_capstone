@@ -23,10 +23,10 @@ handler.put(async (req, res) => {
     user.role = req.body.role || user.role
     await user.save()
     await db.disconnect()
-    res.send('User Updated Successfully')
+    res.send({ message: 'User Updated Successfully' })
   } else {
     await db.disconnect()
-    res.status(404).send('User Not Found')
+    res.status(404).send({ message: 'User Not Found' })
   }
 })
 
@@ -36,10 +36,10 @@ handler.delete(async (req, res) => {
   if (user) {
     await user.remove()
     await db.disconnect()
-    res.send('User Deleted')
+    res.send({ message: 'User Deleted' })
   } else {
     await db.disconnect()
-    res.status(404).send('User Not Found')
+    res.status(404).send({ message: 'User Not Found' })
   }
 })
 

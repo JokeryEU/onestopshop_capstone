@@ -46,7 +46,7 @@ handler.put(async (req, res) => {
     res.send(paidOrder)
   } else {
     await db.disconnect()
-    res.status(404).send('Order not found')
+    res.status(404).send({ message: 'Order not found' })
   }
 })
 

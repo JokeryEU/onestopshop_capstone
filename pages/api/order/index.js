@@ -10,7 +10,7 @@ handler.use(isAuth)
 handler.post(async (req, res) => {
   await db.connect()
   if (req.body.orderItems && req.body.orderItems.length === 0) {
-    throw new Error('No order items')
+    return res.status(404).send('No order items')
   } else {
     const transaction = {
       user: req.user._id,

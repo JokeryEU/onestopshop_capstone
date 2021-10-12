@@ -20,10 +20,10 @@ handler.use(isAuth).get(async (req, res) => {
     if (userReview) {
       res.send({ review: userReview })
     } else {
-      res.send('Review not found')
+      res.send({ message: 'Review not found' })
     }
   } else {
-    res.send('Product not found')
+    res.send({ message: 'Product not found' })
   }
 })
 export default handler

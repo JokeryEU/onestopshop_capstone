@@ -15,7 +15,7 @@ handler.get(async (req, res) => {
   if (product) {
     res.send(product.reviews)
   } else {
-    res.status(404).send('Product not found')
+    res.status(404).send({ message: 'Product not found' })
   }
 })
 
@@ -45,7 +45,7 @@ handler.use(isAuth).post(async (req, res) => {
       await updatedProduct.save()
 
       await db.disconnect()
-      return res.send('Review updated')
+      return res.send({ message: 'Review updated' })
     } else {
       const review = {
         user: req.user._id,
@@ -60,11 +60,11 @@ handler.use(isAuth).post(async (req, res) => {
         product.reviews.length
       await product.save()
       await db.disconnect()
-      res.status(201).send('Review submitted')
+      res.status(201).send({ message: 'Review submitted' })
     }
   } else {
     await db.disconnect()
-    res.status(404).send('Product not found')
+    res.status(404).send({ message: 'Product not found' })
   }
 })
 

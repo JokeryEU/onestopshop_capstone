@@ -18,7 +18,9 @@ handler.use(isAdmin).delete(async (req, res) => {
   const order = await Order.findById(req.query.id)
   if (order.isPaid) {
     await db.disconnect()
-    return res.status(400).send('Order is already paid, use refund option')
+    return res
+      .status(400)
+      .send({ message: 'Order is already paid, use refund option' })
   }
   if (order) {
     const deletedOrder = await order.remove()
@@ -26,7 +28,7 @@ handler.use(isAdmin).delete(async (req, res) => {
     res.send(deletedOrder)
   } else {
     await db.disconnect()
-    res.status(404).send('Order Not Found')
+    res.status(404).send({ message: 'Order Not Found' })
   }
 })
 

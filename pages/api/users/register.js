@@ -28,7 +28,7 @@ handler.post(async (req, res) => {
     })
   } else {
     await db.disconnect()
-    throw new Error('User already exists')
+    res.status(400).send({ message: 'User already exists' })
   }
 })
 

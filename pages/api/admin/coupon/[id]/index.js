@@ -29,7 +29,7 @@ handler.put(async (req, res) => {
     res.send(updatedCoupon)
   } else {
     await db.disconnect()
-    res.status(404).send('Coupon Not Found')
+    res.status(404).send({ message: 'Coupon Not Found' })
   }
 })
 
@@ -39,10 +39,10 @@ handler.delete(async (req, res) => {
   if (coupon) {
     const deletedCoupon = await coupon.remove()
     await db.disconnect()
-    res.send('Coupon Deleted', { coupon: deletedCoupon })
+    res.status(204).send()
   } else {
     await db.disconnect()
-    res.status(404).send('Coupon Not Found')
+    res.status(404).send({ message: 'Coupon Not Found' })
   }
 })
 

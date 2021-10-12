@@ -21,17 +21,19 @@ handler.post(async (req, res) => {
 
     if (existItem) {
       await db.disconnect()
-      throw new Error('Product already in the wishlist')
+      return res
+        .status(400)
+        .send({ message: 'Product is already in the wishlist' })
     }
     const wish = req.query.id
     user.wishlist.push(wish)
 
     await user.save()
     await db.disconnect()
-    res.status(201).send('Product added to the wishlist')
+    res.status(201).send({ message: 'Product added to the wishlist' })
   } else {
     await db.disconnect()
-    res.status(404).send('Product not found')
+    res.status(404).send({ message: 'Product not found' })
   }
 })
 
@@ -46,7 +48,7 @@ handler.delete(async (req, res) => {
 
     await user.save()
     await db.disconnect()
-    res.send('Product removed from wishlist')
+    res.status(204).send()
   }
 })
 
