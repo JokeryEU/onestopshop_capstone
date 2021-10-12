@@ -31,3 +31,13 @@ export const forgotPwEmailTemplate = (email, link, name) => {
       </html>`,
   }
 }
+
+export const forgotPwEmailSuccessTemplate = (email, name) => {
+  return {
+    to: email,
+    from: `OneStopShop <${process.env.SENDER_EMAIL_FORGOT_PW}>`,
+    subject: 'Your password has been changed',
+    text: `Hi ${name} \n 
+    This is a confirmation that the password for your OneStopShop account ${email} has just been changed.\n`,
+  }
+}

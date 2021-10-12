@@ -3,7 +3,10 @@ import User from '../../../models/User'
 import db from '../../../utils/db'
 import jwt from 'jsonwebtoken'
 import sendgrid from '@sendgrid/mail'
-import { forgotPwEmailTemplate } from '../../../utils/emailTemplates'
+import {
+  forgotPwEmailTemplate,
+  forgotPwEmailSuccessTemplate,
+} from '../../../utils/emailTemplates'
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
 
@@ -75,6 +78,11 @@ handler.put(async (req, res) => {
     user.password = newPassword
     await user.save()
     await db.disconnect()
+
+    const emailReady = forgotPwEmailSuccessTemplate(user.email, user.lastName)
+
+    await sendgrid.send(emailReady)
+
     return res.send({
       message: 'Success! You can now login with your new password',
     })
