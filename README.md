@@ -57,7 +57,7 @@
 - Search for products by name or category
 - Change theme to dark/light mode
 - Register a new account
-- Login into your account
+- Login into your account or if you forgot your password you can reset it
 - Buy products with Paypal/Stripe/Cash
 - Add products to your wishlist
 - Check your order history
@@ -79,13 +79,13 @@ Room for improvement:
 
 - User interface
 - Charts
+- Payments
 - ...
 
 To do:
 
 - Add refund orders
 - Add User address in the database
-- Add forgot password
 - Add OAuth
 - ...
 
