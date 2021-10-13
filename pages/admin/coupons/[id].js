@@ -177,13 +177,15 @@ const AdminCouponEditPage = ({ params }) => {
                             id="name"
                             label="Name"
                             error={Boolean(errors.name)}
-                            // helperText={
-                            //   errors.name.type === 'minLength'
-                            //     ? 'Name must be at least 6 characters long'
-                            //     : errors.name.type === 'maxLength'
-                            //     ? 'Name must be maximum 12 characters long'
-                            //     : 'Name is required'
-                            // }
+                            helperText={
+                              errors.name
+                                ? errors.name.type === 'minLength'
+                                  ? 'Name must be at least 6 characters long'
+                                  : errors.name.type === 'maxLength'
+                                  ? 'Name must be maximum 12 characters long'
+                                  : 'Name is required'
+                                : ''
+                            }
                             {...field}
                           />
                         )}
@@ -224,7 +226,7 @@ const AdminCouponEditPage = ({ params }) => {
                             <DatePicker
                               autoOk
                               label="Expiry"
-                              format="dd-MM-yyyy"
+                              format="dd-MMM-yyyy"
                               inputVariant="outlined"
                               disablePast
                               id="expiry"

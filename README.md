@@ -30,7 +30,7 @@
 - Notistack - version 1.0.10
 - Jsonwebtoken - version 8.5.1
 - Bcrypt - version 5.0.1
-- Axios - version 0.22.0
+- Axios - version 0.23.0
 - Multer - version 1.4.3
 - Cloudinary - version 1.27.1
 - Multer-storage-cloudinary - version 4.0.0
