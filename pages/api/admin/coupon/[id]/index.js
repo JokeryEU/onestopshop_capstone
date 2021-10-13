@@ -37,7 +37,7 @@ handler.delete(async (req, res) => {
   await db.connect()
   const coupon = await Coupon.findById(req.query.id)
   if (coupon) {
-    const deletedCoupon = await coupon.remove()
+    await coupon.remove()
     await db.disconnect()
     res.status(204).send()
   } else {

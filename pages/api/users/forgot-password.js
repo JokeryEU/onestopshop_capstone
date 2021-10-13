@@ -13,9 +13,30 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
 const handler = nc()
 
 handler.post(async (req, res) => {
-  await db.connect()
   const { email } = req.body
+  await db.connect()
   const user = await User.findOne({ email })
+
+  if (user.resetPasswordToken) {
+    await new Promise((res, rej) =>
+      jwt.verify(
+        user.resetPasswordToken,
+        process.env.FORGOT_PASSWORD_TOKEN,
+        (error, decoded) => {
+          if (error) {
+            db.disconnect()
+            rej(error)
+          }
+          res(decoded)
+        }
+      )
+    )
+    db.disconnect()
+    return res.status(400).send({
+      message:
+        'Your link its still valid please wait 1 hour or use the link you got from your email',
+    })
+  }
   if (!user) {
     await db.disconnect()
     return res.status(401).send({
@@ -59,9 +80,7 @@ handler.put(async (req, res) => {
         process.env.FORGOT_PASSWORD_TOKEN,
         (error, decoded) => {
           if (error) {
-            const err = new Error('Invalid token')
-            err.httpStatusCode = 401
-            rej(err)
+            rej(error)
           }
           res(decoded)
         }
