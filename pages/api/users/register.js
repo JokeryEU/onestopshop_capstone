@@ -1,35 +1,44 @@
 import nc from 'next-connect'
+import PendingUser from '../../../models/PendingUser'
 import User from '../../../models/User'
 import { auth } from '../../../utils/auth'
 import db from '../../../utils/db'
+import sendgrid from '@sendgrid/mail'
+import { userRegisteredTemplate } from '../../../utils/emailTemplates'
+
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
 
 const handler = nc()
 
 handler.post(async (req, res) => {
+  const { email, lastName } = req.body
   await db.connect()
-  const newUser = await User.create({
+
+  const regUser = await User.findOne({ email })
+  const pendUser = await PendingUser.findOne({ email })
+  const date = Date.now()
+
+  if (pendUser && pendUser.expiry < date) await pendUser.remove()
+
+  if ((pendUser && pendUser.expiry > date) || regUser) {
+    await db.disconnect()
+    return res.status(422).send('Email already registered!')
+  }
+
+  const newUser = await PendingUser.create({
     ...req.body,
     role: 'User',
+    expiry: date + 86400000,
   })
-  if (newUser) {
-    const user = await User.checkCredentials(req.body.email, req.body.password)
-    const tokens = await auth(user)
-    const { accessToken } = tokens
+  const link = 'http://' + req.headers.host + '/user/activation/' + newUser._id
+  const emailReady = userRegisteredTemplate(email, link, lastName)
 
-    await db.disconnect()
-    res.status(201).send({
-      accessToken,
-      wishlist: user.wishlist,
-      role: newUser.role,
-      _id: newUser._id,
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
-      email: newUser.email,
-    })
-  } else {
-    await db.disconnect()
-    res.status(400).send({ message: 'User already exists' })
-  }
+  await sendgrid.send(emailReady)
+
+  await db.disconnect()
+  res
+    .status(201)
+    .send({ message: 'An email was sent to you to complete your registration' })
 })
 
 export default handler

@@ -13,7 +13,7 @@ import { useSnackbar } from 'notistack'
 import { getError } from '../../../utils/error'
 import { useRouter } from 'next/router'
 
-const resetPasswordPage = ({ params }) => {
+const ResetPasswordPage = ({ params }) => {
   const token = params.token
   const router = useRouter()
   const {
@@ -141,4 +141,4 @@ export function getServerSideProps({ req, params }) {
   }
 }
 
-export default resetPasswordPage
+export default ResetPasswordPage

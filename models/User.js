@@ -51,16 +51,6 @@ const userSchema = new Schema(
   { timestamps: true }
 )
 
-userSchema.pre('save', async function (next) {
-  if (this.isModified('password')) {
-    this.password = await bcrypt.hash(
-      this.password,
-      parseInt(process.env.SALT_ROUNDS)
-    )
-  }
-  next()
-})
-
 userSchema.statics.checkCredentials = async function (email, enteredPassword) {
   const user = await this.findOne({ email })
   if (user) {

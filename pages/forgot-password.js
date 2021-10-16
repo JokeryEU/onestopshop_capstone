@@ -13,7 +13,7 @@ import { useSnackbar } from 'notistack'
 import { getError } from '../utils/error'
 import { useState } from 'react'
 
-const forgotPasswordPage = () => {
+const ForgotPasswordPage = () => {
   const {
     handleSubmit,
     control,
@@ -140,4 +140,4 @@ export function getServerSideProps({ req }) {
   }
 }
 
-export default forgotPasswordPage
+export default ForgotPasswordPage

@@ -216,3 +216,19 @@ export const forgotPwEmailSuccessTemplate = (email, name) => {
     This is a confirmation that the password for your OneStopShop account ${email} has just been changed.\n`,
   }
 }
+
+export const userRegisteredTemplate = (email, link, name) => {
+  return {
+    to: email,
+    from: `OneStopShop <${process.env.SENDER_EMAIL_FORGOT_PW}>`,
+    subject: 'Activate your account',
+    html: `
+    <h3> Hi ${name} </h3>
+    <br>
+    <p>Thank you for registering into OneStopShop. Just one last step is laying ahead of you...</p>
+    <p>To activate your account: <a href=${link} style="text-decoration: underline;color: #252525;font-size: 14px;">Click here</a></p>
+    <p>The link is valid for only 24 hours</p>
+    <br>
+    <p>Your OneStopShop Team</p>`,
+  }
+}

@@ -7,6 +7,7 @@ import {
   forgotPwEmailTemplate,
   forgotPwEmailSuccessTemplate,
 } from '../../../utils/emailTemplates'
+import bcrypt from 'bcrypt'
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
 
@@ -93,8 +94,12 @@ handler.put(async (req, res) => {
       await db.disconnect()
       return res.status(401).send({ message: 'Invalid token' })
     }
+    const hashedPw = await bcrypt.hash(
+      newPassword,
+      parseInt(process.env.SALT_ROUNDS)
+    )
     user.resetPasswordToken = ''
-    user.password = newPassword
+    user.password = hashedPw
     await user.save()
     await db.disconnect()
 

@@ -2,13 +2,13 @@ import nc from 'next-connect'
 import User from '../../../models/User'
 import db from '../../../utils/db'
 import { auth, isAuth } from '../../../utils/auth'
+import bcrypt from 'bcrypt'
 
 const handler = nc()
 handler.use(isAuth)
 
 handler.put(async (req, res) => {
   await db.connect()
-
   const user = await User.findById(req.user._id)
   const tokens = await auth(user)
   const { accessToken } = tokens
@@ -16,7 +16,11 @@ handler.put(async (req, res) => {
   user.lastName = req.body.lastName || user.lastName
   user.email = req.body.email || user.email
   if (req.body.password) {
-    user.password = req.body.password
+    const hashedPw = await bcrypt.hash(
+      req.body.password,
+      parseInt(process.env.SALT_ROUNDS)
+    )
+    user.password = hashedPw
   }
 
   await user.save()
