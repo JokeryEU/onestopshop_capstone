@@ -209,7 +209,7 @@ export const forgotPwEmailTemplate = (email, link, name) => {
 
 export const forgotPwEmailSuccessTemplate = (email, name) => {
   return {
-    to: email,
+    to: `${name} <${email}>`,
     from: `OneStopShop <${process.env.SENDER_EMAIL_FORGOT_PW}>`,
     subject: 'Your password has been changed',
     text: `Hi ${name} \n 
@@ -219,7 +219,7 @@ export const forgotPwEmailSuccessTemplate = (email, name) => {
 
 export const userRegisteredTemplate = (email, link, name) => {
   return {
-    to: email,
+    to: `${name} <${email}>`,
     from: `OneStopShop <${process.env.SENDER_EMAIL_FORGOT_PW}>`,
     subject: 'Activate your account',
     html: `

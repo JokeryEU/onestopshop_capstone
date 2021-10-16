@@ -87,6 +87,7 @@ Room for improvement:
 To do:
 
 - Add refund orders
+- Add better security to paypal/stripe payment methods
 - Add User address in the database
 - Add OAuth
 - ...

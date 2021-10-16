@@ -1,4 +1,10 @@
-import { Link, List, ListItem, Typography } from '@material-ui/core'
+import {
+  CircularProgress,
+  Link,
+  List,
+  ListItem,
+  Typography,
+} from '@material-ui/core'
 import Layout from '../../../components/Layout'
 import useStyles from '../../..//utils/styles'
 import axios from 'axios'
@@ -12,14 +18,18 @@ const AccountActivationPage = ({ params }) => {
   const { enqueueSnackbar } = useSnackbar()
   const classes = useStyles()
 
+  const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     const activateAcc = async () => {
+      setLoading(true)
       try {
         await axios.post('/api/users/activateAccount', { id })
+        setLoading(false)
         setSuccess(true)
       } catch (error) {
+        setLoading(false)
         enqueueSnackbar(getError(error), { variant: 'error' })
       }
     }
@@ -32,7 +42,9 @@ const AccountActivationPage = ({ params }) => {
         <Typography component="h1" variant="h1">
           Account Activation
         </Typography>
-        {success ? (
+        {loading ? (
+          <CircularProgress />
+        ) : success ? (
           <ListItem>
             <Typography variant="h2" align="justify">
               Your account has been activated. You can now{' '}
