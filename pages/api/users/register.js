@@ -38,7 +38,9 @@ handler.post(async (req, res) => {
   await db.disconnect()
   res
     .status(201)
-    .send({ message: 'An email was sent to you to complete your registration' })
+    .send({
+      message: `An email was sent to ${email} to complete your registration`,
+    })
 })
 
 export default handler
