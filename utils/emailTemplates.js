@@ -1,5 +1,9 @@
-export const forgotPwEmailTemplate = (email, link, name) => {
-  return {
+import sendgrid from '@sendgrid/mail'
+
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
+
+export const forgotPwEmailTemplate = async (email, link, name) => {
+  const mail = {
     to: `${name} <${email}>`,
     from: `OneStopShop <${process.env.SENDER_EMAIL_FORGOT_PW}>`,
     subject: 'Password Reset link',
@@ -205,20 +209,22 @@ export const forgotPwEmailTemplate = (email, link, name) => {
       </body>
     </html>`,
   }
+  return await sendgrid.send(mail)
 }
 
-export const forgotPwEmailSuccessTemplate = (email, name) => {
-  return {
+export const forgotPwEmailSuccessTemplate = async (email, name) => {
+  const mail = {
     to: `${name} <${email}>`,
     from: `OneStopShop <${process.env.SENDER_EMAIL_FORGOT_PW}>`,
     subject: 'Your password has been changed',
     text: `Hi ${name} \n 
     This is a confirmation that the password for your OneStopShop account ${email} has just been changed.\n`,
   }
+  return await sendgrid.send(mail)
 }
 
-export const userRegisteredTemplate = (email, link, name) => {
-  return {
+export const userRegisteredTemplate = async (email, link, name) => {
+  const mail = {
     to: `${name} <${email}>`,
     from: `OneStopShop <${process.env.SENDER_EMAIL_FORGOT_PW}>`,
     subject: 'Activate your account',
@@ -231,4 +237,5 @@ export const userRegisteredTemplate = (email, link, name) => {
     <br>
     <p>Your OneStopShop Team</p>`,
   }
+  return await sendgrid.send(mail)
 }

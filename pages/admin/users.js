@@ -157,7 +157,7 @@ const AdminUsersPage = () => {
                       <TableBody>
                         {users.map((user) => (
                           <TableRow key={user._id}>
-                            <TableCell>{user._id.substring(16, 24)}</TableCell>
+                            <TableCell>{user._id}</TableCell>
                             <TableCell>
                               {user.firstName + ' ' + user.lastName}
                             </TableCell>

@@ -1,12 +1,8 @@
 import nc from 'next-connect'
 import PendingUser from '../../../models/PendingUser'
 import User from '../../../models/User'
-import { auth } from '../../../utils/auth'
 import db from '../../../utils/db'
-import sendgrid from '@sendgrid/mail'
 import { userRegisteredTemplate } from '../../../utils/emailTemplates'
-
-sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
 
 const handler = nc()
 
@@ -30,17 +26,13 @@ handler.post(async (req, res) => {
     role: 'User',
     expiry: date + 86400000,
   })
-  const link = 'http://' + req.headers.host + '/user/activation/' + newUser._id
-  const emailReady = userRegisteredTemplate(email, link, lastName)
-
-  await sendgrid.send(emailReady)
-
   await db.disconnect()
-  res
-    .status(201)
-    .send({
-      message: `An email was sent to ${email} to complete your registration`,
-    })
+  const link = 'http://' + req.headers.host + '/user/activation/' + newUser._id
+  await userRegisteredTemplate(email, link, lastName)
+
+  res.status(201).send({
+    message: `An email was sent to ${email} to complete your registration`,
+  })
 })
 
 export default handler

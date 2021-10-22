@@ -2,14 +2,11 @@ import nc from 'next-connect'
 import User from '../../../models/User'
 import db from '../../../utils/db'
 import jwt from 'jsonwebtoken'
-import sendgrid from '@sendgrid/mail'
 import {
   forgotPwEmailTemplate,
   forgotPwEmailSuccessTemplate,
 } from '../../../utils/emailTemplates'
 import bcrypt from 'bcrypt'
-
-sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
 
 const handler = nc()
 
@@ -41,10 +38,7 @@ handler.post(async (req, res) => {
   if (!user) {
     await db.disconnect()
     return res.status(401).send({
-      message:
-        'The email address ' +
-        email +
-        ' is not associated with any account. Double-check your email address and try again.',
+      message: `The email address ${email} is not associated with any account. Double-check your email address and try again.`,
     })
   }
   const token = await new Promise((res, rej) =>
@@ -63,9 +57,7 @@ handler.post(async (req, res) => {
   await db.disconnect()
 
   const link = 'http://' + req.headers.host + '/user/reset-password/' + token
-  const emailReady = forgotPwEmailTemplate(email, link, user.lastName)
-
-  await sendgrid.send(emailReady)
+  await forgotPwEmailTemplate(email, link, user.lastName)
 
   res.send({
     message: `Email has been sent to ${email}. The reset link is valid in 1 hour.`,
@@ -103,9 +95,7 @@ handler.put(async (req, res) => {
     await user.save()
     await db.disconnect()
 
-    const emailReady = forgotPwEmailSuccessTemplate(user.email, user.lastName)
-
-    await sendgrid.send(emailReady)
+    await forgotPwEmailSuccessTemplate(user.email, user.lastName)
 
     return res.send({
       message: 'Success! You can now login with your new password',

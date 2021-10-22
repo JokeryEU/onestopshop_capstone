@@ -1,6 +1,6 @@
 {
   "name": "onestopshop",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -26,20 +26,20 @@
     "date-fns": "^2.25.0",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.11",
+    "mongoose": "^6.0.12",
     "multer": "^1.4.3",
     "multer-storage-cloudinary": "^4.0.0",
     "next": "11.1.2",
     "next-connect": "^0.11.0",
     "notistack": "^1.0.10",
     "react": "17.0.2",
-    "react-chartjs-2": "^3.1.1",
+    "react-chartjs-2": "^3.2.0",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.15.4",
     "react-material-ui-carousel": "^2.3.5",
-    "react-responsive-carousel": "^3.2.21",
-    "sharp": "^0.29.1",
-    "stripe": "^8.183.0"
+    "react-responsive-carousel": "^3.2.22",
+    "sharp": "^0.29.2",
+    "stripe": "^8.184.0"
   },
   "devDependencies": {
     "eslint": "^8.0.1",
