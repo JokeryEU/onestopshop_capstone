@@ -10,13 +10,14 @@ import Layout from '../components/Layout'
 import useStyles from '../utils/styles'
 import NextLink from 'next/link'
 import axios from 'axios'
-import { useContext } from 'react'
+import { useCallback, useContext } from 'react'
 import { Store } from '../utils/store'
 import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 import { Controller, useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 import { getError } from '../utils/error'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 const RegisterPage = () => {
   const {
@@ -29,6 +30,18 @@ const RegisterPage = () => {
   const { redirect } = router.query
   const { dispatch } = useContext(Store)
   const classes = useStyles()
+  const { executeRecaptcha } = useGoogleReCaptcha()
+
+  const reCaptchaVerifyHandler = useCallback(async () => {
+    if (!executeRecaptcha) {
+      console.log('Execute recaptcha not yet available')
+      return
+    }
+
+    const token = await executeRecaptcha('Place Order')
+    const { data } = await axios.post('api/keys/reCaptcha', { captcha: token })
+    return data
+  }, [])
 
   const submitHandler = async ({
     firstName,
@@ -42,19 +55,22 @@ const RegisterPage = () => {
       return enqueueSnackbar("Passwords don't match!", { variant: 'error' })
     }
     try {
-      const { data } = await axios.post('/api/users/register', {
-        firstName,
-        lastName,
-        email,
-        password,
-      })
+      const verifyCaptcha = await reCaptchaVerifyHandler()
+      if (verifyCaptcha.success) {
+        const { data } = await axios.post('/api/users/register', {
+          firstName,
+          lastName,
+          email,
+          password,
+        })
 
-      dispatch({ type: 'USER_LOGIN', payload: data })
-      Cookies.set('userInfo', JSON.stringify(data), { sameSite: 'lax' })
-      Cookies.set('wishItems', JSON.stringify(data.wishlist), {
-        sameSite: 'lax',
-      })
-      router.push(redirect || '/')
+        dispatch({ type: 'USER_LOGIN', payload: data })
+        Cookies.set('userInfo', JSON.stringify(data), { sameSite: 'lax' })
+        Cookies.set('wishItems', JSON.stringify(data.wishlist), {
+          sameSite: 'lax',
+        })
+        router.push(redirect || '/')
+      }
     } catch (error) {
       enqueueSnackbar(getError(error), { variant: 'error' })
     }

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { Carousel } from 'react-responsive-carousel'
 import NextLink from 'next/link'
@@ -27,6 +27,7 @@ import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { getError } from '../../utils/error'
 import { format, parseISO } from 'date-fns'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 const ProductPage = (props) => {
   const { enqueueSnackbar } = useSnackbar()
@@ -35,7 +36,7 @@ const ProductPage = (props) => {
   const { userInfo } = state
   const { product } = props
   const classes = useStyles()
-
+  const { executeRecaptcha } = useGoogleReCaptcha()
   if (!product) return <div>Product not found</div>
 
   const [reviews, setReviews] = useState([])
@@ -97,24 +98,38 @@ const ProductPage = (props) => {
     }
   }
 
+  const reCaptchaVerifyHandler = useCallback(async () => {
+    if (!executeRecaptcha) {
+      console.log('Execute recaptcha not yet available')
+      return
+    }
+
+    const token = await executeRecaptcha('Place Order')
+    const { data } = await axios.post('api/keys/reCaptcha', { captcha: token })
+    return data
+  }, [])
+
   const submitHandler = async (e) => {
     e.preventDefault()
     setLoading(true)
     try {
-      await axios.post(
-        `/api/products/${product._id}/reviews`,
-        {
-          rating,
-          comment,
-        },
-        {
-          headers: { authorization: `Bearer ${userInfo.accessToken}` },
-        }
-      )
-      setLoading(false)
-      enqueueSnackbar('Review submitted successfully', { variant: 'success' })
+      const verifyCaptcha = await reCaptchaVerifyHandler()
+      if (verifyCaptcha.success) {
+        await axios.post(
+          `/api/products/${product._id}/reviews`,
+          {
+            rating,
+            comment,
+          },
+          {
+            headers: { authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        setLoading(false)
+        enqueueSnackbar('Review submitted successfully', { variant: 'success' })
 
-      fetchReviews()
+        fetchReviews()
+      }
     } catch (error) {
       setLoading(false)
       enqueueSnackbar(getError(error), { variant: 'error' })

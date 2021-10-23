@@ -33,7 +33,7 @@ handler.get(async (req, res) => {
         totalSales: { $sum: '$totalPrice' },
       },
     },
-  ])
+  ]).sort({ _id: 1 })
   await db.disconnect()
   res.send({ ordersCount, productsCount, usersCount, ordersPrice, salesData })
 })

@@ -11,13 +11,14 @@ import Layout from '../components/Layout'
 import useStyles from '../utils/styles'
 import NextLink from 'next/link'
 import axios from 'axios'
-import { useContext } from 'react'
+import { useCallback, useContext } from 'react'
 import { Store } from '../utils/store'
 import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 import { Controller, useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 import { getError } from '../utils/error'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 const LoginPage = () => {
   const {
@@ -29,23 +30,42 @@ const LoginPage = () => {
   const router = useRouter()
   const { redirect } = router.query
   const { dispatch } = useContext(Store)
-
+  const { executeRecaptcha } = useGoogleReCaptcha()
   const classes = useStyles()
+
+  const reCaptchaVerifyHandler = useCallback(async () => {
+    if (!executeRecaptcha) {
+      console.log('Execute recaptcha not yet available')
+      return
+    }
+
+    const token = await executeRecaptcha('Login')
+    const { data } = await axios.post('api/keys/reCaptcha', { captcha: token })
+    return data
+  }, [])
 
   const submitHandler = async ({ email, password }) => {
     closeSnackbar()
     try {
-      const { data } = await axios.post('/api/users/login', { email, password })
+      const verifyCaptcha = await reCaptchaVerifyHandler()
 
-      dispatch({ type: 'USER_LOGIN', payload: data })
-      Cookies.set('userInfo', JSON.stringify(data), { sameSite: 'lax' })
-      dispatch({ type: 'WISH_ADD_ITEM', payload: data.wishlist })
+      if (verifyCaptcha.success) {
+        const { data } = await axios.post('/api/users/login', {
+          email,
+          password,
+        })
 
-      router.push(redirect || '/')
+        dispatch({ type: 'USER_LOGIN', payload: data })
+        Cookies.set('userInfo', JSON.stringify(data), { sameSite: 'lax' })
+        dispatch({ type: 'WISH_ADD_ITEM', payload: data.wishlist })
+
+        router.push(redirect || '/')
+      }
     } catch (error) {
       enqueueSnackbar(getError(error), { variant: 'error' })
     }
   }
+
   return (
     <Layout title="Login">
       <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>

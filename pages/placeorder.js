@@ -15,7 +15,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import Layout from '../components/Layout'
 import { Store } from '../utils/store'
 import NextLink from 'next/link'
@@ -28,6 +28,7 @@ import useStyles from '../utils/styles'
 import CheckoutWizard from '../components/CheckoutWizard'
 import { getError } from '../utils/error'
 import Cookies from 'js-cookie'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 const PlaceOrderPage = () => {
   const classes = useStyles()
@@ -36,6 +37,7 @@ const PlaceOrderPage = () => {
   const [loading, setLoading] = useState(false)
   const [coupon, setCoupon] = useState('')
   const { state, dispatch } = useContext(Store)
+  const { executeRecaptcha } = useGoogleReCaptcha()
   const {
     userInfo,
     cart: { cartItems, shippingAddress, paymentMethod },
@@ -57,32 +59,46 @@ const PlaceOrderPage = () => {
     if (!paymentMethod) return router.push('/payment')
   }, [router, paymentMethod])
 
+  const reCaptchaVerifyHandler = useCallback(async () => {
+    if (!executeRecaptcha) {
+      console.log('Execute recaptcha not yet available')
+      return
+    }
+
+    const token = await executeRecaptcha('Place Order')
+    const { data } = await axios.post('api/keys/reCaptcha', { captcha: token })
+    return data
+  }, [])
+
   const placeOrderHandler = async () => {
     closeSnackbar()
     try {
       setLoading(true)
-      const { data } = await axios.post(
-        '/api/order',
-        {
-          orderItems: cartItems,
-          shippingAddress,
-          paymentMethod,
-          itemsPrice,
-          shippingPrice,
-          taxPrice,
-          totalPrice,
-          netPrice,
-          discountPrice,
-          usedCoupon: couponName,
-        },
-        {
-          headers: { authorization: `Bearer ${userInfo.accessToken}` },
-        }
-      )
-      dispatch({ type: 'CART_CLEAR' })
-      Cookies.remove('cartItems')
-      setLoading(false)
-      router.push(`/order/${data._id}`)
+      const verifyCaptcha = await reCaptchaVerifyHandler()
+      if (verifyCaptcha.success) {
+        const { data } = await axios.post(
+          '/api/order',
+          {
+            orderItems: cartItems,
+            shippingAddress,
+            paymentMethod,
+            itemsPrice,
+            shippingPrice,
+            taxPrice,
+            totalPrice,
+            netPrice,
+            discountPrice,
+            usedCoupon: couponName,
+          },
+          {
+            headers: { authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        dispatch({ type: 'CART_CLEAR' })
+        Cookies.remove('cartItems')
+        setLoading(false)
+        router.push(`/order/${data._id}`)
+      }
     } catch (error) {
       setLoading(false)
       enqueueSnackbar(getError(error), { variant: 'error' })
