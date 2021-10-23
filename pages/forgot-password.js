@@ -11,7 +11,8 @@ import axios from 'axios'
 import { Controller, useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 import { getError } from '../utils/error'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 const ForgotPasswordPage = () => {
   const {
@@ -22,20 +23,35 @@ const ForgotPasswordPage = () => {
   } = useForm()
   const { enqueueSnackbar } = useSnackbar()
   const [success, setSuccess] = useState(false)
-
+  const { executeRecaptcha } = useGoogleReCaptcha()
   const classes = useStyles()
+
+  const reCaptchaVerifyHandler = useCallback(async () => {
+    if (!executeRecaptcha) {
+      console.log('Execute recaptcha not yet available')
+      return
+    }
+
+    const token = await executeRecaptcha('Forgot Password')
+    const { data } = await axios.post('api/keys/reCaptcha', { captcha: token })
+    return data
+  }, [])
 
   const submitHandler = async ({ email }) => {
     try {
-      await axios.post('/api/users/forgot-password', { email })
-      reset({
-        email: '',
-      })
-      setSuccess(true)
+      const verifyCaptcha = await reCaptchaVerifyHandler()
+      if (verifyCaptcha.success) {
+        await axios.post('/api/users/forgot-password', { email })
+        reset({
+          email: '',
+        })
+        setSuccess(true)
+      }
     } catch (error) {
       enqueueSnackbar(getError(error), { variant: 'error' })
     }
   }
+
   return (
     <Layout title="Forgot your password?">
       {success ? (

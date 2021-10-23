@@ -38,7 +38,7 @@ const RegisterPage = () => {
       return
     }
 
-    const token = await executeRecaptcha('Place Order')
+    const token = await executeRecaptcha('Register')
     const { data } = await axios.post('api/keys/reCaptcha', { captcha: token })
     return data
   }, [])

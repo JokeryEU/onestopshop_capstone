@@ -104,7 +104,7 @@ const ProductPage = (props) => {
       return
     }
 
-    const token = await executeRecaptcha('Place Order')
+    const token = await executeRecaptcha('Review')
     const { data } = await axios.post('api/keys/reCaptcha', { captcha: token })
     return data
   }, [])
