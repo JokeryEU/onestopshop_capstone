@@ -58,13 +58,15 @@
 - Search for products by name or category
 - Change theme to dark/light mode
 - Register a new account and needing to verify your email to activate your account
-- Login into your account or if you forgot your password you can reset it
+- Login into your account
 - Buy products with Paypal/Stripe/Cash
 - Use coupon during checkout
 - Add products to your wishlist
 - Check your order history
 - Can cancel your order
 - Change your profile info and password
+- Added forgot password
+- Added reCaptcha v3
 - As admin check the chart for number of sales/orders/users
 - As admin review customer orders and mark them to be delivered, also you can delete them if isnt paid
 - As admin check the number of products and add new products
