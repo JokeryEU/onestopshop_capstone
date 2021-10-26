@@ -55,22 +55,19 @@ const RegisterPage = () => {
       return enqueueSnackbar("Passwords don't match!", { variant: 'error' })
     }
     try {
-      const verifyCaptcha = await reCaptchaVerifyHandler()
-      if (verifyCaptcha.success) {
-        const { data } = await axios.post('/api/users/register', {
-          firstName,
-          lastName,
-          email,
-          password,
-        })
+      const { data } = await axios.post('/api/users/register', {
+        firstName,
+        lastName,
+        email,
+        password,
+      })
 
-        dispatch({ type: 'USER_LOGIN', payload: data })
-        Cookies.set('userInfo', JSON.stringify(data), { sameSite: 'lax' })
-        Cookies.set('wishItems', JSON.stringify(data.wishlist), {
-          sameSite: 'lax',
-        })
-        router.push(redirect || '/')
-      }
+      dispatch({ type: 'USER_LOGIN', payload: data })
+      Cookies.set('userInfo', JSON.stringify(data), { sameSite: 'lax' })
+      Cookies.set('wishItems', JSON.stringify(data.wishlist), {
+        sameSite: 'lax',
+      })
+      router.push(redirect || '/')
     } catch (error) {
       enqueueSnackbar(getError(error), { variant: 'error' })
     }

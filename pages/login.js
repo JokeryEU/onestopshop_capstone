@@ -47,20 +47,18 @@ const LoginPage = () => {
   const submitHandler = async ({ email, password }) => {
     closeSnackbar()
     try {
-      const verifyCaptcha = await reCaptchaVerifyHandler()
+      // const verifyCaptcha = await reCaptchaVerifyHandler()
 
-      if (verifyCaptcha.success) {
-        const { data } = await axios.post('/api/users/login', {
-          email,
-          password,
-        })
+      const { data } = await axios.post('/api/users/login', {
+        email,
+        password,
+      })
 
-        dispatch({ type: 'USER_LOGIN', payload: data })
-        Cookies.set('userInfo', JSON.stringify(data), { sameSite: 'lax' })
-        dispatch({ type: 'WISH_ADD_ITEM', payload: data.wishlist })
+      dispatch({ type: 'USER_LOGIN', payload: data })
+      Cookies.set('userInfo', JSON.stringify(data), { sameSite: 'lax' })
+      dispatch({ type: 'WISH_ADD_ITEM', payload: data.wishlist })
 
-        router.push(redirect || '/')
-      }
+      router.push(redirect || '/')
     } catch (error) {
       enqueueSnackbar(getError(error), { variant: 'error' })
     }

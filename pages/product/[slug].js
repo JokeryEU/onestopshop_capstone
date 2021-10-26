@@ -113,23 +113,20 @@ const ProductPage = (props) => {
     e.preventDefault()
     setLoading(true)
     try {
-      const verifyCaptcha = await reCaptchaVerifyHandler()
-      if (verifyCaptcha.success) {
-        await axios.post(
-          `/api/products/${product._id}/reviews`,
-          {
-            rating,
-            comment,
-          },
-          {
-            headers: { authorization: `Bearer ${userInfo.accessToken}` },
-          }
-        )
-        setLoading(false)
-        enqueueSnackbar('Review submitted successfully', { variant: 'success' })
+      await axios.post(
+        `/api/products/${product._id}/reviews`,
+        {
+          rating,
+          comment,
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo.accessToken}` },
+        }
+      )
+      setLoading(false)
+      enqueueSnackbar('Review submitted successfully', { variant: 'success' })
 
-        fetchReviews()
-      }
+      fetchReviews()
     } catch (error) {
       setLoading(false)
       enqueueSnackbar(getError(error), { variant: 'error' })

@@ -66,7 +66,9 @@ const PlaceOrderPage = () => {
     }
 
     const token = await executeRecaptcha('Place Order')
+    console.log(token)
     const { data } = await axios.post('api/keys/reCaptcha', { captcha: token })
+    console.log(data)
     return data
   }, [])
 
@@ -74,31 +76,29 @@ const PlaceOrderPage = () => {
     closeSnackbar()
     try {
       setLoading(true)
-      const verifyCaptcha = await reCaptchaVerifyHandler()
-      if (verifyCaptcha.success) {
-        const { data } = await axios.post(
-          '/api/order',
-          {
-            orderItems: cartItems,
-            shippingAddress,
-            paymentMethod,
-            itemsPrice,
-            shippingPrice,
-            taxPrice,
-            totalPrice,
-            netPrice,
-            discountPrice,
-            usedCoupon: couponName,
-          },
-          {
-            headers: { authorization: `Bearer ${userInfo.accessToken}` },
-          }
-        )
-        dispatch({ type: 'CART_CLEAR' })
-        Cookies.remove('cartItems')
-        setLoading(false)
-        router.push(`/order/${data._id}`)
-      }
+
+      const { data } = await axios.post(
+        '/api/order',
+        {
+          orderItems: cartItems,
+          shippingAddress,
+          paymentMethod,
+          itemsPrice,
+          shippingPrice,
+          taxPrice,
+          totalPrice,
+          netPrice,
+          discountPrice,
+          usedCoupon: couponName,
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo.accessToken}` },
+        }
+      )
+      dispatch({ type: 'CART_CLEAR' })
+      Cookies.remove('cartItems')
+      setLoading(false)
+      router.push(`/order/${data._id}`)
     } catch (error) {
       setLoading(false)
       enqueueSnackbar(getError(error), { variant: 'error' })

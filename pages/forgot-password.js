@@ -39,14 +39,11 @@ const ForgotPasswordPage = () => {
 
   const submitHandler = async ({ email }) => {
     try {
-      const verifyCaptcha = await reCaptchaVerifyHandler()
-      if (verifyCaptcha.success) {
-        await axios.post('/api/users/forgot-password', { email })
-        reset({
-          email: '',
-        })
-        setSuccess(true)
-      }
+      await axios.post('/api/users/forgot-password', { email })
+      reset({
+        email: '',
+      })
+      setSuccess(true)
     } catch (error) {
       enqueueSnackbar(getError(error), { variant: 'error' })
     }

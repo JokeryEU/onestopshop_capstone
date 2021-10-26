@@ -1,7 +1,7 @@
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { SnackbarProvider } from 'notistack'
 import { useEffect } from 'react'
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
+// import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 import { StoreProvider } from '../utils/store'
 import Script from 'next/script'
 
@@ -35,13 +35,13 @@ const MyApp = ({ Component, pageProps }) => {
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <StoreProvider>
-          <GoogleReCaptchaProvider
+          {/* <GoogleReCaptchaProvider
             reCaptchaKey={process.env.RECAPTCHA_SITE_KEY}
-          >
-            <PayPalScriptProvider deferLoading={true}>
-              <Component {...pageProps} />
-            </PayPalScriptProvider>
-          </GoogleReCaptchaProvider>
+          > */}
+          <PayPalScriptProvider deferLoading={true}>
+            <Component {...pageProps} />
+          </PayPalScriptProvider>
+          {/* </GoogleReCaptchaProvider> */}
         </StoreProvider>
       </SnackbarProvider>
     </>
