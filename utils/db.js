@@ -22,7 +22,7 @@ async function connect() {
 
 async function disconnect() {
   if (connection.isConnected) {
-    if (process.env.MONGODB_ADDRESS === 'production') {
+    if (process.env.NODE_ENV === 'production') {
       await mongoose.disconnect()
       connection.isConnected = false
     }
