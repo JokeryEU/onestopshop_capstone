@@ -177,12 +177,8 @@ const ProductPage = ({ product }) => {
         </NextLink>
       </Box>
       <Grid container spacing={1}>
-        <Grid item md={6} xs={12}>
-          <Carousel
-            infiniteLoop
-            showStatus={false}
-            sx={classes.productCarousel}
-          >
+        <Grid item md={6} xs={12} sx={classes.productCarousel}>
+          <Carousel infiniteLoop showStatus={false}>
             {product.image.map((img, index) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img key={index} src={img} alt={product.name} />
