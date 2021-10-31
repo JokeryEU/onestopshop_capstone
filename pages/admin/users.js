@@ -17,13 +17,13 @@ import {
   TableCell,
   TableBody,
   IconButton,
-} from '@material-ui/core'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import EditIcon from '@material-ui/icons/Edit'
+} from '@mui/material'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import EditIcon from '@mui/icons-material/Edit'
 import { getError } from '../../utils/error'
 import { Store } from '../../utils/store'
 import Layout from '../../components/Layout'
-import useStyles from '../../utils/styles'
+import classes from '../../utils/classes'
 import { useSnackbar } from 'notistack'
 
 function reducer(state, action) {
@@ -50,8 +50,6 @@ function reducer(state, action) {
 
 const AdminUsersPage = () => {
   const { state } = useContext(Store)
-
-  const classes = useStyles()
   const { userInfo } = state
 
   const [{ loading, error, users, successDelete, loadingDelete }, dispatch] =
@@ -102,7 +100,7 @@ const AdminUsersPage = () => {
     <Layout title="Admin Users">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <NextLink href="/admin/dashboard" passHref>
                 <ListItem button component="a">
@@ -119,6 +117,11 @@ const AdminUsersPage = () => {
                   <ListItemText primary="Products" />
                 </ListItem>
               </NextLink>
+              <NextLink href="/admin/coupons" passHref>
+                <ListItem button component="a">
+                  <ListItemText primary="Coupons" />
+                </ListItem>
+              </NextLink>
               <NextLink href="/admin/users" passHref>
                 <ListItem selected button component="a">
                   <ListItemText primary="Users" />
@@ -128,7 +131,7 @@ const AdminUsersPage = () => {
           </Card>
         </Grid>
         <Grid item md={9} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
@@ -141,7 +144,7 @@ const AdminUsersPage = () => {
                 {loading ? (
                   <CircularProgress />
                 ) : error ? (
-                  <Typography className={classes.error}>{error}</Typography>
+                  <Typography sx={classes.error}>{error}</Typography>
                 ) : (
                   <TableContainer>
                     <Table>

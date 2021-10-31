@@ -13,7 +13,7 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import axios from 'axios'
 import NextLink from 'next/link'
 import dynamic from 'next/dynamic'
@@ -21,7 +21,7 @@ import { useContext, useEffect, useReducer } from 'react'
 import Layout from '../components/Layout'
 import { getError } from '../utils/error'
 import { Store } from '../utils/store'
-import useStyles from '../utils/styles'
+import classes from '../utils/classes'
 import { format, parseISO } from 'date-fns'
 
 function reducer(state, action) {
@@ -41,7 +41,6 @@ function reducer(state, action) {
 const OrderHistoryPage = () => {
   const { state } = useContext(Store)
   const { userInfo } = state
-  const classes = useStyles()
 
   const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -68,7 +67,7 @@ const OrderHistoryPage = () => {
     <Layout title={'Order History'}>
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <NextLink href="/profile" passHref>
                 <ListItem button component="a">
@@ -84,7 +83,7 @@ const OrderHistoryPage = () => {
           </Card>
         </Grid>
         <Grid item md={9} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <ListItem>
                 <Typography component="h1" variant="1">
@@ -95,7 +94,7 @@ const OrderHistoryPage = () => {
                 {loading ? (
                   <CircularProgress />
                 ) : error ? (
-                  <Typography className={classes.error}>{error}</Typography>
+                  <Typography sx={classes.error}>{error}</Typography>
                 ) : (
                   <TableContainer>
                     <Table>

@@ -13,7 +13,7 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import { format, parseISO } from 'date-fns'
 import { useContext, useEffect, useReducer } from 'react'
 import Layout from '../../components/Layout'
@@ -23,7 +23,7 @@ import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import axios from 'axios'
 import { useSnackbar } from 'notistack'
-import useStyles from '../../utils/styles'
+import classes from '../../utils/classes'
 import { getError } from '../../utils/error'
 import PaypalButton from '../../components/PaypalButton'
 import StripeContainer from '../../components/StripeContainer'
@@ -77,7 +77,6 @@ function reducer(state, action) {
 
 const OrderPage = ({ params }) => {
   const orderId = params.id
-  const classes = useStyles()
   const { enqueueSnackbar } = useSnackbar()
   const { state } = useContext(Store)
   const { userInfo } = state
@@ -218,11 +217,11 @@ const OrderPage = ({ params }) => {
       {loading ? (
         <CircularProgress />
       ) : error ? (
-        <Typography className={classes.error}>{error}</Typography>
+        <Typography sx={classes.error}>{error}</Typography>
       ) : (
         <Grid container spacing={1}>
           <Grid item md={9} xs={12}>
-            <Card className={classes.section}>
+            <Card sx={classes.section}>
               <List>
                 <ListItem>
                   <Typography component="h2" variant="h2">
@@ -257,7 +256,7 @@ const OrderPage = ({ params }) => {
                 </ListItem>
               </List>
             </Card>
-            <Card className={classes.section}>
+            <Card sx={classes.section}>
               <List>
                 <ListItem>
                   <Typography component="h2" variant="h2">
@@ -278,7 +277,7 @@ const OrderPage = ({ params }) => {
                 </ListItem>
               </List>
             </Card>
-            <Card className={classes.section}>
+            <Card sx={classes.section}>
               <List>
                 <ListItem>
                   <Typography component="h2" variant="h2">
@@ -334,7 +333,7 @@ const OrderPage = ({ params }) => {
             </Card>
           </Grid>
           <Grid item md={3} xs={12}>
-            <Card className={classes.section}>
+            <Card sx={classes.section}>
               <List>
                 <ListItem>
                   <Typography variant="h2">Order Summary</Typography>
@@ -444,7 +443,7 @@ const OrderPage = ({ params }) => {
                         {loadingPay && (
                           <CircularProgress
                             size={25}
-                            className={classes.buttonProgress}
+                            sx={classes.buttonProgress}
                           />
                         )}
                       </Button>
@@ -471,7 +470,7 @@ const OrderPage = ({ params }) => {
                       {loadingCancel && (
                         <CircularProgress
                           size={25}
-                          className={classes.buttonProgress}
+                          sx={classes.buttonProgress}
                         />
                       )}
                     </Button>
@@ -493,7 +492,7 @@ const OrderPage = ({ params }) => {
                         {loadingDeliver && (
                           <CircularProgress
                             size={25}
-                            className={classes.buttonProgress}
+                            sx={classes.buttonProgress}
                           />
                         )}
                       </Button>

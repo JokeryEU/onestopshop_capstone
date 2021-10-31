@@ -15,12 +15,13 @@ import {
   CircularProgress,
   Checkbox,
   FormControlLabel,
-} from '@material-ui/core'
+} from '@mui/material'
 import { getError } from '../../../utils/error'
 import { Store } from '../../../utils/store'
 import Layout from '../../../components/Layout'
-import useStyles from '../../../utils/styles'
+import classes from '../../../utils/classes'
 import { Controller, useForm } from 'react-hook-form'
+import Form from '../../../components/Form'
 import { useSnackbar } from 'notistack'
 
 function reducer(state, action) {
@@ -56,6 +57,7 @@ function reducer(state, action) {
 const AdminUserEditPage = ({ params }) => {
   const userId = params.id
   const { state } = useContext(Store)
+  const { userInfo } = state
   const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
@@ -69,8 +71,6 @@ const AdminUserEditPage = ({ params }) => {
   const [role, setRole] = useState('')
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const router = useRouter()
-  const classes = useStyles()
-  const { userInfo } = state
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,7 +118,7 @@ const AdminUserEditPage = ({ params }) => {
     <Layout title={`Admin Edit User ${userId}`}>
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <NextLink href="/admin/dashboard" passHref>
                 <ListItem button component="a">
@@ -149,7 +149,7 @@ const AdminUserEditPage = ({ params }) => {
           </Card>
         </Grid>
         <Grid item md={9} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
@@ -158,15 +158,10 @@ const AdminUserEditPage = ({ params }) => {
               </ListItem>
               <ListItem>
                 {loading && <CircularProgress></CircularProgress>}
-                {error && (
-                  <Typography className={classes.error}>{error}</Typography>
-                )}
+                {error && <Typography sx={classes.error}>{error}</Typography>}
               </ListItem>
               <ListItem>
-                <form
-                  onSubmit={handleSubmit(submitHandler)}
-                  className={classes.form}
-                >
+                <Form onSubmit={handleSubmit(submitHandler)}>
                   <List>
                     <ListItem>
                       <Controller
@@ -283,7 +278,7 @@ const AdminUserEditPage = ({ params }) => {
                         {loadingUpdate && (
                           <CircularProgress
                             size={25}
-                            className={classes.buttonProgress}
+                            sx={classes.buttonProgress}
                           />
                         )}
                       </Button>
@@ -296,7 +291,7 @@ const AdminUserEditPage = ({ params }) => {
                       </NextLink>
                     </ListItem>
                   </List>
-                </form>
+                </Form>
               </ListItem>
             </List>
           </Card>

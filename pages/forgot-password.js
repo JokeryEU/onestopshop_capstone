@@ -1,18 +1,12 @@
-import {
-  Button,
-  List,
-  ListItem,
-  TextField,
-  Typography,
-} from '@material-ui/core'
+import { Button, List, ListItem, TextField, Typography } from '@mui/material'
 import Layout from '../components/Layout'
-import useStyles from '../utils/styles'
+import classes from '../utils/classes'
 import axios from 'axios'
+import Form from '../components/Form'
 import { Controller, useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 import { getError } from '../utils/error'
-import { useCallback, useState } from 'react'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { useState } from 'react'
 
 const ForgotPasswordPage = () => {
   const {
@@ -23,19 +17,8 @@ const ForgotPasswordPage = () => {
   } = useForm()
   const { enqueueSnackbar } = useSnackbar()
   const [success, setSuccess] = useState(false)
-  const { executeRecaptcha } = useGoogleReCaptcha()
-  const classes = useStyles()
 
-  const reCaptchaVerifyHandler = useCallback(async () => {
-    if (!executeRecaptcha) {
-      console.log('Execute recaptcha not yet available')
-      return
-    }
-
-    const token = await executeRecaptcha('Forgot Password')
-    const { data } = await axios.post('api/keys/reCaptcha', { captcha: token })
-    return data
-  }, [])
+  //
 
   const submitHandler = async ({ email }) => {
     try {
@@ -52,7 +35,7 @@ const ForgotPasswordPage = () => {
   return (
     <Layout title="Forgot your password?">
       {success ? (
-        <List className={classes.form}>
+        <List sx={classes.form}>
           <Typography component="h1" variant="h1">
             Reset password
           </Typography>
@@ -65,13 +48,13 @@ const ForgotPasswordPage = () => {
           </ListItem>
           <ListItem>
             <Typography variant="h2" align="justify">
-              If you don't see the email in your inbox, check other places it
-              might be, like your junk, spam, or other folders.
+              If you don&apos;t see the email in your inbox, check other places
+              it might be, like your junk, spam, or other folders.
             </Typography>
           </ListItem>
         </List>
       ) : (
-        <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
+        <Form onSubmit={handleSubmit(submitHandler)}>
           <Typography component="h1" variant="h1">
             Reset password
           </Typography>
@@ -125,7 +108,7 @@ const ForgotPasswordPage = () => {
               </Button>
             </ListItem>
           </List>
-        </form>
+        </Form>
       )}
     </Layout>
   )

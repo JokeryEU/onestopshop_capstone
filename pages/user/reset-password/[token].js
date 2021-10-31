@@ -1,17 +1,11 @@
-import {
-  Button,
-  List,
-  ListItem,
-  TextField,
-  Typography,
-} from '@material-ui/core'
+import { Button, List, ListItem, TextField, Typography } from '@mui/material'
 import Layout from '../../../components/Layout'
-import useStyles from '../../../utils/styles'
 import axios from 'axios'
 import { Controller, useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 import { getError } from '../../../utils/error'
 import { useRouter } from 'next/router'
+import Form from '../../../components/Form'
 
 const ResetPasswordPage = ({ params }) => {
   const token = params.token
@@ -19,12 +13,9 @@ const ResetPasswordPage = ({ params }) => {
   const {
     handleSubmit,
     control,
-    reset,
     formState: { errors },
   } = useForm()
   const { enqueueSnackbar } = useSnackbar()
-
-  const classes = useStyles()
 
   const submitHandler = async ({ password, confirmPassword }) => {
     if (password !== confirmPassword) {
@@ -44,7 +35,7 @@ const ResetPasswordPage = ({ params }) => {
   }
   return (
     <Layout title="Change your password">
-      <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
+      <Form onSubmit={handleSubmit(submitHandler)}>
         <Typography component="h1" variant="h1">
           New password
         </Typography>
@@ -114,7 +105,7 @@ const ResetPasswordPage = ({ params }) => {
             </Button>
           </ListItem>
         </List>
-      </form>
+      </Form>
     </Layout>
   )
 }

@@ -5,19 +5,18 @@ import {
   ListItem,
   TextField,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import Layout from '../components/Layout'
-import useStyles from '../utils/styles'
 import NextLink from 'next/link'
 import axios from 'axios'
-import { useCallback, useContext } from 'react'
+import { useContext } from 'react'
 import { Store } from '../utils/store'
 import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 import { Controller, useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 import { getError } from '../utils/error'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import Form from '../components/Form'
 
 const RegisterPage = () => {
   const {
@@ -29,19 +28,6 @@ const RegisterPage = () => {
   const router = useRouter()
   const { redirect } = router.query
   const { dispatch } = useContext(Store)
-  const classes = useStyles()
-  const { executeRecaptcha } = useGoogleReCaptcha()
-
-  const reCaptchaVerifyHandler = useCallback(async () => {
-    if (!executeRecaptcha) {
-      console.log('Execute recaptcha not yet available')
-      return
-    }
-
-    const token = await executeRecaptcha('Register')
-    const { data } = await axios.post('api/keys/reCaptcha', { captcha: token })
-    return data
-  }, [])
 
   const submitHandler = async ({
     firstName,
@@ -74,7 +60,7 @@ const RegisterPage = () => {
   }
   return (
     <Layout title="Register">
-      <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
+      <Form onSubmit={handleSubmit(submitHandler)}>
         <Typography component="h1" variant="h1">
           Register
         </Typography>
@@ -235,7 +221,7 @@ const RegisterPage = () => {
             </NextLink>
           </ListItem>
         </List>
-      </form>
+      </Form>
     </Layout>
   )
 }

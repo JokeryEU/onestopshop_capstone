@@ -1,5 +1,6 @@
 import {
   Button,
+  Box,
   Card,
   Grid,
   Link,
@@ -14,7 +15,7 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useContext } from 'react'
 import Layout from '../components/Layout'
 import { Store } from '../utils/store'
@@ -26,12 +27,13 @@ import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 
 const CartPage = () => {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const router = useRouter()
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const { state, dispatch } = useContext(Store)
   const {
     cart: { cartItems },
   } = state
+
   const updateCartHandler = async (item, quantity) => {
     closeSnackbar()
     const { data } = await axios.get(`/api/products/${item._id}`)
@@ -54,12 +56,12 @@ const CartPage = () => {
         Shopping Cart
       </Typography>
       {cartItems.length === 0 ? (
-        <div>
+        <Box>
           Cart is empty{' '}
           <NextLink href="/" passHref>
             <Link>Go shopping</Link>
           </NextLink>
-        </div>
+        </Box>
       ) : (
         <Grid container spacing={1}>
           <Grid item md={9} xs={12}>

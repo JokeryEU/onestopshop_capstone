@@ -1,12 +1,10 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import {
   AppBar,
   Avatar,
   Badge,
   Box,
   Container,
-  createTheme,
-  CssBaseline,
   Divider,
   Drawer,
   IconButton,
@@ -18,22 +16,25 @@ import {
   Menu,
   MenuItem,
   Switch,
-  ThemeProvider,
   Toolbar,
   Tooltip,
   Typography,
-} from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
-import CancelIcon from '@material-ui/icons/Cancel'
-import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded'
-import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import SearchIcon from '@material-ui/icons/Search'
+  CssBaseline,
+  ThemeProvider,
+  useMediaQuery,
+} from '@mui/material'
+import { createTheme } from '@mui/material/styles'
+import MenuIcon from '@mui/icons-material/Menu'
+import CancelIcon from '@mui/icons-material/Cancel'
+import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded'
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import SearchIcon from '@mui/icons-material/Search'
 import { getError } from '../utils/error'
 import Head from 'next/head'
-import useStyles from '../utils/styles'
+import classes from '../utils/classes'
 import NextLink from 'next/link'
 import { Store } from '../utils/store'
 import Cookies from 'js-cookie'
@@ -41,7 +42,6 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { useSnackbar } from 'notistack'
 import axios from 'axios'
-import { useEffect } from 'react'
 
 const Layout = ({ description, title, children }) => {
   const router = useRouter()
@@ -54,20 +54,27 @@ const Layout = ({ description, title, children }) => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const theme = createTheme({
+    components: {
+      MuiLink: {
+        defaultProps: {
+          underline: 'hover',
+        },
+      },
+    },
     typography: {
       h1: {
         fontSize: '1.6rem',
-        fontWeight: '400',
+        fontWeight: 400,
         margin: '1rem 0',
       },
       h2: {
         fontSize: '1.4rem',
-        fontWeight: '400',
+        fontWeight: 400,
         margin: '1rem 0',
       },
     },
     palette: {
-      type: darkMode ? 'dark' : 'light',
+      mode: darkMode ? 'dark' : 'light',
       primary: {
         main: '#f0c000',
       },
@@ -76,7 +83,6 @@ const Layout = ({ description, title, children }) => {
       },
     },
   })
-  const classes = useStyles()
 
   const sidebarOpenHandler = () => {
     setSidebarVisible(true)
@@ -143,6 +149,9 @@ const Layout = ({ description, title, children }) => {
     Cookies.remove('wishItems')
     router.push('/')
   }
+
+  const isDesktop = useMediaQuery('(min-width:600px)')
+
   return (
     <>
       <Head>
@@ -153,20 +162,25 @@ const Layout = ({ description, title, children }) => {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AppBar position="static" className={classes.navbar}>
-          <Toolbar className={classes.toolbar}>
+        <AppBar position="static" sx={classes.appbar}>
+          <Toolbar sx={classes.toolbar}>
             <Box display="flex" alignItems="center">
               <IconButton
                 edge="start"
                 aria-label="open drawer"
                 onClick={sidebarOpenHandler}
-                className={classes.menuButton}
+                sx={classes.menuButton}
               >
-                <MenuIcon className={classes.navbarButton} />
+                <MenuIcon sx={classes.navbarButton} />
               </IconButton>
               <NextLink href="/" passHref>
                 <Link>
-                  <Typography className={classes.brand}>OneStopShop</Typography>
+                  <Typography
+                    sx={classes.brand}
+                    style={{ fontWeight: 'bold', fontSize: '1.5rem' }}
+                  >
+                    OneStopShop
+                  </Typography>
                 </Link>
               </NextLink>
             </Box>
@@ -205,24 +219,26 @@ const Layout = ({ description, title, children }) => {
                 ))}
               </List>
             </Drawer>
-            <div className={classes.searchSection}>
-              <form onSubmit={submitHandler} className={classes.searchForm}>
-                <InputBase
-                  name="query"
-                  className={classes.searchInput}
-                  placeholder="Search products"
-                  onChange={queryChangeHandler}
-                />
-                <IconButton
-                  type="submit"
-                  className={classes.iconButton}
-                  aria-label="search"
-                >
-                  <SearchIcon />
-                </IconButton>
+            <Box sx={isDesktop ? classes.visible : classes.hidden}>
+              <form onSubmit={submitHandler}>
+                <Box sx={classes.searchForm}>
+                  <InputBase
+                    name="query"
+                    sx={classes.searchInput}
+                    placeholder="Search products"
+                    onChange={queryChangeHandler}
+                  />
+                  <IconButton
+                    type="submit"
+                    sx={classes.searchButton}
+                    aria-label="search"
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </Box>
               </form>
-            </div>
-            <div>
+            </Box>
+            <Box>
               <Switch
                 checked={darkMode}
                 onChange={darkModeChangeHandler}
@@ -328,17 +344,17 @@ const Layout = ({ description, title, children }) => {
                   </Tooltip>
                 </NextLink>
               )}
-            </div>
+            </Box>
           </Toolbar>
         </AppBar>
-        <Container maxWidth="xl" className={classes.main}>
+        <Container component="main" maxWidth="xl" sx={classes.main}>
           {children}
         </Container>
-        <footer className={classes.footer}>
+        <Box component="footer" sx={classes.footer}>
           <Typography>
             All rights reserved. Copyright &copy; OneStopShop
           </Typography>
-        </footer>
+        </Box>
       </ThemeProvider>
     </>
   )

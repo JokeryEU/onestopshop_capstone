@@ -19,13 +19,13 @@ import {
   TableCell,
   TableBody,
   IconButton,
-} from '@material-ui/core'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import EditIcon from '@material-ui/icons/Edit'
+} from '@mui/material'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import EditIcon from '@mui/icons-material/Edit'
 import { getError } from '../../utils/error'
 import { Store } from '../../utils/store'
 import Layout from '../../components/Layout'
-import useStyles from '../../utils/styles'
+import classes from '../../utils/classes'
 import { useSnackbar } from 'notistack'
 
 function reducer(state, action) {
@@ -56,9 +56,8 @@ function reducer(state, action) {
 }
 
 const AdminProductsPage = () => {
-  const { state } = useContext(Store)
   const router = useRouter()
-  const classes = useStyles()
+  const { state } = useContext(Store)
   const { userInfo } = state
 
   const [
@@ -133,7 +132,7 @@ const AdminProductsPage = () => {
     <Layout title="Admin Products">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <NextLink href="/admin/dashboard" passHref>
                 <ListItem button component="a">
@@ -164,7 +163,7 @@ const AdminProductsPage = () => {
           </Card>
         </Grid>
         <Grid item md={9} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <ListItem>
                 <Grid container alignItems="center">
@@ -185,7 +184,7 @@ const AdminProductsPage = () => {
                       {loadingCreate && (
                         <CircularProgress
                           size={25}
-                          className={classes.buttonProgress}
+                          sx={classes.buttonProgress}
                         />
                       )}
                     </Button>
@@ -197,7 +196,7 @@ const AdminProductsPage = () => {
                 {loading ? (
                   <CircularProgress size={52} />
                 ) : error ? (
-                  <Typography className={classes.error}>{error}</Typography>
+                  <Typography sx={classes.error}>{error}</Typography>
                 ) : (
                   <TableContainer>
                     <Table>

@@ -19,15 +19,15 @@ import {
   IconButton,
   Button,
   InputBase,
-} from '@material-ui/core'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import EditIcon from '@material-ui/icons/Edit'
-import HighlightOffIcon from '@material-ui/icons/HighlightOff'
-import SearchIcon from '@material-ui/icons/Search'
+} from '@mui/material'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import EditIcon from '@mui/icons-material/Edit'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import SearchIcon from '@mui/icons-material/Search'
 import { getError } from '../../../utils/error'
 import { Store } from '../../../utils/store'
 import Layout from '../../../components/Layout'
-import useStyles from '../../../utils/styles'
+import classes from '../../../utils/classes'
 import { useSnackbar } from 'notistack'
 import { useRouter } from 'next/router'
 import { format, parseISO } from 'date-fns'
@@ -69,8 +69,6 @@ function reducer(state, action) {
 }
 
 const AdminCouponsPage = () => {
-  const classes = useStyles()
-
   const [
     { loading, error, coupons, successDelete, loadingCreate, loadingDelete },
     dispatch,
@@ -156,7 +154,7 @@ const AdminCouponsPage = () => {
     <Layout title="Admin Coupons">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <NextLink href="/admin/dashboard" passHref>
                 <ListItem button component="a">
@@ -187,7 +185,7 @@ const AdminCouponsPage = () => {
           </Card>
         </Grid>
         <Grid item md={9} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <ListItem>
                 <Grid container alignItems="center">
@@ -227,7 +225,7 @@ const AdminCouponsPage = () => {
                       {loadingCreate && (
                         <CircularProgress
                           size={25}
-                          className={classes.buttonProgress}
+                          sx={classes.buttonProgress}
                         />
                       )}
                     </Button>
@@ -239,7 +237,7 @@ const AdminCouponsPage = () => {
                 {loading ? (
                   <CircularProgress />
                 ) : error ? (
-                  <Typography className={classes.error}>{error}</Typography>
+                  <Typography sx={classes.error}>{error}</Typography>
                 ) : (
                   <TableContainer>
                     <Table>

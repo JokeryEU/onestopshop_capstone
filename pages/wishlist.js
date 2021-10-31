@@ -13,8 +13,8 @@ import {
   TableBody,
   Grid,
   Link,
-} from '@material-ui/core'
-import AddCircleOutlineSharpIcon from '@material-ui/icons/AddCircleOutlineSharp'
+} from '@mui/material'
+import AddCircleOutlineSharpIcon from '@mui/icons-material/AddCircleOutlineSharp'
 import Layout from '../components/Layout'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -23,11 +23,11 @@ import { getError } from '../utils/error'
 import axios from 'axios'
 
 const WishListPage = () => {
+  const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const { userInfo } = state
   const { wishItems } = state.wish
   const { enqueueSnackbar } = useSnackbar()
-  const router = useRouter()
 
   const removeFromWishHandler = async (wishItem) => {
     try {
@@ -115,7 +115,7 @@ const WishListPage = () => {
                         <Link>
                           <Image
                             height="100"
-                            width="100"
+                            width="150"
                             alt={wishItem.name}
                             src={wishItem.image[0]}
                             layout="responsive"

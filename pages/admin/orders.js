@@ -16,11 +16,11 @@ import {
   TableRow,
   TableCell,
   TableBody,
-} from '@material-ui/core'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+} from '@mui/material'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { getError } from '../../utils/error'
 import Layout from '../../components/Layout'
-import useStyles from '../../utils/styles'
+import classes from '../../utils/classes'
 import { format, parseISO } from 'date-fns'
 import { useContext, useEffect, useReducer } from 'react'
 import { Store } from '../../utils/store'
@@ -55,7 +55,6 @@ function reducer(state, action) {
 const AdminOrdersPage = () => {
   const { state } = useContext(Store)
   const { enqueueSnackbar } = useSnackbar()
-  const classes = useStyles()
   const { userInfo } = state
 
   const [{ loading, error, orders, loadingDelete, successDelete }, dispatch] =
@@ -105,7 +104,7 @@ const AdminOrdersPage = () => {
     <Layout title="Admin Order History">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <NextLink href="/admin/dashboard" passHref>
                 <ListItem button component="a">
@@ -136,7 +135,7 @@ const AdminOrdersPage = () => {
           </Card>
         </Grid>
         <Grid item md={9} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
@@ -148,7 +147,7 @@ const AdminOrdersPage = () => {
                 {loading ? (
                   <CircularProgress size={52} />
                 ) : error ? (
-                  <Typography className={classes.error}>{error}</Typography>
+                  <Typography sx={classes.error}>{error}</Typography>
                 ) : (
                   <TableContainer>
                     <Table>
@@ -206,7 +205,7 @@ const AdminOrdersPage = () => {
                                 {loadingDelete && (
                                   <CircularProgress
                                     size={25}
-                                    className={classes.buttonProgress}
+                                    sx={classes.buttonProgress}
                                   />
                                 )}
                               </Button>

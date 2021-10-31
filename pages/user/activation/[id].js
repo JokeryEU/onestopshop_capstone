@@ -4,9 +4,9 @@ import {
   List,
   ListItem,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import Layout from '../../../components/Layout'
-import useStyles from '../../..//utils/styles'
+import classes from '../../../utils/classes'
 import axios from 'axios'
 import { useSnackbar } from 'notistack'
 import { getError } from '../../../utils/error'
@@ -16,7 +16,6 @@ import { useEffect, useState } from 'react'
 const AccountActivationPage = ({ params }) => {
   const id = params.id
   const { enqueueSnackbar } = useSnackbar()
-  const classes = useStyles()
 
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -34,11 +33,11 @@ const AccountActivationPage = ({ params }) => {
       }
     }
     activateAcc()
-  }, [])
+  }, [id])
 
   return (
     <Layout title="Account Activation">
-      <List className={classes.form}>
+      <List sx={classes.form}>
         <Typography component="h1" variant="h1">
           Account Activation
         </Typography>

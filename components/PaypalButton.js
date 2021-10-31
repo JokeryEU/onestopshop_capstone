@@ -1,14 +1,14 @@
-import { CircularProgress, ListItem } from '@material-ui/core'
+import { CircularProgress, ListItem, Box } from '@mui/material'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 import axios from 'axios'
 import { useSnackbar } from 'notistack'
 import { useEffect } from 'react'
 import { getError } from '../utils/error'
-import useStyles from '../utils/styles'
+import classes from '../utils/classes'
 
 const PaypalButton = ({ userInfo, order, dispatch }) => {
   const { enqueueSnackbar } = useSnackbar()
-  const classes = useStyles()
+
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer()
 
   useEffect(() => {
@@ -65,15 +65,15 @@ const PaypalButton = ({ userInfo, order, dispatch }) => {
   return (
     <ListItem>
       {isPending ? (
-        <CircularProgress size={25} className={classes.buttonProgress} />
+        <CircularProgress size={25} sx={classes.buttonProgress} />
       ) : (
-        <div className={classes.fullWidth}>
+        <Box sx={classes.fullWidth}>
           <PayPalButtons
             createOrder={createOrder}
             onApprove={onApprove}
             onError={onError}
           />
-        </div>
+        </Box>
       )}
     </ListItem>
   )

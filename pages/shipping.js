@@ -1,20 +1,15 @@
-import {
-  Button,
-  List,
-  ListItem,
-  TextField,
-  Typography,
-} from '@material-ui/core'
+import { Button, List, ListItem, TextField, Typography } from '@mui/material'
 import Layout from '../components/Layout'
-import useStyles from '../utils/styles'
 import { useContext, useEffect } from 'react'
 import { Store } from '../utils/store'
 import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 import { Controller, useForm } from 'react-hook-form'
 import CheckoutWizard from '../components/CheckoutWizard'
+import Form from '../components/Form'
 
 const ShippingPage = () => {
+  const router = useRouter()
   const {
     handleSubmit,
     control,
@@ -22,13 +17,13 @@ const ShippingPage = () => {
     setValue,
     getValues,
   } = useForm()
-  const router = useRouter()
-  const { state, dispatch } = useContext(Store)
 
+  const { state, dispatch } = useContext(Store)
   const {
     cart: { shippingAddress },
   } = state
   const { location } = shippingAddress
+
   useEffect(() => {
     setValue('fullName', shippingAddress.fullName)
     setValue('address', shippingAddress.address)
@@ -37,8 +32,6 @@ const ShippingPage = () => {
     setValue('postalCode', shippingAddress.postalCode)
     setValue('phoneNumber', shippingAddress.phoneNumber)
   }, [setValue, shippingAddress])
-
-  const classes = useStyles()
 
   const submitHandler = ({
     fullName,
@@ -114,7 +107,7 @@ const ShippingPage = () => {
   return (
     <Layout title="Shipping Address">
       <CheckoutWizard activeStep={1} />
-      <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
+      <Form onSubmit={handleSubmit(submitHandler)}>
         <Typography component="h1" variant="h1">
           Shipping Address
         </Typography>
@@ -238,7 +231,7 @@ const ShippingPage = () => {
               defaultValue=""
               rules={{
                 required: true,
-                minLength: 3,
+                minLength: 4,
               }}
               render={({ field }) => (
                 <TextField
@@ -250,7 +243,7 @@ const ShippingPage = () => {
                   helperText={
                     errors.postalCode
                       ? errors.postalCode.type === 'minLength'
-                        ? 'Postal Code must be at least 3 characters long'
+                        ? 'Postal Code must be at least 4 characters long'
                         : 'Postal Code is required'
                       : ''
                   }
@@ -305,7 +298,7 @@ const ShippingPage = () => {
             </Button>
           </ListItem>
         </List>
-      </form>
+      </Form>
     </Layout>
   )
 }

@@ -13,11 +13,12 @@ import {
   ListItemText,
   TextField,
   CircularProgress,
-} from '@material-ui/core'
+} from '@mui/material'
+import Form from '../../../components/Form'
 import { getError } from '../../../utils/error'
 import { Store } from '../../../utils/store'
 import Layout from '../../../components/Layout'
-import useStyles from '../../../utils/styles'
+import classes from '../../../utils/classes'
 import { Controller, useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 import DateFnsUtils from '@date-io/date-fns'
@@ -63,7 +64,6 @@ const AdminCouponEditPage = ({ params }) => {
   } = useForm()
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
-  const classes = useStyles()
 
   useEffect(() => {
     const fetchCoupon = async () => {
@@ -110,7 +110,7 @@ const AdminCouponEditPage = ({ params }) => {
     <Layout title={`Admin Edit Coupon ${couponId}`}>
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <NextLink href="/admin/dashboard" passHref>
                 <ListItem button component="a">
@@ -141,7 +141,7 @@ const AdminCouponEditPage = ({ params }) => {
           </Card>
         </Grid>
         <Grid item md={9} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
@@ -149,16 +149,11 @@ const AdminCouponEditPage = ({ params }) => {
                 </Typography>
                 &nbsp;&nbsp;&nbsp;
                 {loading && <CircularProgress />}
-                {error && (
-                  <Typography className={classes.error}>{error}</Typography>
-                )}
+                {error && <Typography sx={classes.error}>{error}</Typography>}
               </ListItem>
 
               <ListItem>
-                <form
-                  onSubmit={handleSubmit(submitHandler)}
-                  className={classes.form}
-                >
+                <Form onSubmit={handleSubmit(submitHandler)}>
                   <List>
                     <ListItem>
                       <Controller
@@ -252,7 +247,7 @@ const AdminCouponEditPage = ({ params }) => {
                         {loadingUpdate && (
                           <CircularProgress
                             size={25}
-                            className={classes.buttonProgress}
+                            sx={classes.buttonProgress}
                           />
                         )}
                       </Button>
@@ -265,7 +260,7 @@ const AdminCouponEditPage = ({ params }) => {
                       </NextLink>
                     </ListItem>
                   </List>
-                </form>
+                </Form>
               </ListItem>
             </List>
           </Card>

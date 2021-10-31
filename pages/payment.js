@@ -7,7 +7,7 @@ import {
   Radio,
   RadioGroup,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
@@ -15,10 +15,9 @@ import { useContext, useEffect, useState } from 'react'
 import CheckoutWizard from '../components/CheckoutWizard'
 import Layout from '../components/Layout'
 import { Store } from '../utils/store'
-import useStyles from '../utils/styles'
+import Form from '../components/Form'
 
 const PaymentPage = () => {
-  const classes = useStyles()
   const router = useRouter()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const [paymentMethod, setPaymentMethod] = useState('')
@@ -50,7 +49,7 @@ const PaymentPage = () => {
   return (
     <Layout title="Payment Method">
       <CheckoutWizard activeStep={2} />
-      <form className={classes.form} onSubmit={submitHandler}>
+      <Form onSubmit={submitHandler}>
         <Typography component="h1" variant="h1">
           Payment Method
         </Typography>
@@ -97,7 +96,7 @@ const PaymentPage = () => {
             </Button>
           </ListItem>
         </List>
-      </form>
+      </Form>
     </Layout>
   )
 }

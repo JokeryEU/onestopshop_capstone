@@ -14,8 +14,8 @@ import {
   TableRow,
   TextField,
   Typography,
-} from '@material-ui/core'
-import { useCallback, useContext, useEffect, useState } from 'react'
+} from '@mui/material'
+import { useContext, useEffect, useState } from 'react'
 import Layout from '../components/Layout'
 import { Store } from '../utils/store'
 import NextLink from 'next/link'
@@ -24,20 +24,18 @@ import dynamic from 'next/dynamic'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
-import useStyles from '../utils/styles'
+import classes from '../utils/classes'
 import CheckoutWizard from '../components/CheckoutWizard'
 import { getError } from '../utils/error'
 import Cookies from 'js-cookie'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 const PlaceOrderPage = () => {
-  const classes = useStyles()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [coupon, setCoupon] = useState('')
   const { state, dispatch } = useContext(Store)
-  const { executeRecaptcha } = useGoogleReCaptcha()
+
   const {
     userInfo,
     cart: { cartItems, shippingAddress, paymentMethod },
@@ -58,19 +56,6 @@ const PlaceOrderPage = () => {
   useEffect(() => {
     if (!paymentMethod) return router.push('/payment')
   }, [router, paymentMethod])
-
-  const reCaptchaVerifyHandler = useCallback(async () => {
-    if (!executeRecaptcha) {
-      console.log('Execute recaptcha not yet available')
-      return
-    }
-
-    const token = await executeRecaptcha('Place Order')
-    console.log(token)
-    const { data } = await axios.post('api/keys/reCaptcha', { captcha: token })
-    console.log(data)
-    return data
-  }, [])
 
   const placeOrderHandler = async () => {
     closeSnackbar()
@@ -149,7 +134,7 @@ const PlaceOrderPage = () => {
       </Typography>
       <Grid container spacing={1}>
         <Grid item md={9} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <ListItem>
                 <Typography component="h2" variant="h2">
@@ -173,7 +158,7 @@ const PlaceOrderPage = () => {
               </ListItem>
             </List>
           </Card>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <ListItem>
                 <Typography component="h2" variant="h2">
@@ -183,7 +168,7 @@ const PlaceOrderPage = () => {
               <ListItem>{paymentMethod}</ListItem>
             </List>
           </Card>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <ListItem>
                 <Typography component="h2" variant="h2">
@@ -239,7 +224,7 @@ const PlaceOrderPage = () => {
           </Card>
         </Grid>
         <Grid item md={3} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <ListItem>
                 <Typography variant="h2">Order Summary</Typography>
@@ -343,10 +328,7 @@ const PlaceOrderPage = () => {
                   >
                     {!couponName ? 'Apply' : 'Remove Coupon'}
                     {loadingCoupon && (
-                      <CircularProgress
-                        size={25}
-                        className={classes.buttonProgress}
-                      />
+                      <CircularProgress size={25} sx={classes.buttonProgress} />
                     )}
                   </Button>
                 </ListItem>
@@ -361,10 +343,7 @@ const PlaceOrderPage = () => {
                 >
                   Place Order
                   {loading && (
-                    <CircularProgress
-                      size={25}
-                      className={classes.buttonProgress}
-                    />
+                    <CircularProgress size={25} sx={classes.buttonProgress} />
                   )}
                 </Button>
               </ListItem>

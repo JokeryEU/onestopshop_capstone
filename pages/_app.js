@@ -1,25 +1,25 @@
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { SnackbarProvider } from 'notistack'
-import { useEffect } from 'react'
-// import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
+import { CacheProvider } from '@emotion/react'
+import createEmotionCache from '../utils/createEmotionCache'
 import { StoreProvider } from '../utils/store'
 import Script from 'next/script'
 
-const MyApp = ({ Component, pageProps }) => {
-  useEffect(() => {
-    const jssStyles = document.querySelector('#jss-server-side')
-    if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles)
-    }
-  }, [])
+const clientSideEmotionCache = createEmotionCache()
 
+const MyApp = ({
+  Component,
+  emotionCache = clientSideEmotionCache,
+  pageProps,
+}) => {
   return (
     <>
       <Script
+        id="firstAnalyticScript"
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
       />
-      <Script strategy="afterInteractive">
+      <Script id="secondAnalyticScript" strategy="afterInteractive">
         {`
      window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -30,20 +30,17 @@ const MyApp = ({ Component, pageProps }) => {
     });
     `}
       </Script>
-
-      <SnackbarProvider
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <StoreProvider>
-          {/* <GoogleReCaptchaProvider
-            reCaptchaKey={process.env.RECAPTCHA_SITE_KEY}
-          > */}
-          <PayPalScriptProvider deferLoading={true}>
-            <Component {...pageProps} />
-          </PayPalScriptProvider>
-          {/* </GoogleReCaptchaProvider> */}
-        </StoreProvider>
-      </SnackbarProvider>
+      <CacheProvider value={emotionCache}>
+        <SnackbarProvider
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <StoreProvider>
+            <PayPalScriptProvider deferLoading={true}>
+              <Component {...pageProps} />
+            </PayPalScriptProvider>
+          </StoreProvider>
+        </SnackbarProvider>
+      </CacheProvider>
     </>
   )
 }

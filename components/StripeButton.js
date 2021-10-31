@@ -3,20 +3,20 @@ import {
   CircularProgress,
   ListItem,
   Typography,
-} from '@material-ui/core'
+  Box,
+} from '@mui/material'
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import axios from 'axios'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { getError } from '../utils/error'
-import useStyles from '../utils/styles'
+import classes from '../utils/classes'
 
 const StripeButton = ({ userInfo, order, dispatch }) => {
   const [loading, setLoading] = useState(false)
   const stripe = useStripe()
   const elements = useElements()
   const { enqueueSnackbar } = useSnackbar()
-  const classes = useStyles()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -73,7 +73,7 @@ const StripeButton = ({ userInfo, order, dispatch }) => {
 
   return (
     <ListItem>
-      <div className={classes.fullWidth}>
+      <Box sx={classes.fullWidth}>
         <Typography variant="h2" component="h2">
           Add your card info:
         </Typography>
@@ -86,15 +86,15 @@ const StripeButton = ({ userInfo, order, dispatch }) => {
             fullWidth
             type="submit"
             disabled={loading}
-            className={classes.buttonMargin}
+            sx={classes.buttonMargin}
           >
             Pay with Stripe €{order.netPrice}
             {loading && (
-              <CircularProgress size={25} className={classes.buttonProgress} />
+              <CircularProgress size={25} sx={classes.buttonProgress} />
             )}
           </Button>
         </form>
-      </div>
+      </Box>
     </ListItem>
   )
 }

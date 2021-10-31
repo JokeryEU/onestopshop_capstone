@@ -7,7 +7,7 @@ import Cookies from 'js-cookie'
 import { useContext, useEffect } from 'react'
 import { Store } from '../utils/store'
 import { useRouter } from 'next/router'
-import useStyles from '../utils/styles'
+import classes from '../utils/classes'
 import Layout from '../components/Layout'
 import {
   Button,
@@ -18,10 +18,12 @@ import {
   ListItemText,
   TextField,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import { getError } from '../utils/error'
+import Form from '../components/Form'
 
 const ProfilePage = () => {
+  const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const { userInfo } = state
   const {
@@ -31,9 +33,6 @@ const ProfilePage = () => {
     setValue,
   } = useForm()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-
-  const router = useRouter()
-  const classes = useStyles()
 
   useEffect(() => {
     setValue('firstName', userInfo.firstName)
@@ -86,7 +85,7 @@ const ProfilePage = () => {
     <Layout title="Profile">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <NextLink href="/profile" passHref>
                 <ListItem selected button component="a">
@@ -102,7 +101,7 @@ const ProfilePage = () => {
           </Card>
         </Grid>
         <Grid item md={9} xs={12}>
-          <Card className={classes.section}>
+          <Card sx={classes.section}>
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
@@ -110,10 +109,7 @@ const ProfilePage = () => {
                 </Typography>
               </ListItem>
               <ListItem>
-                <form
-                  onSubmit={handleSubmit(submitHandler)}
-                  className={classes.form}
-                >
+                <Form onSubmit={handleSubmit(submitHandler)}>
                   <List>
                     <ListItem>
                       <Controller
@@ -273,7 +269,7 @@ const ProfilePage = () => {
                       </Button>
                     </ListItem>
                   </List>
-                </form>
+                </Form>
               </ListItem>
             </List>
           </Card>

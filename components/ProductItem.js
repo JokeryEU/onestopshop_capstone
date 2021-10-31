@@ -8,13 +8,14 @@ import {
   IconButton,
   Tooltip,
   Typography,
-} from '@material-ui/core'
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
+  Box,
+} from '@mui/material'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import NextLink from 'next/link'
-import Rating from '@material-ui/lab/Rating'
-import useStyles from '../utils/styles'
+import Rating from '@mui/material/Rating'
+import classes from '../utils/classes'
 
 const ProductItem = ({
   product,
@@ -22,12 +23,9 @@ const ProductItem = ({
   addOrRemoveWishHandler,
   existItemInWishlist,
 }) => {
-  const classes = useStyles()
-
   return (
     <Grow in>
       <Card
-        className="product-card"
         style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -51,7 +49,7 @@ const ProductItem = ({
           <Typography>
             <strong>€{product.price}</strong>
           </Typography>
-          <div className={classes.grow} />
+          <Box sx={classes.grow} />
           {existItemInWishlist ? (
             <Tooltip title="Remove from wishlist" arrow>
               <IconButton
