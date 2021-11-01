@@ -4,6 +4,7 @@ import {
   List,
   ListItem,
   Typography,
+  Box,
 } from '@mui/material'
 import Layout from '../../../components/Layout'
 import classes from '../../../utils/classes'
@@ -56,8 +57,10 @@ const AccountActivationPage = ({ params }) => {
           <ListItem>
             <Typography variant="h2" align="justify">
               Your activation link has{' '}
-              <span style={{ color: 'red' }}>expired</span>, please register
-              again.
+              <Box component="span" sx={{ color: 'red' }}>
+                expired
+              </Box>
+              , please register again.
             </Typography>
           </ListItem>
         )}
