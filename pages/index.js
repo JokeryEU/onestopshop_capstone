@@ -1,4 +1,4 @@
-import { Grid, Link, Typography, useMediaQuery } from '@material-ui/core'
+import { Grid, Link, Typography, useMediaQuery } from '@mui/material'
 import NextLink from 'next/link'
 import Image from 'next/image'
 import axios from 'axios'
@@ -96,7 +96,7 @@ const HomePage = ({ topRatedProducts, featuredProducts }) => {
     }
   }
 
-  const isDesktop = useMediaQuery('(min-width:600px)')
+  const isDesktop = useMediaQuery('(min-width:640px)')
 
   return (
     <Layout>
@@ -107,7 +107,7 @@ const HomePage = ({ topRatedProducts, featuredProducts }) => {
             href={`/product/${product.slug}`}
             passHref
           >
-            <Link sx={classes.flex}>
+            <Link sx={{ display: 'flex', justifyContent: 'center' }}>
               <Image
                 src={product.image[0]}
                 alt={product.name}
@@ -128,13 +128,7 @@ const HomePage = ({ topRatedProducts, featuredProducts }) => {
         sx={isDesktop ? classes.productContainer : classes.productContainerSm}
       >
         {featuredProducts.map((product) => (
-          <Grid
-            item
-            md={3}
-            lg={2}
-            key={product.slug}
-            style={{ display: 'flex' }}
-          >
+          <Grid item md={3} lg={2} key={product.slug} sx={classes.flex}>
             <ProductItem
               product={product}
               addToCartHandler={addToCartHandler}
@@ -153,13 +147,7 @@ const HomePage = ({ topRatedProducts, featuredProducts }) => {
         sx={isDesktop ? classes.productContainer : classes.productContainerSm}
       >
         {topRatedProducts.map((product) => (
-          <Grid
-            item
-            md={3}
-            lg={2}
-            key={product.slug}
-            style={{ display: 'flex' }}
-          >
+          <Grid item md={3} lg={2} key={product.slug} sx={classes.flex}>
             <ProductItem
               product={product}
               addToCartHandler={addToCartHandler}

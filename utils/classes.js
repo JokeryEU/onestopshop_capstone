@@ -151,7 +151,6 @@ const classes = {
       width: '100%',
       '& img': {
         height: '35vmax',
-        objectFit: 'contain',
       },
     },
   },

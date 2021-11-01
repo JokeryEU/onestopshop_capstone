@@ -35,6 +35,7 @@ const ProductItem = ({
         <NextLink href={`/product/${product.slug}`} passHref>
           <CardActionArea>
             <CardMedia
+              className="product-card"
               component="img"
               image={product.image[0]}
               title={product.name}

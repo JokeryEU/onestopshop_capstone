@@ -150,7 +150,7 @@ const Layout = ({ description, title, children }) => {
     router.push('/')
   }
 
-  const isDesktop = useMediaQuery('(min-width:600px)')
+  const isDesktop = useMediaQuery('(min-width:640px)')
 
   return (
     <>
@@ -175,9 +175,7 @@ const Layout = ({ description, title, children }) => {
               </IconButton>
               <NextLink href="/" passHref>
                 <Link>
-                  <Typography
-                    style={isDesktop ? classes.brand : classes.brandSm}
-                  >
+                  <Typography sx={isDesktop ? classes.brand : classes.brandSm}>
                     OneStopShop
                   </Typography>
                 </Link>
