@@ -52,6 +52,10 @@ const classes = {
     fontWeight: 'bold',
     fontSize: '1.5rem',
   },
+  brandSm: {
+    fontWeight: 'bold',
+    fontSize: '1.1rem',
+  },
   grow: {
     flexGrow: 1,
   },

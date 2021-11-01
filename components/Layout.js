@@ -176,8 +176,7 @@ const Layout = ({ description, title, children }) => {
               <NextLink href="/" passHref>
                 <Link>
                   <Typography
-                    sx={classes.brand}
-                    style={{ fontWeight: 'bold', fontSize: '1.5rem' }}
+                    style={isDesktop ? classes.brand : classes.brandSm}
                   >
                     OneStopShop
                   </Typography>
