@@ -240,6 +240,7 @@ const ProductPage = ({ product }) => {
                   variant="contained"
                   color="primary"
                   onClick={addToCartHandler}
+                  disabled={product.countInStock === 0}
                 >
                   Add to cart
                 </Button>
@@ -347,7 +348,21 @@ const ProductPage = ({ product }) => {
   )
 }
 
-export async function getServerSideProps({ params }) {
+export async function getStaticPaths() {
+  await db.connect()
+  const productPaths = await Product.find({}, '-reviews').lean()
+  await db.disconnect()
+  const paths = productPaths.map((path) => {
+    return { params: { slug: path.slug } }
+  })
+
+  return {
+    paths,
+    fallback: false,
+  }
+}
+
+export async function getStaticProps({ params }) {
   const { slug } = params
   await db.connect()
   const product = await Product.findOne({ slug }, '-reviews').lean()
