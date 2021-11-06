@@ -2,31 +2,58 @@ import mongoose from 'mongoose'
 
 const connection = {}
 
-async function connect() {
-  if (connection.isConnected) {
-    return
-  }
-  if (mongoose.connections.length > 0) {
-    connection.isConnected = mongoose.connections[0].readyState
-    if (connection.isConnected === 1) {
-      return
-    }
-    await mongoose.disconnect()
-  }
-  const db = await mongoose.connect(process.env.MONGODB_ADDRESS, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  connection.isConnected = db.connections[0].readyState
+let cached = global.mongoose
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null }
 }
 
-async function disconnect() {
-  if (connection.isConnected) {
-    if (process.env.NODE_ENV === 'production') {
-      await mongoose.disconnect()
-      connection.isConnected = false
-    }
+async function connect() {
+  if (cached.conn) {
+    return cached.conn
   }
+
+  if (!cached.promise) {
+    const opts = {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+
+    cached.promise = mongoose.connect(process.env.MONGODB_ADDRESS, opts)
+  }
+  cached.conn = await cached.promise
+  return cached.conn
+}
+
+// async function connect() {
+//   if (connection.isConnected) {
+//     return
+//   }
+//   if (mongoose.connections.length > 0) {
+//     connection.isConnected = mongoose.connections[0].readyState
+//     if (connection.isConnected === 1) {
+//       return
+//     }
+//     await mongoose.disconnect()
+//   }
+//   try {
+//     const db = await mongoose.connect(process.env.MONGODB_ADDRESS, {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     })
+//     connection.isConnected = db.connections[0].readyState
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
+
+async function disconnect() {
+  // if (connection.isConnected) {
+  //   if (process.env.NODE_ENV === 'production') {
+  //     await mongoose.disconnect()
+  //     connection.isConnected = false
+  //   }
+  // }
 }
 
 function convertDocToObj(doc) {
