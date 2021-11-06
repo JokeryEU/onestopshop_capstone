@@ -14,9 +14,7 @@ async function connect() {
   }
 
   if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    }
+    const opts = {}
 
     cached.promise = await mongoose.connect(process.env.MONGODB_ADDRESS, opts)
   }
