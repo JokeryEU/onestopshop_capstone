@@ -13,7 +13,7 @@ const MyApp = ({
   pageProps,
 }) => {
   return (
-    <>
+    <CacheProvider value={emotionCache}>
       <Script
         id="firstAnalyticScript"
         strategy="afterInteractive"
@@ -30,18 +30,17 @@ const MyApp = ({
     });
     `}
       </Script>
-      <CacheProvider value={emotionCache}>
-        <SnackbarProvider
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        >
-          <StoreProvider>
-            <PayPalScriptProvider deferLoading={true}>
-              <Component {...pageProps} />
-            </PayPalScriptProvider>
-          </StoreProvider>
-        </SnackbarProvider>
-      </CacheProvider>
-    </>
+
+      <SnackbarProvider
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <StoreProvider>
+          <PayPalScriptProvider deferLoading={true}>
+            <Component {...pageProps} />
+          </PayPalScriptProvider>
+        </StoreProvider>
+      </SnackbarProvider>
+    </CacheProvider>
   )
 }
 

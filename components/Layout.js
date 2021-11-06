@@ -42,6 +42,8 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { useSnackbar } from 'notistack'
 import axios from 'axios'
+import moon from '../public/moon.svg'
+import sunny from '../public/sunny.svg'
 
 const Layout = ({ description, title, children }) => {
   const router = useRouter()
@@ -240,11 +242,9 @@ const Layout = ({ description, title, children }) => {
                 checked={darkMode}
                 onChange={darkModeChangeHandler}
                 checkedIcon={
-                  <Image src="/moon.svg" alt="moon" width="24" height="22" />
+                  <Image src={moon} alt="moon" width="24" height="22" />
                 }
-                icon={
-                  <Image src="/sunny.svg" alt="sun" width="24" height="24" />
-                }
+                icon={<Image src={sunny} alt="sun" width="24" height="24" />}
                 edge="end"
               />
               <NextLink href="/cart" passHref>
