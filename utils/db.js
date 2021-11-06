@@ -18,7 +18,7 @@ async function connect() {
       bufferCommands: false,
     }
 
-    cached.promise = mongoose.connect(process.env.MONGODB_ADDRESS, opts)
+    cached.promise = await mongoose.connect(process.env.MONGODB_ADDRESS, opts)
   }
   cached.conn = await cached.promise
   return cached.conn
