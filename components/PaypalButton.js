@@ -28,16 +28,14 @@ const PaypalButton = ({ userInfo, order, dispatch }) => {
     loadPaypalScript()
   }, [userInfo, paypalDispatch])
 
-  function createOrder(data, actions) {
-    return actions.order
-      .create({
-        purchase_units: [
-          {
-            amount: { value: order.netPrice },
-          },
-        ],
-      })
-      .then((orderID) => orderID)
+  async function createOrder() {
+    const { data } = await axios.get(
+      `/api/order/${order._id}/create-paypal-order`,
+      {
+        headers: { authorization: `Bearer ${userInfo.accessToken}` },
+      }
+    )
+    return data.id
   }
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {

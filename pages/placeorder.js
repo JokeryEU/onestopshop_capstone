@@ -47,7 +47,7 @@ const PlaceOrderPage = () => {
   const itemsPrice = round2(
     cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
   )
-  const shippingPrice = itemsPrice > 200 ? 0 : 15
+  const shippingPrice = itemsPrice >= 200 ? 0 : 15
   const taxPrice = round2(itemsPrice * 0.19)
   const totalPrice = round2(itemsPrice + shippingPrice + taxPrice)
   const discountPrice = round2((totalPrice * discount) / 100)
