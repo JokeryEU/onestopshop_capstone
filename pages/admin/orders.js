@@ -199,9 +199,11 @@ const AdminOrdersPage = () => {
                               </NextLink>
                               <Button
                                 onClick={() => deleteOrderHandler(order)}
-                                disabled={loadingDelete}
+                                disabled={loadingDelete || order.isPaid}
                               >
-                                <DeleteForeverIcon color="error" />
+                                <DeleteForeverIcon
+                                  color={order.isPaid ? 'disabled' : 'error'}
+                                />
                                 {loadingDelete && (
                                   <CircularProgress
                                     size={25}
