@@ -100,7 +100,13 @@ const HomePage = ({ topRatedProducts, featuredProducts }) => {
 
   return (
     <Layout>
-      <Carousel showThumbs={false} infiniteLoop showStatus={false}>
+      <Carousel
+        showThumbs={false}
+        infiniteLoop
+        showStatus={false}
+        swipeable
+        emulateTouch
+      >
         {featuredProducts.map((product) => (
           <NextLink
             key={product._id}
