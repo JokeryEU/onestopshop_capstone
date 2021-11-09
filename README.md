@@ -22,34 +22,39 @@
 
 ## Technologies Used 🛠
 
-- Next.js - version 11.1.2
-- React - version 17.0.2
-- Chart.js - version 3.5.1
-- React-chartjs-2 - version 3.0.5
-- Next-connect - version 0.10.2
-- Notistack - version 1.0.10
-- Jsonwebtoken - version 8.5.1
-- Bcrypt - version 5.0.1
-- Axios - version 0.23.0
-- Multer - version 1.4.3
-- Cloudinary - version 1.27.1
-- Multer-storage-cloudinary - version 4.0.0
-- Date-fns - version 2.25.0
-- Sharp - version 0.29.1
-- Mongoose - version 6.0.11
-- React-hook-form - version 7.15.4
-- Js-cookie - version 3.0.1
-- React-material-ui-carousel - version 2.3.5
-- @sendgrid/mail - version 7.4.7
-- @paypal/react-paypal-js - version 7.4.1
-- stripe - version 8.183.0
-- @stripe/react-stripe-js - version 1.6.0
-- @stripe/stripe-js - version 1.20.2
-- @react-google-maps/api - version 2.5.0
-- @material-ui/core - version 4.12.3
-- @material-ui/icons - version 4.11.2
-- @material-ui/lab - version 4.0.0-alpha.60
-- @material-ui/pickers - version 3.3.10
+- @emotion/react: 11.5.0,
+- @emotion/server: 11.4.0,
+- @emotion/styled: 11.3.0,
+- @material-ui/pickers: 3.3.10,
+- @mui/icons-material: 5.1.0,
+- @mui/material: 5.1.0,
+- @paypal/checkout-server-sdk: 1.0.3,
+- @paypal/react-paypal-js: 7.4.2,
+- @react-google-maps/api: 2.5.0,
+- @sendgrid/mail: 7.6.0,
+- @stripe/react-stripe-js: 1.6.0,
+- @stripe/stripe-js: 1.21.1,
+- axios: 0.24.0,
+- bcrypt: 5.0.1,
+- chart.js: 3.6.0,
+- cloudinary: 1.27.1,
+- date-fns: 2.25.0,
+- js-cookie: 3.0.1,
+- jsonwebtoken: 8.5.1,
+- mongoose: 6.0.12,
+- multer: 1.4.3,
+- multer-storage-cloudinary: 4.0.0,
+- next: 11.1.2,
+- next-connect: 0.11.0,
+- notistack: 2.0.3,
+- react: 17.0.2,
+- react-chartjs-2: 3.3.0,
+- react-dom: 17.0.2,
+- react-google-recaptcha-v3: 1.9.7,
+- react-hook-form: 7.19.1,
+- react-responsive-carousel: 3.2.22,
+- sharp: 0.29.2,
+- stripe: 8.186.1
 
 ## Features 🗄
 
@@ -82,15 +87,15 @@ Project is: _in progress_
 Room for improvement:
 
 - User interface
-- Charts
-- Payments
+- Admin Charts
 - ...
 
 To do:
 
 - Add refund orders
-- Add better security to paypal/stripe payment methods
+- Add better security to stripe payment method
 - Add User address in the database
+- Add refresh token
 - Add OAuth
 - ...
 
