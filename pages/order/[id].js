@@ -70,6 +70,19 @@ function reducer(state, action) {
         successCancel: false,
         errorCancel: '',
       }
+    case 'ORDER_REFUND_REQUEST':
+      return { ...state, loadingRefund: true }
+    case 'ORDER_REFUND_SUCCESS':
+      return { ...state, loadingRefund: false, successRefund: true }
+    case 'ORDER_REFUND_FAIL':
+      return { ...state, loadingRefund: false, errorRefund: action.payload }
+    case 'ORDER_REFUND_RESET':
+      return {
+        ...state,
+        loadingRefund: false,
+        successRefund: false,
+        errorRefund: '',
+      }
     default:
       return state
   }
@@ -92,14 +105,20 @@ const OrderPage = ({ params }) => {
       successCancel,
       loadingDeliver,
       successDeliver,
+      loadingRefund,
+      successRefund,
     },
     dispatch,
   ] = useReducer(reducer, {
     successPay,
     loadingPay,
     loading: true,
+    loadingDeliver: false,
+    successDeliver: false,
     loadingCancel: false,
     successCancel: false,
+    loadingRefund: false,
+    successRefund: false,
     order: {},
     error: '',
   })
@@ -137,15 +156,25 @@ const OrderPage = ({ params }) => {
       successPay ||
       successCancel ||
       successDeliver ||
+      successRefund ||
       (order._id && order._id !== orderId)
     ) {
       fetchOrder()
       if (successPay) dispatch({ type: 'PAY_RESET' })
       if (successDeliver) dispatch({ type: 'DELIVER_RESET' })
       if (successCancel) dispatch({ type: 'ORDER_CANCEL_RESET' })
+      if (successRefund) dispatch({ type: 'ORDER_REFUND_RESET' })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [order, successPay, successDeliver, successCancel, userInfo, orderId])
+  }, [
+    order,
+    successPay,
+    successDeliver,
+    successCancel,
+    successRefund,
+    userInfo,
+    orderId,
+  ])
 
   const handleCancelOrder = async () => {
     dispatch({ type: 'ORDER_CANCEL_REQUEST', payload: {} })
@@ -205,6 +234,27 @@ const OrderPage = ({ params }) => {
       enqueueSnackbar('Order is delivered', { variant: 'success' })
     } catch (err) {
       dispatch({ type: 'DELIVER_FAIL', payload: getError(error) })
+      enqueueSnackbar(getError(error), { variant: 'error' })
+    }
+  }
+
+  const refundOrderHandler = async (order) => {
+    dispatch({ type: 'ORDER_REFUND_REQUEST', payload: {} })
+    try {
+      const { data } = await axios.put(
+        `/api/order/${order._id}/refund`,
+        {},
+        {
+          headers: { authorization: `Bearer ${userInfo.accessToken}` },
+        }
+      )
+      dispatch({ type: 'ORDER_REFUND_SUCCESS', payload: data })
+      enqueueSnackbar('Order has been refunded', { variant: 'success' })
+    } catch (error) {
+      dispatch({
+        type: 'ORDER_REFUND_FAIL',
+        payload: getError(error),
+      })
       enqueueSnackbar(getError(error), { variant: 'error' })
     }
   }
@@ -468,6 +518,25 @@ const OrderPage = ({ params }) => {
                     >
                       Cancel Order
                       {loadingCancel && (
+                        <CircularProgress
+                          size={25}
+                          sx={classes.buttonProgress}
+                        />
+                      )}
+                    </Button>
+                  </ListItem>
+                )}
+                {!order.isRefunded && order.isPaid && (
+                  <ListItem>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={() => refundOrderHandler(order)}
+                      disabled={loadingRefund}
+                    >
+                      Refund Order
+                      {loadingRefund && (
                         <CircularProgress
                           size={25}
                           sx={classes.buttonProgress}

@@ -37,7 +37,7 @@ handler.put(async (req, res) => {
           qty: -item.quantity,
           transactionType: 'CANCELLED',
 
-          description: `Cancelled order ${updatedOrder._id}`,
+          description: `Cancelled order ${updatedOrder._id}. Awaiting refund.`,
         })
 
         await product.save()
@@ -51,7 +51,7 @@ handler.put(async (req, res) => {
           qty: 0,
           transactionType: 'CANCELLED',
 
-          description: `Cancelled order ${updatedOrder._id} . No payment has been made.`,
+          description: `Cancelled order ${updatedOrder._id}. No payment has been made.`,
         })
 
         await product.save()

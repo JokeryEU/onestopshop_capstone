@@ -56,7 +56,7 @@ handler.post(async (req, res) => {
   await user.updateOne({ resetPasswordToken: token })
   await db.disconnect()
 
-  const link = 'http://' + req.headers.host + '/user/reset-password/' + token
+  const link = 'https://' + req.headers.host + '/user/reset-password/' + token
   await forgotPwEmailTemplate(email, link, user.lastName)
 
   res.send({

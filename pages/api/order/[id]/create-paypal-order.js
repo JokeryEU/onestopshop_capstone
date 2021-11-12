@@ -41,6 +41,11 @@ handler.get(async (req, res) => {
   for (const index in order.orderItems) {
     const item = order.orderItems[index]
     const product = await Product.findById(item._id)
+    if (product.countInStock < item.quantity) {
+      return res.status(400).send({
+        message: `There are only ${product.countInStock} instance of ${product.name}`,
+      })
+    }
     itemsPrice += product.price * item.quantity
   }
 
@@ -54,28 +59,30 @@ handler.get(async (req, res) => {
 
   request.prefer('return=representation')
 
+  const currency = 'EUR'
+
   request.requestBody({
     intent: 'CAPTURE',
     purchase_units: [
       {
         amount: {
-          currency_code: 'EUR',
+          currency_code: currency,
           value: String(netPrice),
           breakdown: {
             tax_total: {
-              currency_code: 'EUR',
+              currency_code: currency,
               value: String(taxPrice),
             },
             shipping: {
-              currency_code: 'EUR',
+              currency_code: currency,
               value: String(shippingPrice),
             },
             discount: {
-              currency_code: 'EUR',
+              currency_code: currency,
               value: String(discountPrice),
             },
             item_total: {
-              currency_code: 'EUR',
+              currency_code: currency,
               value: String(itemsPrice),
             },
           },
@@ -84,7 +91,7 @@ handler.get(async (req, res) => {
           return {
             name: item.name,
             unit_amount: {
-              currency_code: 'EUR',
+              currency_code: currency,
               value: String(item.price),
             },
             quantity: String(item.quantity),
