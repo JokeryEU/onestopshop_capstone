@@ -71,7 +71,7 @@
 - Can cancel your order
 - Change your profile info and password
 - Added forgot password
-- Added reCaptcha v3
+- As admin you can refund orders
 - As admin check the chart for number of sales/orders/users
 - As admin review customer orders and mark them to be delivered, also you can delete them if isnt paid
 - As admin check the number of products and add new products
@@ -92,7 +92,6 @@ Room for improvement:
 
 To do:
 
-- Add refund orders
 - Add better security to stripe payment method
 - Add User address in the database
 - Add refresh token

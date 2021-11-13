@@ -526,25 +526,27 @@ const OrderPage = ({ params }) => {
                     </Button>
                   </ListItem>
                 )}
-                {!order.isRefunded && order.isPaid && (
-                  <ListItem>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      onClick={() => refundOrderHandler(order)}
-                      disabled={loadingRefund}
-                    >
-                      Refund Order
-                      {loadingRefund && (
-                        <CircularProgress
-                          size={25}
-                          sx={classes.buttonProgress}
-                        />
-                      )}
-                    </Button>
-                  </ListItem>
-                )}
+                {userInfo.role === 'Admin' &&
+                  !order.isRefunded &&
+                  order.isPaid && (
+                    <ListItem>
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        onClick={() => refundOrderHandler(order)}
+                        disabled={loadingRefund}
+                      >
+                        Refund Order
+                        {loadingRefund && (
+                          <CircularProgress
+                            size={25}
+                            sx={classes.buttonProgress}
+                          />
+                        )}
+                      </Button>
+                    </ListItem>
+                  )}
                 {userInfo.role === 'Admin' &&
                   order.isPaid &&
                   !order.isCancelled &&

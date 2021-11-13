@@ -32,9 +32,7 @@ handler.get(async (req, res) => {
       name: order.usedCoupon,
       expiry: { $gt: Date.now() },
     })
-    if (coupon) {
-      discount = coupon.discount
-    }
+    if (coupon) discount = coupon.discount
   }
 
   let itemsPrice = 0
