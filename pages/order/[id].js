@@ -572,7 +572,7 @@ const OrderPage = ({ params }) => {
 
                 <ListItem>
                   <NextLink href="/" passHref>
-                    <Button fullWidth variant="outlined">
+                    <Button fullWidth variant="outlined" color="inherit">
                       Back to Products
                     </Button>
                   </NextLink>

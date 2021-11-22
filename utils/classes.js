@@ -67,7 +67,7 @@ const classes = {
   menuButton: { padding: 0 },
 
   buttonMargin: {
-    marginTop: 20,
+    marginTop: 2,
   },
 
   // loading circle position on button

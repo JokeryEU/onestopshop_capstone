@@ -22,15 +22,15 @@
 
 ## Technologies Used 🛠
 
-- @emotion/react: 11.5.0,
+- @emotion/react: 11.6.0,
 - @emotion/server: 11.4.0,
-- @emotion/styled: 11.3.0,
+- @emotion/styled: 11.6.0,
 - @material-ui/pickers: 3.3.10,
-- @mui/icons-material: 5.1.0,
-- @mui/material: 5.1.0,
+- @mui/icons-material: 5.1.1,
+- @mui/material: 5.1.1,
 - @paypal/checkout-server-sdk: 1.0.3,
 - @paypal/react-paypal-js: 7.4.2,
-- @react-google-maps/api: 2.5.0,
+- @react-google-maps/api: 2.7.0,
 - @sendgrid/mail: 7.6.0,
 - @stripe/react-stripe-js: 1.6.0,
 - @stripe/stripe-js: 1.21.1,
@@ -41,7 +41,7 @@
 - date-fns: 2.25.0,
 - js-cookie: 3.0.1,
 - jsonwebtoken: 8.5.1,
-- mongoose: 6.0.12,
+- mongoose: 6.0.13,
 - multer: 1.4.3,
 - multer-storage-cloudinary: 4.0.0,
 - next: 11.1.2,
@@ -51,10 +51,10 @@
 - react-chartjs-2: 3.3.0,
 - react-dom: 17.0.2,
 - react-google-recaptcha-v3: 1.9.7,
-- react-hook-form: 7.19.5,
+- react-hook-form: 7.20.2,
 - react-responsive-carousel: 3.2.22,
-- sharp: 0.29.2,
-- stripe: 8.188.0
+- sharp: 0.29.3,
+- stripe: 8.191.0
 
 ## Features 🗄
 
