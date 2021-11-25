@@ -25,7 +25,7 @@ handler.get(async (req, res) => {
   await db.connect()
   const request = new paypal.orders.OrdersCreateRequest()
   const order = await Order.findById(req.query.id)
-
+  if (order.isPaid) return res.send({ message: 'Order is already paid' })
   let discount = 0
   if (order.usedCoupon) {
     const coupon = await Coupon.findOne({

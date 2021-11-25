@@ -80,7 +80,7 @@
 
 ## Project Status ⬇️
 
-Project is: _in progress_
+Project is: _completed_
 
 ## Room for Improvement
 
@@ -92,10 +92,6 @@ Room for improvement:
 
 To do:
 
-- Add better security to stripe payment method
-- Add User address in the database
-- Add refresh token
-- Add OAuth
 - ...
 
 ## Contact 📩

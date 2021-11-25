@@ -88,8 +88,10 @@ function reducer(state, action) {
   }
 }
 
-const OrderPage = ({ params }) => {
+const OrderPage = ({ params, query }) => {
   const orderId = params.id
+  const queryResult = query.result
+
   const { enqueueSnackbar } = useSnackbar()
   const { state } = useContext(Store)
   const { userInfo } = state
@@ -110,8 +112,8 @@ const OrderPage = ({ params }) => {
     },
     dispatch,
   ] = useReducer(reducer, {
-    successPay,
-    loadingPay,
+    successPay: false,
+    loadingPay: false,
     loading: true,
     loadingDeliver: false,
     successDeliver: false,
@@ -151,6 +153,31 @@ const OrderPage = ({ params }) => {
       }
     }
 
+    const verifyStripePayment = async () => {
+      try {
+        dispatch({ type: 'PAY_REQUEST' })
+        const { data } = await axios.put(
+          `/api/order/${order._id}/stripe`,
+          {},
+          {
+            headers: { authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        dispatch({ type: 'PAY_SUCCESS', payload: data })
+        enqueueSnackbar(data.message, { variant: 'success' })
+      } catch (error) {
+        dispatch({ type: 'PAY_FAIL', payload: getError(error) })
+        enqueueSnackbar(getError(error), { variant: 'error' })
+      }
+    }
+    if (
+      !order.isPaid &&
+      paymentMethod === 'Stripe' &&
+      queryResult === 'success'
+    ) {
+      verifyStripePayment()
+    }
+
     if (
       !order._id ||
       successPay ||
@@ -160,14 +187,17 @@ const OrderPage = ({ params }) => {
       (order._id && order._id !== orderId)
     ) {
       fetchOrder()
+
       if (successPay) dispatch({ type: 'PAY_RESET' })
       if (successDeliver) dispatch({ type: 'DELIVER_RESET' })
       if (successCancel) dispatch({ type: 'ORDER_CANCEL_RESET' })
       if (successRefund) dispatch({ type: 'ORDER_REFUND_RESET' })
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     order,
+    queryResult,
     successPay,
     successDeliver,
     successCancel,
@@ -472,11 +502,7 @@ const OrderPage = ({ params }) => {
                 {!isPaid &&
                   paymentMethod === 'Stripe' &&
                   !order.isCancelled && (
-                    <StripeContainer
-                      userInfo={userInfo}
-                      order={order}
-                      dispatch={dispatch}
-                    />
+                    <StripeContainer userInfo={userInfo} order={order} />
                   )}
                 {userInfo.role === 'Admin' &&
                   !order.isPaid &&
@@ -586,7 +612,7 @@ const OrderPage = ({ params }) => {
   )
 }
 
-export function getServerSideProps({ req, params }) {
+export function getServerSideProps({ req, params, query }) {
   if (!req.headers.cookie) {
     return {
       redirect: {
@@ -606,7 +632,7 @@ export function getServerSideProps({ req, params }) {
     }
   } else {
     return {
-      props: { params },
+      props: { params, query },
     }
   }
 }
