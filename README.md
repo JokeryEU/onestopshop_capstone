@@ -22,12 +22,12 @@
 
 ## Technologies Used 🛠
 
-- @emotion/react: 11.6.0,
+- @emotion/react: 11.7.0,
 - @emotion/server: 11.4.0,
 - @emotion/styled: 11.6.0,
 - @material-ui/pickers: 3.3.10,
-- @mui/icons-material: 5.1.1,
-- @mui/material: 5.1.1,
+- @mui/icons-material: 5.2.0,
+- @mui/material: 5.2.1,
 - @paypal/checkout-server-sdk: 1.0.3,
 - @paypal/react-paypal-js: 7.4.2,
 - @react-google-maps/api: 2.7.0,
@@ -51,7 +51,7 @@
 - react-chartjs-2: 3.3.0,
 - react-dom: 17.0.2,
 - react-google-recaptcha-v3: 1.9.7,
-- react-hook-form: 7.20.2,
+- react-hook-form: 7.20.4,
 - react-responsive-carousel: 3.2.22,
 - sharp: 0.29.3,
 - stripe: 8.191.0
