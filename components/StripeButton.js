@@ -27,7 +27,6 @@ const StripeButton = ({ userInfo, order }) => {
       window.location = data.url
     } catch (err) {
       setLoading(false)
-
       enqueueSnackbar(getError(err), { variant: 'error' })
     }
   }

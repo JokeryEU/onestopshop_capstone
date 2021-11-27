@@ -164,7 +164,6 @@ const OrderPage = ({ params, query }) => {
           }
         )
         dispatch({ type: 'PAY_SUCCESS', payload: data })
-        enqueueSnackbar(data.message, { variant: 'success' })
       } catch (error) {
         dispatch({ type: 'PAY_FAIL', payload: getError(error) })
         enqueueSnackbar(getError(error), { variant: 'error' })
