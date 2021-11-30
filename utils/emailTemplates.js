@@ -230,7 +230,7 @@ export const userRegisteredTemplate = async (email, link, name) => {
     subject: 'Activate your account',
     html: `
     <h3> Hi ${name} </h3>
-    <br>
+        
     <p>Thank you for registering into OneStopShop. Just one last step is laying ahead of you...</p>
     <p>To activate your account: <a href=${link} style="text-decoration: underline;color: #252525;font-size: 14px;">Click here</a></p>
     <p>The link is valid for only 24 hours</p>

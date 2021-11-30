@@ -9,10 +9,7 @@ import {
 import Layout from '../components/Layout'
 import NextLink from 'next/link'
 import axios from 'axios'
-import { useContext } from 'react'
-import { Store } from '../utils/store'
 import { useRouter } from 'next/router'
-import Cookies from 'js-cookie'
 import { Controller, useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 import { getError } from '../utils/error'
@@ -27,7 +24,6 @@ const RegisterPage = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const router = useRouter()
   const { redirect } = router.query
-  const { dispatch } = useContext(Store)
 
   const submitHandler = async ({
     firstName,
@@ -47,12 +43,7 @@ const RegisterPage = () => {
         email,
         password,
       })
-
-      dispatch({ type: 'USER_LOGIN', payload: data })
-      Cookies.set('userInfo', JSON.stringify(data), { sameSite: 'lax' })
-      Cookies.set('wishItems', JSON.stringify(data.wishlist), {
-        sameSite: 'lax',
-      })
+      enqueueSnackbar(data.message, { variant: 'success' })
       router.push(redirect || '/')
     } catch (error) {
       enqueueSnackbar(getError(error), { variant: 'error' })

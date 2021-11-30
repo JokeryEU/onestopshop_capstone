@@ -18,7 +18,7 @@ handler.post(async (req, res) => {
 
   if ((pendUser && pendUser.expiry > date) || regUser) {
     await db.disconnect()
-    return res.status(422).send('Email already registered!')
+    return res.status(422).send({ message: 'Email already registered!' })
   }
 
   const newUser = await PendingUser.create({
