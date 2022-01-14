@@ -50,7 +50,6 @@
 - react: 17.0.2,
 - react-chartjs-2: 3.3.0,
 - react-dom: 17.0.2,
-- react-google-recaptcha-v3: 1.9.7,
 - react-hook-form: 7.20.4,
 - react-responsive-carousel: 3.2.22,
 - sharp: 0.29.3,
