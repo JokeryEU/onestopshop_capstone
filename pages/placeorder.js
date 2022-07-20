@@ -146,7 +146,7 @@ const PlaceOrderPage = () => {
                 {shippingAddress.city}, {shippingAddress.postalCode},{' '}
                 {shippingAddress.country}, {shippingAddress.phoneNumber}
                 &nbsp;
-                {shippingAddress?.location && (
+                {/* {shippingAddress?.location && (
                   <Link
                     variant="button"
                     target="_new"
@@ -154,7 +154,7 @@ const PlaceOrderPage = () => {
                   >
                     Show On Map
                   </Link>
-                )}
+                )} */}
               </ListItem>
             </List>
           </Card>

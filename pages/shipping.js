@@ -15,7 +15,7 @@ const ShippingPage = () => {
     control,
     formState: { errors },
     setValue,
-    getValues,
+    // getValues,
   } = useForm()
 
   const { state, dispatch } = useContext(Store)
@@ -69,40 +69,40 @@ const ShippingPage = () => {
     router.push('/payment')
   }
 
-  const chooseLocationHandler = () => {
-    const fullName = getValues('fullName')
-    const address = getValues('address')
-    const city = getValues('city')
-    const postalCode = getValues('postalCode')
-    const country = getValues('country')
-    const phoneNumber = getValues('phoneNumber')
-    dispatch({
-      type: 'SAVE_SHIPPING_ADDRESS',
-      payload: {
-        fullName,
-        address,
-        city,
-        postalCode,
-        country,
-        phoneNumber,
-        location,
-      },
-    })
-    Cookies.set(
-      'shippingAddress',
-      JSON.stringify({
-        fullName,
-        address,
-        city,
-        postalCode,
-        country,
-        phoneNumber,
-        location,
-      }),
-      { sameSite: 'lax' }
-    )
-    router.push('/map')
-  }
+  // const chooseLocationHandler = () => {
+  //   const fullName = getValues('fullName')
+  //   const address = getValues('address')
+  //   const city = getValues('city')
+  //   const postalCode = getValues('postalCode')
+  //   const country = getValues('country')
+  //   const phoneNumber = getValues('phoneNumber')
+  //   dispatch({
+  //     type: 'SAVE_SHIPPING_ADDRESS',
+  //     payload: {
+  //       fullName,
+  //       address,
+  //       city,
+  //       postalCode,
+  //       country,
+  //       phoneNumber,
+  //       location,
+  //     },
+  //   })
+  //   Cookies.set(
+  //     'shippingAddress',
+  //     JSON.stringify({
+  //       fullName,
+  //       address,
+  //       city,
+  //       postalCode,
+  //       country,
+  //       phoneNumber,
+  //       location,
+  //     }),
+  //     { sameSite: 'lax' }
+  //   )
+  //   router.push('/map')
+  // }
 
   return (
     <Layout title="Shipping Address">
@@ -280,7 +280,7 @@ const ShippingPage = () => {
               )}
             />
           </ListItem>
-          <ListItem>
+          {/* <ListItem>
             <Button
               variant="contained"
               type="button"
@@ -291,7 +291,7 @@ const ShippingPage = () => {
             <Typography>
               {location?.lat && `${location.lat}, ${location.lng}`}
             </Typography>
-          </ListItem>
+          </ListItem> */}
           <ListItem>
             <Button variant="contained" type="submit" fullWidth color="primary">
               Continue
