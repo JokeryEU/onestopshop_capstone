@@ -12,8 +12,18 @@ const handler = nc()
 
 handler.post(async (req, res) => {
   const { email } = req.body
+  if (typeof email !== 'string') {
+    return res.status(400).send({ message: 'Invalid email format.' })
+  }
   await db.connect()
   const user = await User.findOne({ email })
+
+  if (!user) {
+    await db.disconnect()
+    return res.status(401).send({
+      message: `The email address ${email} is not associated with any account. Double-check your email address and try again.`,
+    })
+  }
 
   if (user.resetPasswordToken) {
     await new Promise((res, rej) =>
@@ -33,12 +43,6 @@ handler.post(async (req, res) => {
     return res.status(400).send({
       message:
         'Your link its still valid please wait 1 hour or use the link you got from your email',
-    })
-  }
-  if (!user) {
-    await db.disconnect()
-    return res.status(401).send({
-      message: `The email address ${email} is not associated with any account. Double-check your email address and try again.`,
     })
   }
   const token = await new Promise((res, rej) =>

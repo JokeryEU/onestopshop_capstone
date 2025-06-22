@@ -72,8 +72,7 @@ const ForgotPasswordPage = () => {
                 defaultValue=""
                 rules={{
                   required: true,
-                  // eslint-disable-next-line no-useless-escape
-                  pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                  pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
                 }}
                 render={({ field }) => (
                   <TextField
